@@ -14,19 +14,19 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import {
-  barUserQuery,
+  // barUserQuery,
   blockQuery,
   currencyFormatter,
   decimalFormatter,
-  ethPriceQuery,
+  avaxPriceQuery,
   formatCurrency,
   getApollo,
-  getBarUser,
-  getEthPrice,
+  // getBarUser,
+  getAvaxPrice,
   getLatestBlock,
   getPairs,
   getPoolUser,
-  getSushiToken,
+  getPandaSwapV2Token,
   getToken,
   getUser,
   latestBlockQuery,
@@ -73,18 +73,18 @@ function UserPage() {
 
   const {
     data: { bundles },
-  } = useQuery(ethPriceQuery, {
+  } = useQuery(avaxPriceQuery, {
     pollInterval: 60000,
   });
 
-  const { data: barData } = useQuery(barUserQuery, {
-    variables: {
-      id: id.toLowerCase(),
-    },
-    context: {
-      clientName: "bar",
-    },
-  });
+  // const { data: barData } = useQuery(barUserQuery, {
+  //   variables: {
+  //     id: id.toLowerCase(),
+  //   },
+  //   context: {
+  //     clientName: "bar",
+  //   },
+  // });
 
   const { data: poolData } = useQuery(poolUserQuery, {
     variables: {
@@ -128,53 +128,53 @@ function UserPage() {
   //   () =>
   //     Promise.all([
   //       getPairs,
-  //       getSushiToken,
+  //       getPandaSwapV2Token,
   //       getPoolUser(id.toLowerCase()),
   //       getBarUser(id.toLocaleLowerCase()),
-  //       getEthPrice,
+  //       getAvaxPrice,
   //     ]),
   //   60000
   // );
 
   const sushiPrice =
-    parseFloat(token?.derivedETH) * parseFloat(bundles[0].ethPrice);
+    parseFloat(token?.derivedAVAX) * parseFloat(bundles[0].avaxPrice);
 
-  // BAR
-  const xSushi = parseFloat(barData?.user?.xSushi);
+  // // BAR
+  // const xSushi = parseFloat(barData?.user?.xSushi);
 
-  const barPending =
-    (xSushi * parseFloat(barData?.user?.bar?.sushiStaked)) /
-    parseFloat(barData?.user?.bar?.totalSupply);
+  // const barPending =
+  //   (xSushi * parseFloat(barData?.user?.bar?.sushiStaked)) /
+  //   parseFloat(barData?.user?.bar?.totalSupply);
 
-  const xSushiTransfered =
-    barData?.user?.xSushiIn > barData?.user?.xSushiOut
-      ? parseFloat(barData?.user?.xSushiIn) -
-        parseFloat(barData?.user?.xSushiOut)
-      : parseFloat(barData?.user?.xSushiOut) -
-        parseFloat(barData?.user?.xSushiIn);
+  // const xSushiTransfered =
+  //   barData?.user?.xSushiIn > barData?.user?.xSushiOut
+  //     ? parseFloat(barData?.user?.xSushiIn) -
+  //       parseFloat(barData?.user?.xSushiOut)
+  //     : parseFloat(barData?.user?.xSushiOut) -
+  //       parseFloat(barData?.user?.xSushiIn);
 
-  const barStaked = barData?.user?.sushiStaked;
+  // const barStaked = barData?.user?.sushiStaked;
 
-  const barStakedUSD = barData?.user?.sushiStakedUSD;
+  // const barStakedUSD = barData?.user?.sushiStakedUSD;
 
-  const barHarvested = barData?.user?.sushiHarvested;
-  const barHarvestedUSD = barData?.user?.sushiHarvestedUSD;
+  // const barHarvested = barData?.user?.sushiHarvested;
+  // const barHarvestedUSD = barData?.user?.sushiHarvestedUSD;
 
-  const barPendingUSD = barPending > 0 ? barPending * sushiPrice : 0;
+  // const barPendingUSD = barPending > 0 ? barPending * sushiPrice : 0;
 
-  const barRoiSushi =
-    barPending -
-    (parseFloat(barData?.user?.sushiStaked) -
-      parseFloat(barData?.user?.sushiHarvested) +
-      parseFloat(barData?.user?.sushiIn) -
-      parseFloat(barData?.user?.sushiOut));
+  // const barRoiSushi =
+  //   barPending -
+  //   (parseFloat(barData?.user?.sushiStaked) -
+  //     parseFloat(barData?.user?.sushiHarvested) +
+  //     parseFloat(barData?.user?.sushiIn) -
+  //     parseFloat(barData?.user?.sushiOut));
 
-  const barRoiUSD =
-    barPendingUSD -
-    (parseFloat(barData?.user?.sushiStakedUSD) -
-      parseFloat(barData?.user?.sushiHarvestedUSD) +
-      parseFloat(barData?.user?.usdIn) -
-      parseFloat(barData?.user?.usdOut));
+  // const barRoiUSD =
+  //   barPendingUSD -
+  //   (parseFloat(barData?.user?.sushiStakedUSD) -
+  //     parseFloat(barData?.user?.sushiHarvestedUSD) +
+  //     parseFloat(barData?.user?.usdIn) -
+  //     parseFloat(barData?.user?.usdOut));
 
   const { data: blocksData } = useQuery(latestBlockQuery, {
     context: {
@@ -182,11 +182,11 @@ function UserPage() {
     },
   });
 
-  const blockDifference =
-    parseInt(blocksData?.blocks[0].number) -
-    parseInt(barData?.user?.createdAtBlock);
+  // const blockDifference =
+  //   parseInt(blocksData?.blocks[0].number) -
+  //   parseInt(barData?.user?.createdAtBlock);
 
-  const barRoiDailySushi = (barRoiSushi / blockDifference) * 6440;
+  // const barRoiDailySushi = (barRoiSushi / blockDifference) * 6440;
 
   // POOLS
 
@@ -256,8 +256,8 @@ function UserPage() {
   // const originalInvestments =
   //   parseFloat(barData?.user?.sushiStakedUSD) + parseFloat(poolEntriesUSD);
 
-  const investments =
-    poolEntriesUSD + barPendingUSD + poolsPendingUSD + poolExitsUSD + lockedUSD;
+  // const investments =
+  //   poolEntriesUSD + barPendingUSD + poolsPendingUSD + poolExitsUSD + lockedUSD;
 
   return (
     <AppShell>
@@ -634,11 +634,11 @@ export async function getStaticProps({ params }) {
 
   const id = params.id.toLowerCase();
 
-  await getEthPrice(client);
+  await getAvaxPrice(client);
 
-  await getSushiToken(client);
+  await getPandaSwapV2Token(client);
 
-  await getBarUser(id.toLowerCase(), client);
+  // await getBarUser(id.toLowerCase(), client);
 
   await client.query({
     query: lockupUserQuery,

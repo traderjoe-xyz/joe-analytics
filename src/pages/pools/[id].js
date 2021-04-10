@@ -18,14 +18,14 @@ import {
 } from "@material-ui/core";
 import {
   currencyFormatter,
-  ethPriceQuery,
+  avaxPriceQuery,
   getApollo,
-  getEthPrice,
+  getAvaxPrice,
   getPool,
   getPoolHistories,
   getPoolIds,
   getPools,
-  getSushiToken,
+  getPandaSwapV2Token,
   poolHistoryQuery,
   poolQuery,
   tokenQuery,
@@ -79,7 +79,7 @@ function PoolPage() {
 
   const {
     data: { bundles },
-  } = useQuery(ethPriceQuery, {
+  } = useQuery(avaxPriceQuery, {
     pollInterval: 60000,
   });
 
@@ -92,7 +92,7 @@ function PoolPage() {
   });
 
   const sushiPrice =
-    parseFloat(token?.derivedETH) * parseFloat(bundles[0].ethPrice);
+    parseFloat(token?.derivedAVAX) * parseFloat(bundles[0].avaxPrice);
 
   const {
     slpAge,
@@ -441,8 +441,8 @@ function PoolPage() {
 
 export async function getStaticProps({ params: { id } }) {
   const client = getApollo();
-  await getEthPrice(client);
-  await getSushiToken(client);
+  await getAvaxPrice(client);
+  await getPandaSwapV2Token(client);
   await getPool(id, client);
   await getPoolHistories(id, client);
   return {

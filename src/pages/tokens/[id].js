@@ -14,14 +14,14 @@ import {
 import { Box, Grid, Paper, Typography } from "@material-ui/core";
 import {
   currencyFormatter,
-  ethPriceQuery,
+  avaxPriceQuery,
   getApollo,
   getOneDayBlock,
-  getOneDayEthPrice,
+  getOneDayAvaxPrice,
   getToken,
   getTokenPairs,
-  oneDayEthPriceQuery,
-  sevenDayEthPriceQuery,
+  oneDayAvaxPriceQuery,
+  sevenDayAvaxPriceQuery,
   tokenDayDatasQuery,
   tokenIdsQuery,
   tokenPairsQuery,
@@ -88,15 +88,15 @@ function TokenPage() {
 
   const {
     data: { bundles },
-  } = useQuery(ethPriceQuery, {
+  } = useQuery(avaxPriceQuery, {
     pollInterval: 60000,
   });
 
-  const { data: oneDayEthPriceData } = useQuery(oneDayEthPriceQuery);
+  const { data: oneDayAvaxPriceData } = useQuery(oneDayAvaxPriceQuery);
 
   useInterval(async () => {
     await getToken(id);
-    await getOneDayEthPrice();
+    await getOneDayAvaxPrice();
   }, 60000);
 
   const {
@@ -140,19 +140,19 @@ function TokenPage() {
 
   const totalLiquidityUSD =
     parseFloat(token?.liquidity) *
-    parseFloat(token?.derivedETH) *
-    parseFloat(bundles[0].ethPrice);
+    parseFloat(token?.derivedAVAX) *
+    parseFloat(bundles[0].avaxPrice);
 
   const totalLiquidityUSDYesterday =
     parseFloat(token.oneDay?.liquidity) *
-    parseFloat(token.oneDay?.derivedETH) *
-    parseFloat(oneDayEthPriceData?.ethPrice);
+    parseFloat(token.oneDay?.derivedAVAX) *
+    parseFloat(oneDayAvaxPriceData?.avaxPrice);
 
-  const price = parseFloat(token?.derivedETH) * parseFloat(bundles[0].ethPrice);
+  const price = parseFloat(token?.derivedAVAX) * parseFloat(bundles[0].avaxPrice);
 
   const priceYesterday =
-    parseFloat(token.oneDay?.derivedETH) *
-    parseFloat(oneDayEthPriceData?.ethPrice);
+    parseFloat(token.oneDay?.derivedAVAX) *
+    parseFloat(oneDayAvaxPriceData?.avaxPrice);
 
   const priceChange = ((price - priceYesterday) / priceYesterday) * 100;
 
@@ -313,7 +313,7 @@ export async function getStaticProps({ params }) {
   const id = params.id.toLowerCase();
 
   await client.query({
-    query: ethPriceQuery,
+    query: avaxPriceQuery,
   });
 
   await getToken(id, client);
@@ -340,7 +340,7 @@ export async function getStaticProps({ params }) {
     },
   });
 
-  await getOneDayEthPrice(client);
+  await getOneDayAvaxPrice(client);
 
   return {
     props: {

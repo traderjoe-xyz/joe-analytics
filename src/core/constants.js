@@ -1,3 +1,8 @@
+// WOLFE MIGLIO (WOLFE)
+// UniBomb (UBOMB)
+// ERC20
+// BITCOIN FREE (BTCFR)
+
 export const TOKEN_DENY = [
   "0x495c7f3a713870f68f8b418b355c085dfdc412c3",
   "0xc3761eb917cd790b30dad99f6cc5b4ff93c4f9ea",
@@ -5,6 +10,7 @@ export const TOKEN_DENY = [
   "0xfc989fbb6b3024de5ca0144dc23c18a063942ac1",
 ];
 
+//Uniswap V2 (UNI-V2)
 export const PAIR_DENY = ["0xb6a741f37d6e455ebcc9f17e2c16d0586c3f57a5"];
 
 export const EXCHANGE_CREATED_TIMESTAMP = 1599214239;

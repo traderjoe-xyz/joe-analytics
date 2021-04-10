@@ -4,15 +4,15 @@ import {
   barHistoriesQuery,
   barQuery,
   dayDatasQuery,
-  ethPriceQuery,
+  avaxPriceQuery,
   factoryQuery,
   getApollo,
   getBar,
   getBarHistories,
   getDayData,
-  getEthPrice,
+  getAvaxPrice,
   getFactory,
-  getSushiToken,
+  getPandaSwapV2Token,
   tokenQuery,
   useInterval,
 } from "app/core";
@@ -71,14 +71,14 @@ function BarPage() {
 
   const {
     data: { bundles },
-  } = useQuery(ethPriceQuery);
+  } = useQuery(avaxPriceQuery);
 
   const {
     data: { dayDatas },
   } = useQuery(dayDatasQuery);
 
   const sushiPrice =
-    parseFloat(token?.derivedETH) * parseFloat(bundles[0].ethPrice);
+    parseFloat(token?.derivedAVAX) * parseFloat(bundles[0].avaxPrice);
 
   useInterval(async () => {
     await Promise.all([
@@ -86,8 +86,8 @@ function BarPage() {
       getBarHistories,
       getDayData,
       getFactory,
-      getSushiToken,
-      getEthPrice,
+      getPandaSwapV2Token,
+      getAvaxPrice,
     ]);
   }, 60000);
 
@@ -356,8 +356,8 @@ export async function getStaticProps() {
   await getBarHistories(client);
   await getFactory(client);
   await getDayData(client);
-  await getSushiToken(client);
-  await getEthPrice(client);
+  await getPandaSwapV2Token(client);
+  await getAvaxPrice(client);
   return {
     props: {
       initialApolloState: client.cache.extract(),

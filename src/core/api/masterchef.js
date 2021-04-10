@@ -1,4 +1,4 @@
-import { getAverageBlockTime, getEthPrice, getToken } from "../api";
+import { getAverageBlockTime, getAvaxPrice, getToken } from "../api";
 import {
   liquidityPositionSubsetQuery,
   pairQuery,
@@ -150,15 +150,15 @@ export async function getPools(client = getApollo()) {
   const averageBlockTime = await getAverageBlockTime();
   // const averageBlockTime = 13;
 
-  const { bundles } = await getEthPrice();
+  const { bundles } = await getAvaxPrice();
 
-  const ethPrice = bundles[0].ethPrice;
+  const avaxPrice = bundles[0].avaxPrice;
 
   const { token } = await getToken(
     "0x6b3595068778dd592e39a122f4f5a5cf09c90fe2"
   );
 
-  const sushiPrice = ethPrice * token.derivedETH;
+  const sushiPrice = avaxPrice * token.derivedAVAX;
 
   // MASTERCHEF
   const {
@@ -194,11 +194,11 @@ export async function getPools(client = getApollo()) {
           //   100 - 100 * (pool45.allocPoint / pool45.owner.totalAllocPoint);
 
           // const roiPerBlock =
-          //   (Number(token.derivedETH) *
+          //   (Number(token.derivedAVAX) *
           //     rewardPerBlock *
           //     3 *
           //     (Number(pool.allocPoint) / Number(pool.owner.totalAllocPoint))) /
-          //   (Number(pair.reserveETH) * (balance / Number(pair.totalSupply)));
+          //   (Number(pair.reserveAVAX) * (balance / Number(pair.totalSupply)));
 
           const balanceUSD =
             (balance / Number(pair.totalSupply)) * Number(pair.reserveUSD);

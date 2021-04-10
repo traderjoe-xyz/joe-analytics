@@ -1,8 +1,8 @@
 import { AppShell, TokenTable } from "app/components";
 import {
-  ethPriceQuery,
+  avaxPriceQuery,
   getApollo,
-  getOneDayEthPrice,
+  getOneDayAvaxPrice,
   getTokens,
   tokensQuery,
   useInterval,
@@ -18,7 +18,7 @@ function TokensPage() {
   } = useQuery(tokensQuery);
 
   useInterval(async () => {
-    await Promise.all([getTokens, getOneDayEthPrice]);
+    await Promise.all([getTokens, getOneDayAvaxPrice]);
   }, 60000);
 
   return (
@@ -35,10 +35,10 @@ export async function getStaticProps() {
   const client = getApollo();
 
   await client.query({
-    query: ethPriceQuery,
+    query: avaxPriceQuery,
   });
 
-  await getOneDayEthPrice(client);
+  await getOneDayAvaxPrice(client);
 
   await getTokens(client);
 

@@ -13,11 +13,11 @@ import {
   dayDatasQuery,
   getApollo,
   getDayData,
-  getEthPrice,
-  getOneDayEthPrice,
+  getAvaxPrice,
+  getOneDayAvaxPrice,
   getPairs,
   getPools,
-  getSevenDayEthPrice,
+  getSevenDayAvaxPrice,
   getTokens,
   pairsQuery,
   poolsQuery,
@@ -57,8 +57,8 @@ function IndexPage() {
         getPools,
         getTokens,
         getDayData,
-        getOneDayEthPrice,
-        getSevenDayEthPrice,
+        getOneDayAvaxPrice,
+        getSevenDayAvaxPrice,
       ]),
     60000
   );
@@ -155,11 +155,11 @@ export async function getStaticProps() {
 
   await getDayData(client);
 
-  await getEthPrice(client);
+  await getAvaxPrice(client);
 
-  await getOneDayEthPrice(client);
+  await getOneDayAvaxPrice(client);
 
-  await getSevenDayEthPrice(client);
+  await getSevenDayAvaxPrice(client);
 
   await getTokens(client);
 

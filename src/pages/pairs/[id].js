@@ -15,7 +15,7 @@ import {
 } from "app/components";
 import { Avatar, Box, Chip, Grid, Paper, Typography } from "@material-ui/core";
 import {
-  ethPriceQuery,
+  avaxPriceQuery,
   formatCurrency,
   formatDecimal,
   getApollo,
@@ -83,7 +83,7 @@ function PairPage(props) {
 
   const {
     data: { bundles },
-  } = useQuery(ethPriceQuery, {
+  } = useQuery(avaxPriceQuery, {
     pollInterval: 60000,
   });
 
@@ -159,10 +159,10 @@ function PairPage(props) {
   const chartDatas = pairDayDatas.reduce(
     (previousValue, currentValue) => {
       const untrackedVolumeUSD =
-        currentValue?.token0.derivedETH * currentValue?.volumeToken0 +
-        currentValue?.token1.derivedETH *
+        currentValue?.token0.derivedAVAX * currentValue?.volumeToken0 +
+        currentValue?.token1.derivedAVAX *
           currentValue?.volumeToken1 *
-          bundles[0].ethPrice;
+          bundles[0].avaxPrice;
 
       const volumeUSD =
         currentValue?.volumeUSD === "0"
@@ -240,7 +240,7 @@ function PairPage(props) {
               {`1 ${pair.token0.symbol} = ${formatDecimal(
                 pair.reserve1 / pair.reserve0
               )} ${pair.token1.symbol} (${formatCurrency(
-                pair.token0?.derivedETH * bundles[0].ethPrice
+                pair.token0?.derivedAVAX * bundles[0].avaxPrice
               )})`}
             </Typography>
           </Paper>
@@ -265,7 +265,7 @@ function PairPage(props) {
               {`1 ${pair.token1.symbol} = ${formatDecimal(
                 pair.reserve0 / pair.reserve1
               )} ${pair.token0.symbol} (${formatCurrency(
-                pair.token1?.derivedETH * bundles[0].ethPrice
+                pair.token1?.derivedAVAX * bundles[0].avaxPrice
               )})`}
             </Typography>
           </Paper>
@@ -423,9 +423,9 @@ export async function getStaticProps({ params }) {
 
   const id = params.id.toLowerCase()
 
-  // EthPrice
+  // AvaxPrice
   await client.query({
-    query: ethPriceQuery,
+    query: avaxPriceQuery,
   });
 
   await getPair(id, client);

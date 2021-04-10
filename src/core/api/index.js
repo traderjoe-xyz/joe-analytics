@@ -1,20 +1,20 @@
 import {
-  ethPriceQuery,
-  ethPriceTimeTravelQuery,
+  avaxPriceQuery,
+  avaxPriceTimeTravelQuery,
   getApollo,
   getOneDayBlock,
   getSevenDayBlock,
   getTwoDayBlock,
-  oneDayEthPriceQuery,
+  oneDayAvaxPriceQuery,
   pairQuery,
   pairTimeTravelQuery,
   pairsQuery,
   pairsTimeTravelQuery,
-  sevenDayEthPriceQuery,
+  sevenDayAvaxPriceQuery,
   tokenPairsQuery,
 } from "app/core";
 
-export * from "./bar";
+// export * from "./bar";
 export * from "./blocks";
 export * from "./exchange";
 export * from "./masterchef";
@@ -40,29 +40,29 @@ export async function getLiquidityPositionSnapshots(
   });
 }
 
-// Eth Price
-export async function getEthPrice(client = getApollo()) {
+// Avax Price
+export async function getAvaxPrice(client = getApollo()) {
   const { data } = await client.query({
-    query: ethPriceQuery,
+    query: avaxPriceQuery,
   });
 
   await client.cache.writeQuery({
-    query: ethPriceQuery,
+    query: avaxPriceQuery,
     data,
   });
 
   return await client.cache.readQuery({
-    query: ethPriceQuery,
+    query: avaxPriceQuery,
   });
 }
 
-export async function getOneDayEthPrice(client = getApollo()) {
+export async function getOneDayAvaxPrice(client = getApollo()) {
   const block = await getOneDayBlock();
 
   const {
     data: { bundles },
   } = await client.query({
-    query: ethPriceTimeTravelQuery,
+    query: avaxPriceTimeTravelQuery,
     variables: {
       block,
     },
@@ -70,20 +70,20 @@ export async function getOneDayEthPrice(client = getApollo()) {
   });
 
   await client.cache.writeQuery({
-    query: oneDayEthPriceQuery,
+    query: oneDayAvaxPriceQuery,
     data: {
-      ethPrice: bundles[0]?.ethPrice,
+      avaxPrice: bundles[0]?.avaxPrice,
     },
   });
 }
 
-export async function getSevenDayEthPrice(client = getApollo()) {
+export async function getSevenDayAvaxPrice(client = getApollo()) {
   const block = await getSevenDayBlock();
 
   const {
     data: { bundles },
   } = await client.query({
-    query: ethPriceTimeTravelQuery,
+    query: avaxPriceTimeTravelQuery,
     variables: {
       block,
     },
@@ -91,9 +91,9 @@ export async function getSevenDayEthPrice(client = getApollo()) {
   });
 
   await client.cache.writeQuery({
-    query: sevenDayEthPriceQuery,
+    query: sevenDayAvaxPriceQuery,
     data: {
-      ethPrice: bundles[0]?.ethPrice,
+      avaxPrice: bundles[0]?.avaxPrice,
     },
   });
 }
