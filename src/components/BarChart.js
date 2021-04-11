@@ -89,12 +89,14 @@ export default function BarChart({
   }
 
   data = data.filter((d) => timespan <= d.date);
-
+  var lastData = data.length > 1 ? data[data.length - 1] : null
   const [overlay, setOverlay] = useState({
     title,
-    value: currencyFormatter.format(data[data.length - 1].value),
-    date: data[data.length - 1].date,
+    value: currencyFormatter.format(lastData ? lastData.value : 0),
+    date: lastData ? lastData.date : 0,
   });
+
+
 
   // bounds
   const xMax = width - margin.left - margin.right;
