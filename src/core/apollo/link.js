@@ -37,7 +37,8 @@ export const exchange = from([
 export const blocklytics = from([
   new RetryLink(),
   new HttpLink({
-    uri: "https://api.thegraph.com/subgraphs/name/blocklytics/ethereum-blocks",
+    // uri: "https://api.thegraph.com/subgraphs/name/blocklytics/ethereum-blocks",
+    uri: "https://graph-node.avax.network/subgraphs/name/dasconnor/avalancheblocks", 
     shouldBatch: true,
   }),
 ]);
