@@ -169,8 +169,7 @@ function TokenPage() {
     <AppShell>
       <Head>
         <title>
-          {currencyFormatter.format(price || 0)} | {token.symbol} | SushiSwap
-          Analytics
+          {currencyFormatter.format(price || 0)} | {token.symbol} | JoeDefi Analytics
         </title>
       </Head>
       <PageHeader>
@@ -196,14 +195,14 @@ function TokenPage() {
           </Grid>
           <Grid item xs={12} sm="auto" className={classes.links}>
             <Link
-              href={`https://exchange.sushiswapclassic.org/#/add/${token.id}/ETH`}
+              href={`https://exchange.joe.defi/#/add/${token.id}/AVAX`}
               target="_blank"
               variant="body1"
             >
               Add Liquidity
             </Link>
             <Link
-              href={`https://exchange.sushiswapclassic.org/#/swap?inputCurrency=${token.id}`}
+              href={`https://exchange.joe.defi/#/swap?inputCurrency=${token.id}`}
               target="_blank"
               variant="body1"
             >

@@ -35,6 +35,10 @@ import { toChecksumAddress } from "web3-utils";
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 
+/*
+ * TODO: disabled IntoTheBlock window widget
+ */
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flex: 1,
@@ -188,7 +192,7 @@ function PairPage(props) {
     <AppShell>
       <Head>
         <title>
-          {pair.token0.symbol}-{pair.token1.symbol} | SushiSwap Analytics
+          {pair.token0.symbol}-{pair.token1.symbol} | JoeDefi Analytics
         </title>
       </Head>
       <PageHeader>
@@ -201,7 +205,7 @@ function PairPage(props) {
           </Box>
           <Box display="flex" alignItems="center" className={classes.links}>
             <Link
-              href={`https://exchange.sushiswapclassic.org/#/add/${pair.token0.id}/${pair.token1.id}`}
+              href={`https://exchange.joe.defi/#/add/${pair.token0.id}/${pair.token1.id}`}
               target="_blank"
               variant="body1"
               className={classes.firstLink}
@@ -209,7 +213,7 @@ function PairPage(props) {
               Add Liquidity
             </Link>
             <Link
-              href={`https://exchange.sushiswapclassic.org/#/swap?inputCurrency=${pair.token0.id}&outputCurrency=${pair.token1.id}`}
+              href={`https://exchange.joe.defi/#/swap?inputCurrency=${pair.token0.id}&outputCurrency=${pair.token1.id}`}
               target="_blank"
               variant="body1"
             >
@@ -404,13 +408,13 @@ function PairPage(props) {
             <Typography variant="body2" noWrap>
               {pair.token1.id}
             </Typography>,
-            <Link href={`https://etherscan.io/address/${pair.id}`}>View</Link>,
+            <Link href={`https://cchain.explorer.avax.network/address/${pair.id}`}>View</Link>,
           ]}
         />
       </Box>
-      <Box my={4}>
+      {/* <Box my={4}>
         <IntoTheBlock pairAddress={pair.id} />
-      </Box>
+      </Box> */}
       <Box my={4}>
         <Transactions transactions={transactions} txCount={pair.txCount} />
       </Box>

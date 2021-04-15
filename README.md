@@ -9,12 +9,15 @@ Forked from `sushiswap-analytics`.
     - refactor `ETH` to `AVAX`
     - update endpoint to get daily `AVAX` price
     - refactor `SUSHI` for `PANDASWAPV2`
-- what to do about `queries/blocks.js` ?
-- do we need to update `queries/masterchef.js` ? Do we need subgraph?
+- [x] updated to use avax block subgraph
 - update `constants.js`
-- update etherscan links to avaxexplorer
+- update `src/components/Sushi.js` sushi svg logo
+- update `src/components/TokenIcon.js` with avax token icons
+- [x] update etherscan links to avaxexplorer
 - update sushiswap pool / token links
-
+- implement template/mustache for configs
+    - added new `config.json`
+    - update `src/core/constants.js`
 
 # (Original README) SushiSwap Analytics
 

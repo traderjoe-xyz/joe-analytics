@@ -37,6 +37,7 @@ import { ParentSize } from "@visx/responsive";
 import { deepPurple } from "@material-ui/core/colors";
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
+import config from "../config.json";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -83,15 +84,16 @@ function PoolPage() {
     pollInterval: 60000,
   });
 
+  const token_address = config.joe_token_address;
   const {
     data: { token },
   } = useQuery(tokenQuery, {
     variables: {
-      id: "0x6b3595068778dd592e39a122f4f5a5cf09c90fe2",
+      id: token_address,
     },
   });
 
-  const sushiPrice =
+  const joePrice =
     parseFloat(token?.derivedAVAX) * parseFloat(bundles[0].avaxPrice);
 
   const {
@@ -172,7 +174,7 @@ function PoolPage() {
   return (
     <AppShell>
       <Head>
-        <title>Pool {id} | SushiSwap Analytics</title>
+        <title>Pool {id} | JoeDefi Analytics</title>
       </Head>
 
       <PageHeader mb={3}>
@@ -197,16 +199,16 @@ function PoolPage() {
           </Grid>
           <Grid item xs={12} sm="auto" className={classes.links}>
             <Link
-              href={`https://sushiswapclassic.org/farms/${
+              href={`https://joe.defi/farms/${
                 pool.liquidityPair.token0.symbol
               }-${pool.liquidityPair.token1.symbol.replace(
-                "WETH",
-                "ETH"
-              )}%20SLP`}
+                "WAVAX",
+                "AVAX"
+              )}%20LP`}
               target="_blank"
               variant="body1"
             >
-              Stake SLP
+              Stake LP
             </Link>
           </Grid>
         </Grid>
@@ -226,7 +228,7 @@ function PoolPage() {
       <Grid container spacing={3}>
         <Grid item xs={12} sm={4}>
           <KPI
-            title="~ SLP Age"
+            title="~ LP Age"
             value={`${(
               parseFloat(pool.slpAge) / parseFloat(pool.balance / 1e18)
             ).toFixed(2)} Days`}
@@ -238,7 +240,7 @@ function PoolPage() {
         <Grid item xs={12} sm={4}>
           <KPI
             title="Staked"
-            value={`${(pool.balance / 1e18).toFixed(4)} SLP`}
+            value={`${(pool.balance / 1e18).toFixed(4)} LP`}
           />
         </Grid>
         {/* <Grid item xs={12} sm={4}>
@@ -267,7 +269,7 @@ function PoolPage() {
                   height={height}
                   title="Profitability"
                   margin={{ top: 64, right: 32, bottom: 0, left: 64 }}
-                  data={[pendingSushi]}
+                  data={[pendingJoe]}
                 />
               )}
             </ParentSize>
@@ -291,7 +293,7 @@ function PoolPage() {
                   height={height}
                   margin={{ top: 64, right: 32, bottom: 0, left: 64 }}
                   data={[slpAge, slpAgeRemoved]}
-                  labels={["SLP Age", "SLP Age Removed"]}
+                  labels={["LP Age", "LP Age Removed"]}
                 />
               )}
             </ParentSize>
@@ -314,7 +316,7 @@ function PoolPage() {
                   height={height}
                   margin={{ top: 64, right: 32, bottom: 0, left: 64 }}
                   data={[slpDeposited, slpWithdrawn]}
-                  labels={["SLP Deposited", "SLP Age Withdrawn"]}
+                  labels={["LP Deposited", "LP Age Withdrawn"]}
                 />
               )}
             </ParentSize>
@@ -334,7 +336,7 @@ function PoolPage() {
             <ParentSize>
               {({ width, height }) => (
                 <Curves
-                  title="~ SLP Age (Days)"
+                  title="~ LP Age (Days)"
                   width={width}
                   height={height}
                   margin={{ top: 64, right: 32, bottom: 0, left: 64 }}
@@ -382,7 +384,7 @@ function PoolPage() {
             <ParentSize>
               {({ width, height }) => (
                 <Curves
-                  title="SLP Balance"
+                  title="LP Balance"
                   width={width}
                   height={height}
                   margin={{ top: 64, right: 32, bottom: 0, left: 64 }}

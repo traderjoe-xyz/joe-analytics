@@ -47,6 +47,7 @@ import { POOL_DENY } from "app/core/constants";
 import { toChecksumAddress } from "web3-utils";
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
+import config from "../config.json";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -105,11 +106,12 @@ function UserPage() {
     fetchPolicy: 'no-cache'
   });
   
+  const token_address = config.joe_token_address;
   const {
     data: { token },
   } = useQuery(tokenQuery, {
     variables: {
-      id: "0x6b3595068778dd592e39a122f4f5a5cf09c90fe2",
+      id: token_address,
     },
   });
 
@@ -136,43 +138,43 @@ function UserPage() {
   //   60000
   // );
 
-  const sushiPrice =
+  const joePrice =
     parseFloat(token?.derivedAVAX) * parseFloat(bundles[0].avaxPrice);
 
   // // BAR
-  // const xSushi = parseFloat(barData?.user?.xSushi);
+  // const xJoe = parseFloat(barData?.user?.xJoe);
 
   // const barPending =
-  //   (xSushi * parseFloat(barData?.user?.bar?.sushiStaked)) /
+  //   (xJoe * parseFloat(barData?.user?.bar?.joeStaked)) /
   //   parseFloat(barData?.user?.bar?.totalSupply);
 
-  // const xSushiTransfered =
-  //   barData?.user?.xSushiIn > barData?.user?.xSushiOut
-  //     ? parseFloat(barData?.user?.xSushiIn) -
-  //       parseFloat(barData?.user?.xSushiOut)
-  //     : parseFloat(barData?.user?.xSushiOut) -
-  //       parseFloat(barData?.user?.xSushiIn);
+  // const xJoeTransfered =
+  //   barData?.user?.xJoeIn > barData?.user?.xJoeOut
+  //     ? parseFloat(barData?.user?.xJoeIn) -
+  //       parseFloat(barData?.user?.xJoeOut)
+  //     : parseFloat(barData?.user?.xJoeOut) -
+  //       parseFloat(barData?.user?.xJoeIn);
 
-  // const barStaked = barData?.user?.sushiStaked;
+  // const barStaked = barData?.user?.joeStaked;
 
-  // const barStakedUSD = barData?.user?.sushiStakedUSD;
+  // const barStakedUSD = barData?.user?.joeStakedUSD;
 
-  // const barHarvested = barData?.user?.sushiHarvested;
-  // const barHarvestedUSD = barData?.user?.sushiHarvestedUSD;
+  // const barHarvested = barData?.user?.joeHarvested;
+  // const barHarvestedUSD = barData?.user?.joeHarvestedUSD;
 
-  // const barPendingUSD = barPending > 0 ? barPending * sushiPrice : 0;
+  // const barPendingUSD = barPending > 0 ? barPending * joePrice : 0;
 
-  // const barRoiSushi =
+  // const barRoiJoe =
   //   barPending -
-  //   (parseFloat(barData?.user?.sushiStaked) -
-  //     parseFloat(barData?.user?.sushiHarvested) +
-  //     parseFloat(barData?.user?.sushiIn) -
-  //     parseFloat(barData?.user?.sushiOut));
+  //   (parseFloat(barData?.user?.joeStaked) -
+  //     parseFloat(barData?.user?.joeHarvested) +
+  //     parseFloat(barData?.user?.joeIn) -
+  //     parseFloat(barData?.user?.joeOut));
 
   // const barRoiUSD =
   //   barPendingUSD -
-  //   (parseFloat(barData?.user?.sushiStakedUSD) -
-  //     parseFloat(barData?.user?.sushiHarvestedUSD) +
+  //   (parseFloat(barData?.user?.joeStakedUSD) -
+  //     parseFloat(barData?.user?.joeHarvestedUSD) +
   //     parseFloat(barData?.user?.usdIn) -
   //     parseFloat(barData?.user?.usdOut));
 
@@ -186,7 +188,7 @@ function UserPage() {
   //   parseInt(blocksData?.blocks[0].number) -
   //   parseInt(barData?.user?.createdAtBlock);
 
-  // const barRoiDailySushi = (barRoiSushi / blockDifference) * 6440;
+  // const barRoiDailyJoe = (barRoiJoe / blockDifference) * 6440;
 
   // POOLS
 
@@ -203,11 +205,11 @@ function UserPage() {
     poolUsers?.reduce((previousValue, currentValue) => {
       return (
         previousValue +
-        ((currentValue.amount * currentValue.pool.accSushiPerShare) / 1e12 -
+        ((currentValue.amount * currentValue.pool.accJoePerShare) / 1e12 -
           currentValue.rewardDebt) /
           1e18
       );
-    }, 0) * sushiPrice;
+    }, 0) * joePrice;
 
   const [
     poolEntriesUSD,
@@ -219,42 +221,42 @@ function UserPage() {
       return [
         entries + parseFloat(currentValue.entryUSD),
         exits + parseFloat(currentValue.exitUSD),
-        harvested + parseFloat(currentValue.sushiHarvestedUSD),
+        harvested + parseFloat(currentValue.joeHarvestedUSD),
       ];
     },
     [0, 0, 0]
   );
 
   const lockedUSD = poolData?.users.reduce((previousValue, user) => {
-    const pendingSushi =
-      ((user.amount * user.pool.accSushiPerShare) / 1e12 - user.rewardDebt) /
+    const pendingJoe =
+      ((user.amount * user.pool.accJoePerShare) / 1e12 - user.rewardDebt) /
       1e18;
 
     const lockupUser = lockupData?.users.find(
       (u) => u.pool.id === user.pool.id
     );
 
-    const sushiAtLockup = lockupUser
-      ? ((lockupUser.amount * lockupUser.pool.accSushiPerShare) / 1e12 -
+    const joeAtLockup = lockupUser
+      ? ((lockupUser.amount * lockupUser.pool.accJoePerShare) / 1e12 -
           lockupUser.rewardDebt) /
         1e18
       : 0;
 
-    const sushiLocked =
-      (parseFloat(user.sushiHarvestedSinceLockup) +
-        pendingSushi -
-        sushiAtLockup) *
+    const joeLocked =
+      (parseFloat(user.joeHarvestedSinceLockup) +
+        pendingJoe -
+        joeAtLockup) *
       2;
 
-    const sushiLockedUSD = sushiLocked * sushiPrice;
+    const joeLockedUSD = joeLocked * joePrice;
 
-    return previousValue + sushiLockedUSD;
+    return previousValue + joeLockedUSD;
   }, 0);
 
   // Global
 
   // const originalInvestments =
-  //   parseFloat(barData?.user?.sushiStakedUSD) + parseFloat(poolEntriesUSD);
+  //   parseFloat(barData?.user?.joeStakedUSD) + parseFloat(poolEntriesUSD);
 
   // const investments =
   //   poolEntriesUSD + barPendingUSD + poolsPendingUSD + poolExitsUSD + lockedUSD;
@@ -262,7 +264,7 @@ function UserPage() {
   return (
     <AppShell>
       <Head>
-        <title>User {id} | SushiSwap Analytics</title>
+        <title>User {id} | JoeDefi Analytics</title>
       </Head>
 
       <PageHeader>
@@ -291,7 +293,7 @@ function UserPage() {
               <Grid item xs={12} sm={6} md={3}>
                 <KPI
                   title="Value"
-                  value={formatCurrency(sushiPrice * barPending)}
+                  value={formatCurrency(joePrice * barPending)}
                 />
               </Grid>
               <Grid item xs={12} sm={6} md={3}>
@@ -300,8 +302,8 @@ function UserPage() {
 
               <Grid item xs={12} sm={6} md={3}>
                 <KPI
-                  title="xSUSHI"
-                  value={Number(xSushi.toFixed(2)).toLocaleString()}
+                  title="xJOE"
+                  value={Number(xJoe.toFixed(2)).toLocaleString()}
                 />
               </Grid>
 
@@ -335,7 +337,7 @@ function UserPage() {
                     <TableCell key="barRoiDaily" align="right">
                       ROI (Daily)
                     </TableCell>
-                    <TableCell key="barRoiSushi" align="right">
+                    <TableCell key="barRoiJoe" align="right">
                       ROI (All-time)
                     </TableCell>
                   </TableRow>
@@ -347,7 +349,7 @@ function UserPage() {
                         <Avatar
                           className={classes.avatar}
                           imgProps={{ loading: "lazy" }}
-                          alt="SUSHI"
+                          alt="JOE"
                           src={`https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${toChecksumAddress(
                             "0x6b3595068778dd592e39a122f4f5a5cf09c90fe2"
                           )}/logo.png`}
@@ -357,10 +359,10 @@ function UserPage() {
                           variant="body2"
                           noWrap
                         >
-                          SUSHI
+                          JOE
                         </Link>
                         {/* <Link href={`/tokens/0x8798249c2e607446efb7ad49ec89dd1865ff4272`} variant="body2" noWrap>
-                        xSUSHI
+                        xJOE
                       </Link> */}
                       </Box>
                     </TableCell>
@@ -379,31 +381,31 @@ function UserPage() {
                     <TableCell align="right">
                       <Typography noWrap variant="body2">
                         {Number(barPending.toFixed(2)).toLocaleString()} (
-                        {formatCurrency(sushiPrice * barPending)})
+                        {formatCurrency(joePrice * barPending)})
                       </Typography>
                     </TableCell>
                     <TableCell align="right">
                       <Typography noWrap variant="body2">
-                        {decimalFormatter.format(barRoiDailySushi * 365)} (
-                        {formatCurrency(barRoiDailySushi * 365 * sushiPrice)})
+                        {decimalFormatter.format(barRoiDailyJoe * 365)} (
+                        {formatCurrency(barRoiDailyJoe * 365 * joePrice)})
                       </Typography>
                     </TableCell>
                     <TableCell align="right">
                       <Typography noWrap variant="body2">
-                        {decimalFormatter.format(barRoiDailySushi * 30)} (
-                        {formatCurrency(barRoiDailySushi * 30 * sushiPrice)})
+                        {decimalFormatter.format(barRoiDailyJoe * 30)} (
+                        {formatCurrency(barRoiDailyJoe * 30 * joePrice)})
                       </Typography>
                     </TableCell>
                     <TableCell align="right">
                       <Typography noWrap variant="body2">
-                        {decimalFormatter.format(barRoiDailySushi)} (
-                        {formatCurrency(barRoiDailySushi * sushiPrice)})
+                        {decimalFormatter.format(barRoiDailyJoe)} (
+                        {formatCurrency(barRoiDailyJoe * joePrice)})
                       </Typography>
                     </TableCell>
 
                     <TableCell align="right">
-                      {decimalFormatter.format(barRoiSushi)} (
-                      {formatCurrency(barRoiSushi * sushiPrice)})
+                      {decimalFormatter.format(barRoiJoe)} (
+                      {formatCurrency(barRoiJoe * joePrice)})
                     </TableCell>
                   </TableRow>
                 </TableBody>
@@ -476,14 +478,14 @@ function UserPage() {
                     <TableCell key="value" align="right">
                       Value
                     </TableCell>
-                    <TableCell key="pendingSushi" align="right">
-                      Sushi Pending
+                    <TableCell key="pendingJoe" align="right">
+                      Joe Pending
                     </TableCell>
-                    <TableCell key="sushiHarvested" align="right">
-                      Sushi Harvested
+                    <TableCell key="joeHarvested" align="right">
+                      Joe Harvested
                     </TableCell>
-                    <TableCell key="sushiLocked" align="right">
-                      Sushi Locked
+                    <TableCell key="joeLocked" align="right">
+                      Joe Locked
                     </TableCell>
                     <TableCell key="pl" align="right">
                       Profit/Loss
@@ -505,38 +507,38 @@ function UserPage() {
                     const token0 = pair.reserve0 * share;
                     const token1 = pair.reserve1 * share;
 
-                    const pendingSushi =
-                      ((user.amount * user.pool.accSushiPerShare) / 1e12 -
+                    const pendingJoe =
+                      ((user.amount * user.pool.accJoePerShare) / 1e12 -
                         user.rewardDebt) /
                       1e18;
-                    // user.amount.mul(accSushiPerShare).div(1e12).sub(user.rewardDebt);
+                    // user.amount.mul(accJoePerShare).div(1e12).sub(user.rewardDebt);
 
                     // console.log(
                     //   user,
                     //   user.entryUSD,
                     //   user.exitUSD,
-                    //   pendingSushi * sushiPrice
+                    //   pendingJoe * joePrice
                     // );
 
                     const lockupUser = lockupData?.users.find(
                       (u) => u.pool.id === user.pool.id
                     );
 
-                    const sushiAtLockup = lockupUser
+                    const joeAtLockup = lockupUser
                       ? ((lockupUser.amount *
-                          lockupUser.pool.accSushiPerShare) /
+                          lockupUser.pool.accJoePerShare) /
                           1e12 -
                           lockupUser.rewardDebt) /
                         1e18
                       : 0;
 
-                    const sushiLocked =
-                      (parseFloat(user.sushiHarvestedSinceLockup) +
-                        pendingSushi -
-                        sushiAtLockup) *
+                    const joeLocked =
+                      (parseFloat(user.joeHarvestedSinceLockup) +
+                        pendingJoe -
+                        joeAtLockup) *
                       2;
 
-                    const sushiLockedUSD = sushiLocked * sushiPrice;
+                    const joeLockedUSD = joeLocked * joePrice;
 
                     return (
                       <TableRow key={user.pool.id}>
@@ -585,23 +587,23 @@ function UserPage() {
                         </TableCell>
                         <TableCell align="right">
                           <Typography noWrap variant="body2">
-                            {decimalFormatter.format(pendingSushi)} (
+                            {decimalFormatter.format(pendingJoe)} (
                             {currencyFormatter.format(
-                              pendingSushi * sushiPrice
+                              pendingJoe * joePrice
                             )}
                             )
                           </Typography>
                         </TableCell>
                         <TableCell align="right">
                           <Typography noWrap variant="body2">
-                            {decimalFormatter.format(user.sushiHarvested)} (
-                            {currencyFormatter.format(user.sushiHarvestedUSD)})
+                            {decimalFormatter.format(user.joeHarvested)} (
+                            {currencyFormatter.format(user.joeHarvestedUSD)})
                           </Typography>
                         </TableCell>
                         <TableCell align="right">
                           <Typography noWrap variant="body2">
-                            {decimalFormatter.format(sushiLocked)} (
-                            {currencyFormatter.format(sushiLockedUSD)})
+                            {decimalFormatter.format(joeLocked)} (
+                            {currencyFormatter.format(joeLockedUSD)})
                           </Typography>
                         </TableCell>
                         <TableCell align="right">
@@ -609,8 +611,8 @@ function UserPage() {
                             {currencyFormatter.format(
                               parseFloat(pair.reserveUSD * share) +
                                 parseFloat(user.exitUSD) +
-                                parseFloat(user.sushiHarvestedUSD) +
-                                parseFloat(pendingSushi * sushiPrice) -
+                                parseFloat(user.joeHarvestedUSD) +
+                                parseFloat(pendingJoe * joePrice) -
                                 parseFloat(user.entryUSD)
                             )}
                           </Typography>

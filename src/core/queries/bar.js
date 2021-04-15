@@ -6,27 +6,27 @@ export const barQuery = gql`
       id
       totalSupply
       ratio
-      xSushiMinted
-      xSushiBurned
-      sushiStaked
-      sushiStakedUSD
-      sushiHarvested
-      sushiHarvestedUSD
-      xSushiAge
-      xSushiAgeDestroyed
+      xJoeMinted
+      xJoeBurned
+      joeStaked
+      joeStakedUSD
+      joeHarvested
+      joeHarvestedUSD
+      xJoeAge
+      xJoeAgeDestroyed
       # histories(first: 1000) {
       #   id
       #   date
       #   timeframe
-      #   sushiStaked
-      #   sushiStakedUSD
-      #   sushiHarvested
-      #   sushiHarvestedUSD
-      #   xSushiAge
-      #   xSushiAgeDestroyed
-      #   xSushiMinted
-      #   xSushiBurned
-      #   xSushiSupply
+      #   joeStaked
+      #   joeStakedUSD
+      #   joeHarvested
+      #   joeHarvestedUSD
+      #   xJoeAge
+      #   xJoeAgeDestroyed
+      #   xJoeMinted
+      #   xJoeBurned
+      #   xJoeSupply
       #   ratio
       # }
     }
@@ -39,15 +39,15 @@ export const barHistoriesQuery = gql`
       id
       date
       timeframe
-      sushiStaked
-      sushiStakedUSD
-      sushiHarvested
-      sushiHarvestedUSD
-      xSushiAge
-      xSushiAgeDestroyed
-      xSushiMinted
-      xSushiBurned
-      xSushiSupply
+      joeStaked
+      joeStakedUSD
+      joeHarvested
+      joeHarvestedUSD
+      xJoeAge
+      xJoeAgeDestroyed
+      xJoeMinted
+      xJoeBurned
+      xJoeSupply
       ratio
     }
   }
@@ -59,20 +59,20 @@ export const barUserQuery = gql`
       id
       bar {
         totalSupply
-        sushiStaked
+        joeStaked
       }
-      xSushi
-      sushiStaked
-      sushiStakedUSD
-      sushiHarvested
-      sushiHarvestedUSD
-      xSushiIn
-      xSushiOut
-      xSushiOffset
-      xSushiMinted
-      xSushiBurned
-      sushiIn
-      sushiOut
+      xJoe
+      joeStaked
+      joeStakedUSD
+      joeHarvested
+      joeHarvestedUSD
+      xJoeIn
+      xJoeOut
+      xJoeOffset
+      xJoeMinted
+      xJoeBurned
+      joeIn
+      joeOut
       usdIn
       usdOut
       createdAt

@@ -33,7 +33,7 @@ const getX = (d) => new Date(d.time);
 const getY = (d) => d.value;
 
 const ordinalColorScale = scaleOrdinal({
-  domain: ["xSushi Age", "xSushi Age Destroyed"],
+  domain: ["xJoe Age", "xJoe Age Destroyed"],
   range: [green[500], red[500]],
 });
 

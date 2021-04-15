@@ -15,6 +15,8 @@ import {
 
 import { getApollo } from "../apollo";
 
+import config from "../../config.json";
+
 export async function getFactory(client = getApollo()) {
   const {
     data: { factory },
@@ -56,8 +58,9 @@ export async function getFactory(client = getApollo()) {
   });
 }
 
-export async function getPandaSwapV2Token(client = getApollo()) {
-  return await getToken("0xc7e37A28bB17EdB59E99d5485Dc8c51BC87aE699", client);
+export async function getJoeToken(client = getApollo()) {
+  const address = config.factoryAddress; 
+  return await getToken(address, client);
 }
 
 export async function getDayData(client = getApollo()) {

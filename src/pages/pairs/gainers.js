@@ -20,7 +20,7 @@ function GainersPage() {
   return (
     <AppShell>
       <Head>
-        <title>Top Gainers | SushiSwap Analytics</title>
+        <title>Top Gainers | JoeDefi Analytics</title>
       </Head>
       <GainersList pairs={pairs} />
     </AppShell>

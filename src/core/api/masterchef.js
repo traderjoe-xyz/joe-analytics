@@ -16,6 +16,8 @@ import { POOL_DENY } from "app/core/constants";
 import { getApollo } from "../apollo";
 import { sub } from "date-fns";
 
+import config from "../../config.json"
+
 export async function getPoolIds(client = getApollo()) {
   const {
     data: { pools },
@@ -154,11 +156,11 @@ export async function getPools(client = getApollo()) {
 
   const avaxPrice = bundles[0].avaxPrice;
 
-  const { token } = await getToken(
-    "0x6b3595068778dd592e39a122f4f5a5cf09c90fe2"
-  );
+  // JOE token
+  const token_address = config.joe_token_address; 
+  const { token } = await getToken(token_address);
 
-  const sushiPrice = avaxPrice * token.derivedAVAX;
+  const joePrice = avaxPrice * token.derivedAVAX;
 
   // MASTERCHEF
   const {
@@ -176,7 +178,7 @@ export async function getPools(client = getApollo()) {
           (pool) =>
             !POOL_DENY.includes(pool.id) &&
             pool.allocPoint !== "0" &&
-            pool.accSushiPerShare !== "0" &&
+            pool.accJoePerShare !== "0" &&
             pairs.find((pair) => pair?.id === pool.pair)
         )
         .map((pool) => {
@@ -205,11 +207,11 @@ export async function getPools(client = getApollo()) {
 
           const rewardPerBlock =
             ((pool.allocPoint / pool.owner.totalAllocPoint) *
-              pool.owner.sushiPerBlock) /
+              pool.owner.joePerBlock) /
             1e18;
 
 
-          const roiPerBlock = (rewardPerBlock * sushiPrice) / balanceUSD;
+          const roiPerBlock = (rewardPerBlock * joePrice) / balanceUSD;
 
           const roiPerHour = roiPerBlock * blocksPerHour;
 
@@ -227,7 +229,7 @@ export async function getPools(client = getApollo()) {
             roiPerDay,
             roiPerMonth,
             roiPerYear,
-            rewardPerThousand: 1 * roiPerDay * (1000 / sushiPrice),
+            rewardPerThousand: 1 * roiPerDay * (1000 / joePrice),
             tvl:
               (pair.reserveUSD / pair.totalSupply) *
               liquidityPosition.liquidityTokenBalance,

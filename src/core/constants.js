@@ -1,8 +1,10 @@
-// WOLFE MIGLIO (WOLFE)
-// UniBomb (UBOMB)
-// ERC20
-// BITCOIN FREE (BTCFR)
-
+/*
+ * What are these?
+ *    WOLFE MIGLIO (WOLFE)
+ *    UniBomb (UBOMB)
+ *    ERC20
+ *    BITCOIN FREE (BTCFR)
+ */
 export const TOKEN_DENY = [
   "0x495c7f3a713870f68f8b418b355c085dfdc412c3",
   "0xc3761eb917cd790b30dad99f6cc5b4ff93c4f9ea",
