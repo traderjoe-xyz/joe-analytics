@@ -26,7 +26,7 @@ import {
   getLatestBlock,
   getPairs,
   getPoolUser,
-  getPandaSwapV2Token,
+  getJoeToken,
   getToken,
   getUser,
   latestBlockQuery,
@@ -47,7 +47,7 @@ import { POOL_DENY } from "app/core/constants";
 import { toChecksumAddress } from "web3-utils";
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
-import config from "../config.json";
+import config from "../../config.json";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -130,7 +130,7 @@ function UserPage() {
   //   () =>
   //     Promise.all([
   //       getPairs,
-  //       getPandaSwapV2Token,
+  //       getJoeToken,
   //       getPoolUser(id.toLowerCase()),
   //       getBarUser(id.toLocaleLowerCase()),
   //       getAvaxPrice,
@@ -638,7 +638,7 @@ export async function getStaticProps({ params }) {
 
   await getAvaxPrice(client);
 
-  await getPandaSwapV2Token(client);
+  await getJoeToken(client);
 
   // await getBarUser(id.toLowerCase(), client);
 

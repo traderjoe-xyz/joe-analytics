@@ -12,7 +12,7 @@ import {
   getDayData,
   getAvaxPrice,
   getFactory,
-  getPandaSwapV2Token,
+  getJoeToken,
   tokenQuery,
   useInterval,
 } from "app/core";
@@ -86,7 +86,7 @@ function BarPage() {
       getBarHistories,
       getDayData,
       getFactory,
-      getPandaSwapV2Token,
+      getJoeToken,
       getAvaxPrice,
     ]);
   }, 60000);
@@ -356,7 +356,7 @@ export async function getStaticProps() {
   await getBarHistories(client);
   await getFactory(client);
   await getDayData(client);
-  await getPandaSwapV2Token(client);
+  await getJoeToken(client);
   await getAvaxPrice(client);
   return {
     props: {

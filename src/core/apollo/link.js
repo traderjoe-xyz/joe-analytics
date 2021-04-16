@@ -21,7 +21,7 @@ export const bar = from([
 export const masterchef = from([
   new RetryLink(),
   new HttpLink({
-    uri: "https://api.thegraph.com/subgraphs/name/0xmurloc/JoeDefiMasterChefAvax",
+    uri: "https://api.thegraph.com/subgraphs/name/0xmurloc/joe-defi-masterchef-avax",
     shouldBatch: true,
   }),
 ]);
@@ -29,7 +29,7 @@ export const masterchef = from([
 export const exchange = from([
   new RetryLink(),
   new HttpLink({
-    uri: "https://api.thegraph.com/subgraphs/name/0xmurloc/JoeDefiExchangeAvax",
+    uri: "https://api.thegraph.com/subgraphs/name/0xmurloc/joe-defi-exchange-avax",
     shouldBatch: true,
   }),
 ]);

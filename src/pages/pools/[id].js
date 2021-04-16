@@ -25,7 +25,7 @@ import {
   getPoolHistories,
   getPoolIds,
   getPools,
-  getPandaSwapV2Token,
+  getJoeToken,
   poolHistoryQuery,
   poolQuery,
   tokenQuery,
@@ -37,7 +37,7 @@ import { ParentSize } from "@visx/responsive";
 import { deepPurple } from "@material-ui/core/colors";
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
-import config from "../config.json";
+import config from "../../config.json";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -444,7 +444,7 @@ function PoolPage() {
 export async function getStaticProps({ params: { id } }) {
   const client = getApollo();
   await getAvaxPrice(client);
-  await getPandaSwapV2Token(client);
+  await getJoeToken(client);
   await getPool(id, client);
   await getPoolHistories(id, client);
   return {
