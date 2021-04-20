@@ -264,7 +264,7 @@ function UserPage() {
   return (
     <AppShell>
       <Head>
-        <title>User {id} | JoeDefi Analytics</title>
+        <title>User {id} | Trader Joe Analytics</title>
       </Head>
 
       <PageHeader>

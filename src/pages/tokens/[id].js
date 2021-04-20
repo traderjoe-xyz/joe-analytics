@@ -169,7 +169,7 @@ function TokenPage() {
     <AppShell>
       <Head>
         <title>
-          {currencyFormatter.format(price || 0)} | {token.symbol} | JoeDefi Analytics
+          {currencyFormatter.format(price || 0)} | {token.symbol} | Trader Joe Analytics
         </title>
       </Head>
       <PageHeader>

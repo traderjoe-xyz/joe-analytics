@@ -22,7 +22,7 @@ function RecentPairsPage() {
   return (
     <AppShell>
       <Head>
-        <title>Recently Added Pairs | JoeDefi Analytics</title>
+        <title>Recently Added Pairs | Trader Joe Analytics</title>
       </Head>
       <PairTable pairs={pairs} orderBy="timestamp" order="desc" />
     </AppShell>

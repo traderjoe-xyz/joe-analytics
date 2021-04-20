@@ -174,7 +174,7 @@ function PoolPage() {
   return (
     <AppShell>
       <Head>
-        <title>Pool {id} | JoeDefi Analytics</title>
+        <title>Pool {id} | Trader Joe Analytics</title>
       </Head>
 
       <PageHeader mb={3}>

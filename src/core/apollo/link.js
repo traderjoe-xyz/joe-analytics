@@ -40,8 +40,8 @@ export const exchange = from([
 export const blocklytics = from([
   new RetryLink(),
   new HttpLink({
-    // uri: "https://graph-node.avax.network/subgraphs/name/dasconnor/avalancheblocks",
-    uri: "https://thegraph.com/explorer/subgraph/blocklytics/rinkeby-blocks", 
+    // uri: "https://api.thegraph.com/subgraphs/name/dasconnor/avalanche-blocks",
+    uri: "https://api.thegraph.com/subgraphs/name/blocklytics/rinkeby-blocks", 
     shouldBatch: true,
   }),
 ]);

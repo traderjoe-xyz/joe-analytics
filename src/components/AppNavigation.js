@@ -96,7 +96,7 @@ export default function AppNavigation() {
               <Sushi />
             </IconButton>
             <Typography variant="subtitle1" color="textPrimary" noWrap>
-              Joe Defi
+              Trader Joe
             </Typography>
           </Box>
         </Hidden>

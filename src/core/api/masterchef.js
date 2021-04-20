@@ -154,7 +154,7 @@ export async function getPools(client = getApollo()) {
 
   const { bundles } = await getAvaxPrice();
 
-  const avaxPrice = bundles[0].avaxPrice;
+  const avaxPrice = bundles[0] && bundles[0].hasOwnProperty("avaxPrice") ? bundles[0].avaxPrice : 0;
 
   // JOE token
   const token_address = config.joe_token_address; 

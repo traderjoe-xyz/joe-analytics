@@ -20,7 +20,7 @@ function GainersPage() {
   return (
     <AppShell>
       <Head>
-        <title>Top Gainers | JoeDefi Analytics</title>
+        <title>Top Gainers | Trader Joe Analytics</title>
       </Head>
       <GainersList pairs={pairs} />
     </AppShell>

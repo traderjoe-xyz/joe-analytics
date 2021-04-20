@@ -142,7 +142,7 @@ export default function AppBar({
                 <Sushi />
               </IconButton>
               <Typography variant="subtitle1" color="textPrimary" noWrap>
-                Joe Defi Analytics
+                Trader Joe Analytics
               </Typography>
             </Box>
           </Hidden>

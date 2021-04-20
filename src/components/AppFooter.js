@@ -19,7 +19,7 @@ export default function AppFooter() {
           <Typography variant="body2" color="textSecondary" align="center">
             {"Copyright © "}
             <MuiLink color="inherit" href="/">
-              Joe Defi Analytics
+              Trade Joe Analytics
             </MuiLink>{" "}
             {new Date().getFullYear()}
             {"."}

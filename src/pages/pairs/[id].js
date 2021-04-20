@@ -192,7 +192,7 @@ function PairPage(props) {
     <AppShell>
       <Head>
         <title>
-          {pair.token0.symbol}-{pair.token1.symbol} | JoeDefi Analytics
+          {pair.token0.symbol}-{pair.token1.symbol} | Trader Joe Analytics
         </title>
       </Head>
       <PageHeader>

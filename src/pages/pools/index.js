@@ -19,7 +19,7 @@ function PoolsPage() {
   return (
     <AppShell>
       <Head>
-        <title>Pools | JoeDefi Analytics</title>
+        <title>Pools | Trader Joe Analytics</title>
       </Head>
       <PoolTable
         pools={pools}

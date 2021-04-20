@@ -86,7 +86,7 @@ function IndexPage() {
   return (
     <AppShell>
       <Head>
-        <title>Dashboard | JoeDefi Analytics</title>
+        <title>Dashboard | Trader Joe Analytics</title>
       </Head>
       <Box mb={3}>
         <Search pairs={pairs} tokens={tokens} />
