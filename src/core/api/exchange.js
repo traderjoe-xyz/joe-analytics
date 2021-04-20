@@ -123,13 +123,13 @@ export async function getToken(id, client = getApollo()) {
         ...token,
         oneDay: {
           volumeUSD: String(oneDayToken?.volumeUSD),
-          derivedETH: String(oneDayToken?.derivedETH),
+          derivedAVAX: String(oneDayToken?.derivedAVAX),
           liquidity: String(oneDayToken?.liquidity),
           txCount: String(oneDayToken?.txCount),
         },
         twoDay: {
           volumeUSD: String(twoDayToken?.volumeUSD),
-          derivedETH: String(twoDayToken?.derivedETH),
+          derivedAVAX: String(twoDayToken?.derivedAVAX),
           liquidity: String(twoDayToken?.liquidity),
           txCount: String(twoDayToken?.txCount),
         },
@@ -182,12 +182,12 @@ export async function getTokens(client = getApollo()) {
           ...token,
           oneDay: {
             volumeUSD: String(oneDayToken?.volumeUSD),
-            derivedETH: String(oneDayToken?.derivedETH),
+            derivedAVAX: String(oneDayToken?.derivedAVAX),
             liquidity: String(oneDayToken?.liquidity),
           },
           sevenDay: {
             volumeUSD: String(sevenDayToken?.volumeUSD),
-            derivedETH: String(sevenDayToken?.derivedETH),
+            derivedAVAX: String(sevenDayToken?.derivedAVAX),
             liquidity: String(sevenDayToken?.liquidity),
           },
         };

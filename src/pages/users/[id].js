@@ -78,14 +78,14 @@ function UserPage() {
     pollInterval: 60000,
   });
 
-  // const { data: barData } = useQuery(barUserQuery, {
-  //   variables: {
-  //     id: id.toLowerCase(),
-  //   },
-  //   context: {
-  //     clientName: "bar",
-  //   },
-  // });
+  const { data: barData } = useQuery(barUserQuery, {
+    variables: {
+      id: id.toLowerCase(),
+    },
+    context: {
+      clientName: "bar",
+    },
+  });
 
   const { data: poolData } = useQuery(poolUserQuery, {
     variables: {
@@ -126,57 +126,57 @@ function UserPage() {
       user.pool.allocPoint !== "0"
   );
 
-  // useInterval(
-  //   () =>
-  //     Promise.all([
-  //       getPairs,
-  //       getJoeToken,
-  //       getPoolUser(id.toLowerCase()),
-  //       getBarUser(id.toLocaleLowerCase()),
-  //       getAvaxPrice,
-  //     ]),
-  //   60000
-  // );
+  useInterval(
+    () =>
+      Promise.all([
+        getPairs,
+        getJoeToken,
+        getPoolUser(id.toLowerCase()),
+        getBarUser(id.toLocaleLowerCase()),
+        getAvaxPrice,
+      ]),
+    60000
+  );
 
   const joePrice =
     parseFloat(token?.derivedAVAX) * parseFloat(bundles[0].avaxPrice);
 
-  // // BAR
-  // const xJoe = parseFloat(barData?.user?.xJoe);
+  // BAR
+  const xJoe = parseFloat(barData?.user?.xJoe);
 
-  // const barPending =
-  //   (xJoe * parseFloat(barData?.user?.bar?.joeStaked)) /
-  //   parseFloat(barData?.user?.bar?.totalSupply);
+  const barPending =
+    (xJoe * parseFloat(barData?.user?.bar?.joeStaked)) /
+    parseFloat(barData?.user?.bar?.totalSupply);
 
-  // const xJoeTransfered =
-  //   barData?.user?.xJoeIn > barData?.user?.xJoeOut
-  //     ? parseFloat(barData?.user?.xJoeIn) -
-  //       parseFloat(barData?.user?.xJoeOut)
-  //     : parseFloat(barData?.user?.xJoeOut) -
-  //       parseFloat(barData?.user?.xJoeIn);
+  const xJoeTransfered =
+    barData?.user?.xJoeIn > barData?.user?.xJoeOut
+      ? parseFloat(barData?.user?.xJoeIn) -
+        parseFloat(barData?.user?.xJoeOut)
+      : parseFloat(barData?.user?.xJoeOut) -
+        parseFloat(barData?.user?.xJoeIn);
 
-  // const barStaked = barData?.user?.joeStaked;
+  const barStaked = barData?.user?.joeStaked;
 
-  // const barStakedUSD = barData?.user?.joeStakedUSD;
+  const barStakedUSD = barData?.user?.joeStakedUSD;
 
-  // const barHarvested = barData?.user?.joeHarvested;
-  // const barHarvestedUSD = barData?.user?.joeHarvestedUSD;
+  const barHarvested = barData?.user?.joeHarvested;
+  const barHarvestedUSD = barData?.user?.joeHarvestedUSD;
 
-  // const barPendingUSD = barPending > 0 ? barPending * joePrice : 0;
+  const barPendingUSD = barPending > 0 ? barPending * joePrice : 0;
 
-  // const barRoiJoe =
-  //   barPending -
-  //   (parseFloat(barData?.user?.joeStaked) -
-  //     parseFloat(barData?.user?.joeHarvested) +
-  //     parseFloat(barData?.user?.joeIn) -
-  //     parseFloat(barData?.user?.joeOut));
+  const barRoiJoe =
+    barPending -
+    (parseFloat(barData?.user?.joeStaked) -
+      parseFloat(barData?.user?.joeHarvested) +
+      parseFloat(barData?.user?.joeIn) -
+      parseFloat(barData?.user?.joeOut));
 
-  // const barRoiUSD =
-  //   barPendingUSD -
-  //   (parseFloat(barData?.user?.joeStakedUSD) -
-  //     parseFloat(barData?.user?.joeHarvestedUSD) +
-  //     parseFloat(barData?.user?.usdIn) -
-  //     parseFloat(barData?.user?.usdOut));
+  const barRoiUSD =
+    barPendingUSD -
+    (parseFloat(barData?.user?.joeStakedUSD) -
+      parseFloat(barData?.user?.joeHarvestedUSD) +
+      parseFloat(barData?.user?.usdIn) -
+      parseFloat(barData?.user?.usdOut));
 
   const { data: blocksData } = useQuery(latestBlockQuery, {
     context: {
@@ -184,11 +184,11 @@ function UserPage() {
     },
   });
 
-  // const blockDifference =
-  //   parseInt(blocksData?.blocks[0].number) -
-  //   parseInt(barData?.user?.createdAtBlock);
+  const blockDifference =
+    parseInt(blocksData?.blocks[0].number) -
+    parseInt(barData?.user?.createdAtBlock);
 
-  // const barRoiDailyJoe = (barRoiJoe / blockDifference) * 6440;
+  const barRoiDailyJoe = (barRoiJoe / blockDifference) * 6440;
 
   // POOLS
 
@@ -255,11 +255,11 @@ function UserPage() {
 
   // Global
 
-  // const originalInvestments =
-  //   parseFloat(barData?.user?.joeStakedUSD) + parseFloat(poolEntriesUSD);
+  const originalInvestments =
+    parseFloat(barData?.user?.joeStakedUSD) + parseFloat(poolEntriesUSD);
 
-  // const investments =
-  //   poolEntriesUSD + barPendingUSD + poolsPendingUSD + poolExitsUSD + lockedUSD;
+  const investments =
+    poolEntriesUSD + barPendingUSD + poolsPendingUSD + poolExitsUSD + lockedUSD;
 
   return (
     <AppShell>
@@ -511,14 +511,14 @@ function UserPage() {
                       ((user.amount * user.pool.accJoePerShare) / 1e12 -
                         user.rewardDebt) /
                       1e18;
-                    // user.amount.mul(accJoePerShare).div(1e12).sub(user.rewardDebt);
+                    user.amount.mul(accJoePerShare).div(1e12).sub(user.rewardDebt);
 
-                    // console.log(
-                    //   user,
-                    //   user.entryUSD,
-                    //   user.exitUSD,
-                    //   pendingJoe * joePrice
-                    // );
+                    console.log(
+                      user,
+                      user.entryUSD,
+                      user.exitUSD,
+                      pendingJoe * joePrice
+                    );
 
                     const lockupUser = lockupData?.users.find(
                       (u) => u.pool.id === user.pool.id

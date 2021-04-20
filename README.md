@@ -6,7 +6,10 @@ Forked from `sushiswap-analytics`.
 
 ### Deploy
 
-WIP
+```sh
+yarn prepare:avax
+yarn build
+```
 
 ## Getting started
 

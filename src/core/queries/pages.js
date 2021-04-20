@@ -12,7 +12,7 @@ import { pairFieldsQuery } from "./exchange";
 // Gainers
 export const gainersQuery = gql`
   query gainersQuery($first: Int! = 1000) {
-    pairs(first: $first, orderBy: trackedReserveETH, orderDirection: desc) {
+    pairs(first: $first, orderBy: trackedReserveAVAX, orderDirection: desc) {
       ...pairFields
       reserveUSDGained @client
       reserveUSDGainedYesterday @client
@@ -28,7 +28,7 @@ export const gainersQuery = gql`
 // Losers
 export const losersQuery = gql`
   query losersQuery($first: Int! = 1000) {
-    pairs(first: $first, orderBy: trackedReserveETH, orderDirection: desc) {
+    pairs(first: $first, orderBy: trackedReserveAVAX, orderDirection: desc) {
       ...pairFields
       reserveUSDLost @client
       reserveUSDLostYesterday @client
