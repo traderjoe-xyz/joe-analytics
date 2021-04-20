@@ -13,7 +13,8 @@ export const uniswap = from([
 export const bar = from([
   new RetryLink(),
   new HttpLink({
-    uri: "https://api.thegraph.com/subgraphs/name/matthewlilley/bar",
+    // uri: "https://api.thegraph.com/subgraphs/name/0xmurloc/joe-defi-bar-avax",
+    uri: "https://api.thegraph.com/subgraphs/name/0xmurloc/joe-defi-bar-rinkeby",
     shouldBatch: true,
   }),
 ]);
@@ -21,7 +22,8 @@ export const bar = from([
 export const masterchef = from([
   new RetryLink(),
   new HttpLink({
-    uri: "https://api.thegraph.com/subgraphs/name/0xmurloc/joe-defi-masterchef-avax",
+    // uri: "https://api.thegraph.com/subgraphs/name/0xmurloc/joe-defi-masterchef-avax",
+    uri: "https://api.thegraph.com/subgraphs/name/0xmurloc/joe-defi-masterchef-rinkeby",
     shouldBatch: true,
   }),
 ]);
@@ -29,7 +31,8 @@ export const masterchef = from([
 export const exchange = from([
   new RetryLink(),
   new HttpLink({
-    uri: "https://api.thegraph.com/subgraphs/name/0xmurloc/joe-defi-exchange-avax",
+    // uri: "https://api.thegraph.com/subgraphs/name/0xmurloc/joe-defi-exchange-avax",
+    uri: "https://api.thegraph.com/subgraphs/name/0xmurloc/joe-defi-exchange-rinkeby",
     shouldBatch: true,
   }),
 ]);
@@ -37,8 +40,8 @@ export const exchange = from([
 export const blocklytics = from([
   new RetryLink(),
   new HttpLink({
-    // uri: "https://api.thegraph.com/subgraphs/name/blocklytics/ethereum-blocks",
-    uri: "https://graph-node.avax.network/subgraphs/name/dasconnor/avalancheblocks", 
+    // uri: "https://graph-node.avax.network/subgraphs/name/dasconnor/avalancheblocks",
+    uri: "https://thegraph.com/explorer/subgraph/blocklytics/rinkeby-blocks", 
     shouldBatch: true,
   }),
 ]);
