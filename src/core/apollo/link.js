@@ -2,6 +2,12 @@ import { HttpLink, from, split } from "@apollo/client";
 
 import { RetryLink } from "@apollo/client/link/retry";
 
+import { GRAPH_BAR_URI, 
+  GRAPH_MASTERCHEF_URI, 
+  GRAPH_EXCHANGE_URI, 
+  GRAPH_BLOCKS_URI
+} from "../../config/index.ts"; 
+
 export const uniswap = from([
   new RetryLink(),
   new HttpLink({
@@ -13,8 +19,8 @@ export const uniswap = from([
 export const bar = from([
   new RetryLink(),
   new HttpLink({
-    // uri: "https://api.thegraph.com/subgraphs/name/0xmurloc/joe-defi-bar-avax",
-    uri: "https://api.thegraph.com/subgraphs/name/0xmurloc/joe-defi-bar-rinkeby",
+    // uri: "https://api.thegraph.com/subgraphs/name/0xmurloc/joe-defi-bar-rinkeby",
+    uri: GRAPH_BAR_URI,
     shouldBatch: true,
   }),
 ]);
@@ -22,8 +28,8 @@ export const bar = from([
 export const masterchef = from([
   new RetryLink(),
   new HttpLink({
-    // uri: "https://api.thegraph.com/subgraphs/name/0xmurloc/joe-defi-masterchef-avax",
-    uri: "https://api.thegraph.com/subgraphs/name/0xmurloc/joe-defi-masterchef-rinkeby",
+    // uri: "https://api.thegraph.com/subgraphs/name/0xmurloc/joe-defi-masterchef-rinkeby",
+    uri: GRAPH_MASTERCHEF_URI, 
     shouldBatch: true,
   }),
 ]);
@@ -31,8 +37,8 @@ export const masterchef = from([
 export const exchange = from([
   new RetryLink(),
   new HttpLink({
-    // uri: "https://api.thegraph.com/subgraphs/name/0xmurloc/joe-defi-exchange-avax",
-    uri: "https://api.thegraph.com/subgraphs/name/0xmurloc/joe-defi-exchange-rinkeby",
+    // uri: "https://api.thegraph.com/subgraphs/name/0xmurloc/joe-defi-exchange-rinkeby",
+    uri: GRAPH_EXCHANGE_URI, 
     shouldBatch: true,
   }),
 ]);
@@ -40,8 +46,8 @@ export const exchange = from([
 export const blocklytics = from([
   new RetryLink(),
   new HttpLink({
-    // uri: "https://api.thegraph.com/subgraphs/name/dasconnor/avalanche-blocks",
-    uri: "https://api.thegraph.com/subgraphs/name/blocklytics/rinkeby-blocks", 
+    // uri: "https://api.thegraph.com/subgraphs/name/blocklytics/rinkeby-blocks", 
+    uri: GRAPH_BLOCKS_URI, 
     shouldBatch: true,
   }),
 ]);

@@ -40,10 +40,13 @@
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^9.5.3",
+    "mustache": "^4.2.0",
     "next-compose-plugins": "^2.2.0",
     "next-pwa": "^3.1.4"
   },
   "scripts": {
+    "prepare:avax": "mustache src/config/avax.json src/config/index.template.ts > src/config/index.ts",
+    "prepare:rinkeby": "mustache src/config/rinkeby.json src/config/index.template.ts > src/config/index.ts",
     "analyze": "ANALYZE=true yarn build",
     "analyze-serve": "serve .next/analyze -p 3002",
     "dev": "next -p 3001",

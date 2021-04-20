@@ -1,0 +1,6 @@
+{
+    "graph_bar_uri": "https://api.thegraph.com/subgraphs/name/0xmurloc/joe-defi-bar-rinkeby",
+    "graph_masterchef_uri": "https://api.thegraph.com/subgraphs/name/0xmurloc/joe-defi-masterchef-rinkeby",
+    "graph_exchange_uri": "https://api.thegraph.com/subgraphs/name/0xmurloc/joe-defi-exchange-rinkeby",
+    "graph_blocks_uri": "https://api.thegraph.com/subgraphs/name/blocklytics/rinkeby-blocks"
+}
