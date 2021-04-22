@@ -24,6 +24,10 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useQuery } from "@apollo/client";
 
+import { JOE_TOKEN_ADDDRESS } from "../../config/index.ts";
+
+import { print } from 'graphql/language/printer'
+
 const useStyles = makeStyles((theme) => ({
   charts: {
     flexGrow: 1,
@@ -37,10 +41,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function BarPage() {
+  console.log("[BarPage] ")
+
   const classes = useStyles();
 
   const theme = useTheme();
 
+
+  // TODO: bar is null
   const {
     data: { bar },
   } = useQuery(barQuery, {
@@ -61,11 +69,15 @@ function BarPage() {
     data: { factory },
   } = useQuery(factoryQuery);
 
+    // TODO: token is null
   const {
     data: { token },
   } = useQuery(tokenQuery, {
     variables: {
-      id: "0x6b3595068778dd592e39a122f4f5a5cf09c90fe2",
+      id: JOE_TOKEN_ADDDRESS,
+    },
+    context: {
+      clientName: "exchange",
     },
   });
 
@@ -160,11 +172,13 @@ function BarPage() {
       return previousValue + currentValue.value;
     }, 0) / apy.length;
 
+  console.log("[bar] factory: " + JSON.stringify(factory))
   const oneDayVolume = factory.volumeUSD - factory.oneDay.volumeUSD;
 
-  const APR =
-    (((oneDayVolume * 0.05 * 0.01) / bar.totalSupply) * 365) /
-    (bar.ratio * joePrice);
+  console.log("[bar] bar: " + JSON.stringify(bar))
+  const APR = bar === null ? 0 : 
+    (((oneDayVolume * 0.05 * 0.01) / bar?.totalSupply) * 365) /
+    (bar.ratio * joePrice); 
 
   const APY = Math.pow(1 + APR / 365, 365) - 1;
 

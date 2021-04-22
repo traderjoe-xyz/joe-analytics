@@ -47,7 +47,7 @@ import { POOL_DENY } from "app/core/constants";
 import { toChecksumAddress } from "web3-utils";
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
-import config from "../../config.json";
+import { JOE_TOKEN_ADDDRESS } from "../../config/index.ts";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -106,7 +106,7 @@ function UserPage() {
     fetchPolicy: 'no-cache'
   });
   
-  const token_address = config.joe_token_address;
+  const token_address = JOE_TOKEN_ADDDRESS;
   const {
     data: { token },
   } = useQuery(tokenQuery, {

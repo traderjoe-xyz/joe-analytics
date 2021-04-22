@@ -1,11 +1,9 @@
 import gql from "graphql-tag";
-
-// PandaSwapV2 Constants
-// Factory: 0xc7e37A28bB17EdB59E99d5485Dc8c51BC87aE699
+import { FACTORY_ADDRESS } from "../../config/index.ts";
 
 export const factoryQuery = gql`
   query factoryQuery(
-    $id: String! = "0xc7e37A28bB17EdB59E99d5485Dc8c51BC87aE699"
+    $id: String! = "${FACTORY_ADDRESS}"
   ) {
     factory(id: $id) {
       id
@@ -18,7 +16,7 @@ export const factoryQuery = gql`
 
 export const factoryTimeTravelQuery = gql`
   query factoryTimeTravelQuery(
-    $id: String! = "0xc7e37A28bB17EdB59E99d5485Dc8c51BC87aE699"
+    $id: String! = "${FACTORY_ADDRESS}"
     $block: Block_height!
   ) {
     factory(id: $id, block: $block) {
@@ -312,12 +310,21 @@ export const tokenFieldsQuery = gql`
   }
 `;
 
+// export const tokenQuery = gql`
+//   query tokenQuery($id: String!) {
+//     token(id: $id) {
+//       ...tokenFields
+//       oneDay @client
+//       twoDay @client
+//     }
+//   }
+//   ${tokenFieldsQuery}
+// `;
+
 export const tokenQuery = gql`
   query tokenQuery($id: String!) {
     token(id: $id) {
       ...tokenFields
-      oneDay @client
-      twoDay @client
     }
   }
   ${tokenFieldsQuery}

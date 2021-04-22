@@ -3,3 +3,5 @@ export const GRAPH_MASTERCHEF_URI = '{{{ graph_masterchef_uri }}}'
 export const GRAPH_EXCHANGE_URI = '{{{ graph_exchange_uri }}}'
 export const GRAPH_BLOCKS_URI = '{{{ graph_blocks_uri }}}'
 
+export const FACTORY_ADDRESS = '{{ factory_address }}'.toLowerCase()
+export const JOE_TOKEN_ADDDRESS = '{{ joe_token_address }}'.toLowerCase()

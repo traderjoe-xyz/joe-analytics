@@ -37,7 +37,7 @@ import { ParentSize } from "@visx/responsive";
 import { deepPurple } from "@material-ui/core/colors";
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
-import config from "../../config.json";
+import { JOE_TOKEN_ADDDRESS } from "../../config/index.ts";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -84,7 +84,7 @@ function PoolPage() {
     pollInterval: 60000,
   });
 
-  const token_address = config.joe_token_address;
+  const token_address = JOE_TOKEN_ADDDRESS
   const {
     data: { token },
   } = useQuery(tokenQuery, {

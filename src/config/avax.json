@@ -2,5 +2,7 @@
     "graph_bar_uri": "https://api.thegraph.com/subgraphs/name/0xmurloc/joe-defi-bar-avax",
     "graph_masterchef_uri": "https://api.thegraph.com/subgraphs/name/0xmurloc/joe-defi-masterchef-avax",
     "graph_exchange_uri": "https://api.thegraph.com/subgraphs/name/0xmurloc/joe-defi-exchange-avax",
-    "graph_blocks_uri": "https://api.thegraph.com/subgraphs/name/dasconnor/avalanche-blocks"
+    "graph_blocks_uri": "https://api.thegraph.com/subgraphs/name/dasconnor/avalanche-blocks", 
+
+    "joe_token_address": "0x60aE616a2155Ee3d9A68541Ba4544862310933d4"
 }

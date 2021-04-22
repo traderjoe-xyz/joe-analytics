@@ -19,7 +19,6 @@ export const uniswap = from([
 export const bar = from([
   new RetryLink(),
   new HttpLink({
-    // uri: "https://api.thegraph.com/subgraphs/name/0xmurloc/joe-defi-bar-rinkeby",
     uri: GRAPH_BAR_URI,
     shouldBatch: true,
   }),
@@ -28,7 +27,6 @@ export const bar = from([
 export const masterchef = from([
   new RetryLink(),
   new HttpLink({
-    // uri: "https://api.thegraph.com/subgraphs/name/0xmurloc/joe-defi-masterchef-rinkeby",
     uri: GRAPH_MASTERCHEF_URI, 
     shouldBatch: true,
   }),
@@ -37,7 +35,6 @@ export const masterchef = from([
 export const exchange = from([
   new RetryLink(),
   new HttpLink({
-    // uri: "https://api.thegraph.com/subgraphs/name/0xmurloc/joe-defi-exchange-rinkeby",
     uri: GRAPH_EXCHANGE_URI, 
     shouldBatch: true,
   }),
@@ -46,7 +43,6 @@ export const exchange = from([
 export const blocklytics = from([
   new RetryLink(),
   new HttpLink({
-    // uri: "https://api.thegraph.com/subgraphs/name/blocklytics/rinkeby-blocks", 
     uri: GRAPH_BLOCKS_URI, 
     shouldBatch: true,
   }),
