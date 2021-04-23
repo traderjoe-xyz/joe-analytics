@@ -1,7 +1,8 @@
 import gql from "graphql-tag";
+import { MASTERCHEF_ADDRESS } from "../../config/index.ts";
 
 export const barQuery = gql`
-  query barQuery($id: String! = "0x8798249c2e607446efb7ad49ec89dd1865ff4272") {
+  query barQuery($id: String! = "${MASTERCHEF_ADDRESS}") {
     bar(id: $id) {
       id
       totalSupply
@@ -76,7 +77,7 @@ export const barUserQuery = gql`
       usdIn
       usdOut
       createdAt
-      createdAtBlock
+      # createdAtBlock
     }
   }
 `;

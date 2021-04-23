@@ -16,7 +16,7 @@ import { POOL_DENY } from "app/core/constants";
 import { getApollo } from "../apollo";
 import { sub } from "date-fns";
 
-import config from "../../config.json"
+import { JOE_TOKEN_ADDDRESS, MASTERCHEF_ADDRESS } from "../../config/index.ts"
 
 export async function getPoolIds(client = getApollo()) {
   const {
@@ -157,7 +157,7 @@ export async function getPools(client = getApollo()) {
   const avaxPrice = bundles[0] && bundles[0].hasOwnProperty("avaxPrice") ? bundles[0].avaxPrice : 0;
 
   // JOE token
-  const token_address = config.joe_token_address; 
+  const token_address = JOE_TOKEN_ADDDRESS;
   const { token } = await getToken(token_address);
 
   const joePrice = avaxPrice * token.derivedAVAX;
@@ -167,7 +167,7 @@ export async function getPools(client = getApollo()) {
     data: { liquidityPositions },
   } = await client.query({
     query: liquidityPositionSubsetQuery,
-    variables: { user: "0xc2edad668740f1aa35e4d8f227fb8e17dca888cd" },
+    variables: { user: MASTERCHEF_ADDRESS },
   });
 
   await client.cache.writeQuery({
@@ -207,7 +207,7 @@ export async function getPools(client = getApollo()) {
 
           const rewardPerBlock =
             ((pool.allocPoint / pool.owner.totalAllocPoint) *
-              pool.owner.joePerBlock) /
+              pool.owner.joePerSec) /
             1e18;
 
 

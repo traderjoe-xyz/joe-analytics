@@ -47,8 +47,6 @@ function BarPage() {
 
   const theme = useTheme();
 
-
-  // TODO: bar is null
   const {
     data: { bar },
   } = useQuery(barQuery, {
@@ -69,15 +67,12 @@ function BarPage() {
     data: { factory },
   } = useQuery(factoryQuery);
 
-    // TODO: token is null
+  const token_address = JOE_TOKEN_ADDDRESS
   const {
     data: { token },
   } = useQuery(tokenQuery, {
     variables: {
-      id: JOE_TOKEN_ADDDRESS,
-    },
-    context: {
-      clientName: "exchange",
+      id: token_address,
     },
   });
 
@@ -172,13 +167,13 @@ function BarPage() {
       return previousValue + currentValue.value;
     }, 0) / apy.length;
 
-  console.log("[bar] factory: " + JSON.stringify(factory))
+  // console.log("[bar] factory: " + JSON.stringify(factory))
   const oneDayVolume = factory.volumeUSD - factory.oneDay.volumeUSD;
 
   console.log("[bar] bar: " + JSON.stringify(bar))
   const APR = bar === null ? 0 : 
     (((oneDayVolume * 0.05 * 0.01) / bar?.totalSupply) * 365) /
-    (bar.ratio * joePrice); 
+    (bar?.ratio * joePrice); 
 
   const APY = Math.pow(1 + APR / 365, 365) - 1;
 
@@ -204,7 +199,7 @@ function BarPage() {
               <KPI title="APY (Avg)" value={averageApy} format="percent" />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <KPI title="xJoe" value={bar.totalSupply} format="integer" />
+              <KPI title="xJoe" value={bar?.totalSupply} format="integer" />
             </Grid>
             {/* <Grid item xs={12} sm={6} md={3}>
               <KPI
@@ -213,7 +208,7 @@ function BarPage() {
               />
             </Grid> */}
             <Grid item xs={12} sm={6} md={3}>
-              <KPI title="xJoe:Joe" value={Number(bar.ratio).toFixed(4)} />
+              <KPI title="xJoe:Joe" value={Number(bar?.ratio).toFixed(4)} />
             </Grid>
           </Grid>
         </Grid>

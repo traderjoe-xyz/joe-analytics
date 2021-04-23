@@ -28,7 +28,7 @@ const poolUserFragment = gql`
       pair
       balance
       accJoePerShare
-      lastRewardBlock
+      lastRewardTimestamp
     }
     amount
     rewardDebt
@@ -58,11 +58,11 @@ export const poolHistoryQuery = gql`
         id
         accJoePerShare
       }
-      slpBalance
-      slpAge
-      slpAgeRemoved
-      slpDeposited
-      slpWithdrawn
+      jlpBalance
+      jlpAge
+      jlpAgeRemoved
+      jlpDeposited
+      jlpWithdrawn
       entryUSD
       exitUSD
       joeHarvestedUSD
@@ -79,13 +79,13 @@ export const poolQuery = gql`
       id
       pair
       allocPoint
-      lastRewardBlock
+      lastRewardTimestamp
       accJoePerShare
       balance
       userCount
       owner {
         id
-        joePerBlock
+        joePerSec
         totalAllocPoint
       }
       users(orderBy: amount, orderDirection: desc) {
@@ -94,7 +94,7 @@ export const poolQuery = gql`
         amount
         rewardDebt
       }
-      slpAge
+      jlpAge
       liquidityPair @client
       timestamp
       entryUSD
@@ -137,13 +137,13 @@ export const poolsQuery = gql`
       id
       pair
       allocPoint
-      lastRewardBlock
+      lastRewardTimestamp
       accJoePerShare
       balance
       userCount
       owner {
         id
-        joePerBlock
+        joePerSec
         totalAllocPoint
       }
       # users {

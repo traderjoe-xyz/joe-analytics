@@ -310,25 +310,17 @@ export const tokenFieldsQuery = gql`
   }
 `;
 
-// export const tokenQuery = gql`
-//   query tokenQuery($id: String!) {
-//     token(id: $id) {
-//       ...tokenFields
-//       oneDay @client
-//       twoDay @client
-//     }
-//   }
-//   ${tokenFieldsQuery}
-// `;
-
 export const tokenQuery = gql`
   query tokenQuery($id: String!) {
     token(id: $id) {
       ...tokenFields
+      oneDay @client
+      twoDay @client
     }
   }
   ${tokenFieldsQuery}
 `;
+
 
 export const tokenTimeTravelQuery = gql`
   query tokenTimeTravelQuery($id: String!, $block: Block_height!) {
