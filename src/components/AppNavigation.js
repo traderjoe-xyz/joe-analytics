@@ -123,7 +123,7 @@ export default function AppNavigation() {
           <ListItemText primary="Dashboard" />
         </ListItem>
 
-        <ListItem
+        {/* <ListItem
           key="/bar"
           button
           selected={router.pathname === "/bar"}
@@ -133,8 +133,7 @@ export default function AppNavigation() {
             <FastfoodOutlined />
           </ListItemIcon>
           <ListItemText primary="Bar" />
-          {/* {open ? <ExpandLess /> : <ExpandMore />} */}
-        </ListItem>
+        </ListItem> */}
 
         <ListItem button>
           <ListItemIcon>
@@ -227,7 +226,7 @@ export default function AppNavigation() {
               <ListItemText primary="All" />
             </ListItem>
 
-            <ListItem
+            {/* <ListItem
               button
               selected={router.pathname === "/pairs/gainers"}
               onClick={() => router.push("/pairs/gainers")}
@@ -237,8 +236,8 @@ export default function AppNavigation() {
                 <TrendingUpOutlined />
               </ListItemIcon>
               <ListItemText primary="Gainers" />
-            </ListItem>
-            <ListItem
+            </ListItem> */}
+            {/* <ListItem
               button
               selected={router.pathname === "/pairs/losers"}
               onClick={() => router.push("/pairs/losers")}
@@ -248,7 +247,7 @@ export default function AppNavigation() {
                 <TrendingDownOutlined />
               </ListItemIcon>
               <ListItemText primary="Losers" />
-            </ListItem>
+            </ListItem> */}
           </List>
         </Collapse>
         <ListItem
