@@ -80,9 +80,6 @@ function IndexPage() {
       [[], []]
     );
 
-    console.log("index liquidity: %o", liquidity);
-    console.log("index volume: %o", volume);
-
   return (
     <AppShell>
       <Head>
