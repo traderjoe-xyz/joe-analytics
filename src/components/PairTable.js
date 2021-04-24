@@ -8,10 +8,17 @@ import SortableTable from "./SortableTable";
 import { currencyFormatter } from "app/core";
 import { makeStyles } from "@material-ui/core/styles";
 
+const FEE_RATE = 0.0025 // 0.25% of volume are fees
+
 const useStyles = makeStyles((theme) => ({
   root: {},
 }));
 
+/*
+ * PairTable displays pool trading volume and fees
+ * We calc fees based on volume and fee rate (assumes rate is fixed)
+ * We calc annual yield (APY) based on last 7 day volume if available
+ */ 
 export default function PairTable({ pairs, title, ...rest }) {
   const classes = useStyles();
 
@@ -20,38 +27,38 @@ export default function PairTable({ pairs, title, ...rest }) {
       return !PAIR_DENY.includes(row.id);
     })
     .map((pair) => {
-      // const volumeUSD = pair?.volumeUSD === "0" ? pair?.untrackedVolumeUSD : pair?.volumeUSD
-      // const oneDayVolumeUSD = pair?.oneDay?.volumeUSD === "0" ? pair?.oneDay?.untrackedVolumeUSD : pair?.oneDay?.volumeUSD
-      // const twoDayVolumeUSD = pair?.twoDay?.volumeUSD === "0" ? pair?.twoDay?.untrackedVolumeUSD : pair?.twoDay?.volumeUSD
 
-      const volumeUSD =
-        pair?.volumeUSD === "0" ? pair?.untrackedVolumeUSD : pair?.volumeUSD;
+      const displayName = getDisplayName(pair)
 
-      const oneDayVolumeUSD =
-        pair?.oneDay?.volumeUSD === "0"
+      // last 1 day
+      const oneDayVolumeUSD = 
+      pair?.oneDay?.volumeUSD === "0"
           ? pair?.oneDay?.untrackedVolumeUSD
           : pair?.oneDay?.volumeUSD;
+      const oneDayVolume = !isNaN(oneDayVolumeUSD) ? oneDayVolumeUSD : 0 // check for 'undefined'
+      const oneDayFees = oneDayVolume * FEE_RATE
 
+      // last 7 days
       const sevenDayVolumeUSD =
-        pair?.sevenDay?.volumeUSD === "0"
-          ? pair?.sevenDay?.untrackedVolumeUSD
-          : pair?.sevenDay?.volumeUSD;
+      pair?.sevenDay?.volumeUSD === "0"
+        ? pair?.sevenDay?.untrackedVolumeUSD
+        : pair?.sevenDay?.volumeUSD;
+      const sevenDayVolume = !isNaN(sevenDayVolumeUSD) ? sevenDayVolumeUSD : 0 // check for 'undefined'
+      const sevenDayFees = sevenDayVolume * FEE_RATE
 
-      const oneDayVolume = volumeUSD - oneDayVolumeUSD;
-      const oneDayFees = oneDayVolume * 0.003;
-      const oneYearFees = (oneDayVolume * 0.003 * 365 * 100) / pair.reserveUSD;
-      const sevenDayVolume = volumeUSD - sevenDayVolumeUSD;
+      // APY in percentage, calc from 7 day fees if available, else 1 day. 
+      const annualYieldPct = sevenDayVolume > 0 
+        ? sevenDayFees * 365 / 7 * 100 / pair.reserveUSD
+        : oneDayFees * 365 * 100 / pair.reserveUSD
 
       return {
         ...pair,
-        displayName: `${pair.token0.symbol.replace(
-          "WETH",
-          "ETH"
-        )}-${pair.token1.symbol.replace("WETH", "ETH")}`,
-        oneDayVolume: !Number.isNaN(oneDayVolume) ? oneDayVolume : 0,
-        sevenDayVolume: !Number.isNaN(sevenDayVolume) ? sevenDayVolume : 0,
-        oneDayFees: !Number.isNaN(oneDayFees) ? oneDayFees : 0,
-        oneYearFees,
+        displayName, 
+        oneDayVolume, 
+        sevenDayVolume, 
+        oneDayFees,
+        sevenDayFees, 
+        annualYieldPct
       };
     });
 
@@ -102,19 +109,29 @@ export default function PairTable({ pairs, title, ...rest }) {
           {
             key: "sevenDayFees",
             render: (row) =>
-              currencyFormatter.format(row.sevenDayVolume * 0.03),
+              currencyFormatter.format(row.sevenDayFees),
             align: "right",
             label: "Fees (7d)",
           },
           {
-            key: "oneYearFees",
-            render: (row) => <Percent percent={row.oneYearFees} />,
+            key: "annualYieldPct",
+            render: (row) => <Percent percent={row.annualYieldPct} />,
             align: "right",
-            label: "Fees (Yearly)",
+            label: "Fees APY%",
           },
         ]}
         rows={rows}
       />
     </div>
   );
+}
+
+/*
+ * Make a nice pool name
+ *
+ */
+function getDisplayName(pair) {
+  const symbol0 = pair.token0.symbol.replace("WAVAX", "AVAX").replace("WETH", "ETH")
+  const symbol1 = pair.token1.symbol.replace("WAVAX", "AVAX").replace("WETH", "ETH")
+  return `${symbol0}-${symbol1}`
 }
