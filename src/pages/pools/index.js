@@ -23,7 +23,7 @@ function PoolsPage() {
       </Head>
       <PoolTable
         pools={pools}
-        orderBy="rewardPerThousand"
+        orderBy="tvl"
         order="desc"
         rowsPerPage={100}
       />

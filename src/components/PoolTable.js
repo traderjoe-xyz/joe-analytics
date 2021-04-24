@@ -24,13 +24,7 @@ export default function PoolTable({ pools, ...rest }) {
     <div className={classes.root}>
       <SortableTable
         title="Pools"
-        // orderBy={orderBy}
-        // order={order}
         columns={[
-          // {
-          //   key: "id",
-          //   label: "#",
-          // },
           {
             key: "name",
             label: "Name",
@@ -49,35 +43,22 @@ export default function PoolTable({ pools, ...rest }) {
               );
             },
           },
-          // {
-          //   key: "balance",
-          //   label: "Staked",
-          //   align: "right",
-          //   render: (row) => Number(row.staked/1e18).toFixed(2),
-          // },
-          // {
-          //   key: "roiPerHour",
-          //   label: "ROI (Hour)",
-          //   align: "right",
-          //   render: (row) => Number(row.roiPerHour) * 1000,
-          // },
           {
-            key: "rewardPerThousand",
-            label: "Reward per $1000",
+            key: "rewardPerSec",
+            label: "Rewards",
             render: (row) =>
-              `${Number(row.rewardPerThousand).toFixed(2)} JOE per day`,
+              `${Number(row.rewardPerSec).toFixed(2)} JOE per sec`,
           },
           {
-            key: "roi",
-            label: "Yearly / Monthly / Daily ROI",
+            key: "apr",
+            label: "APR / Daily",
             render: (row) => (
               <Typography variant="subtitle2" noWrap>
                 <Percent
-                  percent={Number(row.roiPerYear * 100).toFixed(2)}
+                  percent={Number(row.apr * 100).toFixed(2)}
                   display="inline"
                 />{" "}
-                / {Number(row.roiPerMonth * 100).toFixed(2)}% /{" "}
-                {Number(row.roiPerDay * 100).toFixed(2)}%
+                / {Number(row.aprDaily * 100).toFixed(2)}%
               </Typography>
             ),
           },

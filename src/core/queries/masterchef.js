@@ -146,19 +146,10 @@ export const poolsQuery = gql`
         joePerSec
         totalAllocPoint
       }
-      # users {
-      #   id
-      #   address
-      #   amount
-      #   rewardDebt
-      # }
       liquidityPair @client
-      roiPerBlock @client
-      roiPerHour @client
-      roiPerDay @client
-      roiPerMonth @client
-      roiPerYear @client
-      rewardPerThousand @client
+      aprDaily @client
+      apr @client
+      rewardPerSec @client
       tvl @client
       timestamp
     }

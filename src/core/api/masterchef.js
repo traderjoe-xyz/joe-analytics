@@ -137,8 +137,6 @@ export async function getPools(client = getApollo()) {
     })
     .sort();
 
-  const pool45 = pools.find((p) => p.id === "45");
-
   const {
     data: { pairs },
   } = await client.query({
@@ -147,19 +145,13 @@ export async function getPools(client = getApollo()) {
     fetchPolicy: "network-only",
   });
 
-  // const averageBlockTime = (await getAverageBlockTime()) / 100;
-
-  const averageBlockTime = await getAverageBlockTime();
-  // const averageBlockTime = 13;
-
+  // AVAX price  
   const { bundles } = await getAvaxPrice();
-
   const avaxPrice = bundles[0] && bundles[0].hasOwnProperty("avaxPrice") ? bundles[0].avaxPrice : 0;
 
   // JOE token
   const token_address = JOE_TOKEN_ADDDRESS;
   const { token } = await getToken(token_address);
-
   const joePrice = avaxPrice * token.derivedAVAX;
 
   // MASTERCHEF
@@ -184,52 +176,29 @@ export async function getPools(client = getApollo()) {
         .map((pool) => {
           const pair = pairs.find((pair) => pair.id === pool.pair);
 
+          // JOE rewards issued per sec
+          const balance = Number(pool.balance / 1e18) > 0 ? Number(pool.balance / 1e18) : 0.1
+          const totalSupply = pair.totalSupply > 0 ? pair.totalSupply : 0.1
+          const reserveUSD = pair.reserveUSD > 0 ? pair.reserveUSD : 0.1
+          const balanceUSD = (balance / Number(totalSupply)) * Number(reserveUSD)
+          const rewardPerSec = ((pool.allocPoint / pool.owner.totalAllocPoint) * pool.owner.joePerSec) / 1e18
+  
+          // calc yields
+          const roiPerSec = (rewardPerSec * joePrice) / balanceUSD
+          const aprDaily = roiPerSec * 60 * 60 * 24;
+          const apr = aprDaily * 365;
+
+          // TVL
           const liquidityPosition = liquidityPositions.find(
             (liquidityPosition) => liquidityPosition.pair.id === pair.id
           );
-
-          const balance = Number(pool.balance / 1e18);
-
-          const blocksPerHour = 3600 / averageBlockTime;
-
-          // const rewardPerBlock =
-          //   100 - 100 * (pool45.allocPoint / pool45.owner.totalAllocPoint);
-
-          // const roiPerBlock =
-          //   (Number(token.derivedAVAX) *
-          //     rewardPerBlock *
-          //     3 *
-          //     (Number(pool.allocPoint) / Number(pool.owner.totalAllocPoint))) /
-          //   (Number(pair.reserveAVAX) * (balance / Number(pair.totalSupply)));
-
-          const balanceUSD =
-            (balance / Number(pair.totalSupply)) * Number(pair.reserveUSD);
-
-          const rewardPerBlock =
-            ((pool.allocPoint / pool.owner.totalAllocPoint) *
-              pool.owner.joePerSec) /
-            1e18;
-
-
-          const roiPerBlock = (rewardPerBlock * joePrice) / balanceUSD;
-
-          const roiPerHour = roiPerBlock * blocksPerHour;
-
-          const roiPerDay = roiPerHour * 24;
-
-          const roiPerMonth = roiPerDay * 30;
-
-          const roiPerYear = roiPerMonth * 12;
-
+          
           return {
             ...pool,
             liquidityPair: pair,
-            roiPerBlock,
-            roiPerHour,
-            roiPerDay,
-            roiPerMonth,
-            roiPerYear,
-            rewardPerThousand: 1 * roiPerDay * (1000 / joePrice),
+            rewardPerSec, 
+            aprDaily,
+            apr,
             tvl:
               (pair.reserveUSD / pair.totalSupply) *
               liquidityPosition.liquidityTokenBalance,
