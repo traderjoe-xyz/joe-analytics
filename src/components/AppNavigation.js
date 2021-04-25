@@ -123,7 +123,7 @@ export default function AppNavigation() {
           <ListItemText primary="Dashboard" />
         </ListItem>
 
-        {/* <ListItem
+        <ListItem
           key="/bar"
           button
           selected={router.pathname === "/bar"}
@@ -133,7 +133,7 @@ export default function AppNavigation() {
             <FastfoodOutlined />
           </ListItemIcon>
           <ListItemText primary="Bar" />
-        </ListItem> */}
+        </ListItem>
 
         <ListItem button>
           <ListItemIcon>

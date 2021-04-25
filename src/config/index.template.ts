@@ -6,3 +6,4 @@ export const GRAPH_BLOCKS_URI = '{{{ graph_blocks_uri }}}'
 export const FACTORY_ADDRESS = '{{ factory_address }}'.toLowerCase()
 export const JOE_TOKEN_ADDDRESS = '{{ joe_token_address }}'.toLowerCase()
 export const MASTERCHEF_ADDRESS = '{{ masterchef_address }}'.toLowerCase()
+export const BAR_ADDRESS = '{{ bar_address }}'.toLowerCase()

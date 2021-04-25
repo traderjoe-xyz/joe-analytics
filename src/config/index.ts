@@ -6,3 +6,4 @@ export const GRAPH_BLOCKS_URI = 'https://api.thegraph.com/subgraphs/name/blockly
 export const FACTORY_ADDRESS = '0xE2eCc226Fd2D5CEad96F3f9f00eFaE9fAfe75eB8'.toLowerCase()
 export const JOE_TOKEN_ADDDRESS = '0xB0c71B8d4928EdDB4be4Dee9FaA81d9aaFF40117'.toLowerCase()
 export const MASTERCHEF_ADDRESS = '0x861726BFE27931A4E22a7277bDe6cb8432b65856'.toLowerCase()
+export const BAR_ADDRESS = '0x1528Bde49A4a693DDcD3dF9cBa56803C2f54629c'.toLowerCase()
