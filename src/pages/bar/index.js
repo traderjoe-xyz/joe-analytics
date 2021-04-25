@@ -23,10 +23,9 @@ import { ParentSize } from "@visx/responsive";
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useQuery } from "@apollo/client";
+import { JOE_TOKEN_ADDDRESS } from "config";
 
-import { JOE_TOKEN_ADDDRESS } from "../../config/index.ts";
-
-import { print } from 'graphql/language/printer'
+const FEE_RATE = 0.0005 // 0.05% 
 
 const useStyles = makeStyles((theme) => ({
   charts: {
@@ -41,8 +40,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function BarPage() {
-  console.log("[BarPage] ")
-
   const classes = useStyles();
 
   const theme = useTheme();
@@ -67,12 +64,11 @@ function BarPage() {
     data: { factory },
   } = useQuery(factoryQuery);
 
-  const token_address = JOE_TOKEN_ADDDRESS
   const {
     data: { token },
   } = useQuery(tokenQuery, {
     variables: {
-      id: token_address,
+      id: JOE_TOKEN_ADDDRESS,
     },
   });
 
@@ -146,7 +142,7 @@ function BarPage() {
       });
       previousValue["fees"].push({
         date,
-        value: parseFloat(dayData.volumeUSD * 0.005),
+        value: parseFloat(dayData.volumeUSD * FEE_RATE),
       });
       return previousValue;
     },
@@ -162,73 +158,46 @@ function BarPage() {
     }
   );
 
-  const averageApy =
-    apy.reduce((previousValue, currentValue) => {
-      return previousValue + currentValue.value;
-    }, 0) / apy.length;
+  console.log(`[bar] apys: ${JSON.stringify(apy)}`)
+  console.log(`[bar] factory: ${JSON.stringify(factory)}`)
+  console.log(`[bar] joeStaked: ${JSON.stringify(joeStakedUSD)}`)
+  console.log(`[bar] joeHarvested: ${JSON.stringify(joeHarvestedUSD)}`)
+  console.log(`[bar] xJoe: ${JSON.stringify(xJoe)}`)
+  console.log(`[bar] fees: ${JSON.stringify(fees)}`)
+      
+  const oneDayVolume = factory.oneDay.volumeUSD
+  const oneDayFees = oneDayVolume * FEE_RATE
+  const yearFees = oneDayFees * 365
+  const totalStakedUSD = bar.joeStaked * joePrice
 
-  // console.log("[bar] factory: " + JSON.stringify(factory))
-  const oneDayVolume = factory.volumeUSD - factory.oneDay.volumeUSD;
-
-  console.log("[bar] bar: " + JSON.stringify(bar))
-  const APR = bar === null ? 0 : 
-    (((oneDayVolume * 0.05 * 0.01) / bar?.totalSupply) * 365) /
-    (bar?.ratio * joePrice); 
-
+  const APR = yearFees / totalStakedUSD
   const APY = Math.pow(1 + APR / 365, 365) - 1;
+
+  console.log(`[bar] APR: ${APR}, APY: ${APY}, JoePrice: ${joePrice}`)
 
   return (
     <AppShell>
       <Head>
-        <title>Joe Bar | JoeSwap Analytics</title>
+        <title>Joe Bar | Trader Joe Analytics</title>
       </Head>
 
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Grid container spacing={3}>
-            {/* <Grid item xs>
-              <KPI
-                title="xJoe Age"
-                value={parseFloat(bar.xJoeAge).toLocaleString()}
-              />
-            </Grid> */}
             <Grid item xs={12} sm={6} md={3}>
-              <KPI title="APY (24h)" value={APY * 100} format="percent" />
+              <KPI title="Total Staked" value={totalStakedUSD} format="currency" />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <KPI title="APY (Avg)" value={averageApy} format="percent" />
+              <KPI title="Joe Price" value={joePrice} format="currency" />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <KPI title="xJoe" value={bar?.totalSupply} format="integer" />
+              <KPI title="Fees (24H)" value={oneDayFees} format="currency" />
             </Grid>
-            {/* <Grid item xs={12} sm={6} md={3}>
-              <KPI
-                title="Joe"
-                value={parseInt(bar.joeStaked).toLocaleString()}
-              />
-            </Grid> */}
             <Grid item xs={12} sm={6} md={3}>
-              <KPI title="xJoe:Joe" value={Number(bar?.ratio).toFixed(4)} />
+              <KPI title="APY (24H)" value={APY} format="percent" />
             </Grid>
           </Grid>
         </Grid>
-
-        {/* <Grid item xs={12}>
-          <Paper
-            variant="outlined"
-            style={{ height: 300, position: "relative" }}
-          >
-            <Lines
-              title="xJoe Age & xJoe Age Destroyed"
-              margin={{ top: 64, right: 32, bottom: 32, left: 64 }}
-              strokes={[
-                theme.palette.positive.light,
-                theme.palette.negative.light,
-              ]}
-              lines={[xJoeAge, xJoeAgeDestroyed]}
-            />
-          </Paper>
-        </Grid> */}
 
         <Grid item xs={12}>
           <Paper
@@ -267,25 +236,6 @@ function BarPage() {
             </ParentSize>
           </Paper>
         </Grid>
-
-        {/* <Grid item xs={12}>
-          <Paper
-            variant="outlined"
-            style={{ display: "flex", height: 400, flex: 1 }}
-          >
-            <ParentSize>
-              {({ width, height }) => (
-                <Curves
-                  width={width}
-                  height={height}
-                  title="xJoe:Joe & Joe:xJoe"
-                  margin={{ top: 64, right: 32, bottom: 0, left: 64 }}
-                  data={[xJoe, xJoePerJoe]}
-                />
-              )}
-            </ParentSize>
-          </Paper>
-        </Grid> */}
 
         <Grid item xs={12}>
           <Paper
@@ -343,18 +293,9 @@ function BarPage() {
             </ParentSize>
           </Paper>
 
-          {/* <Chart
-            title="xJoe Total Supply"
-            data={xJoe}
-            height={400}
-            margin={{ top: 56, right: 24, bottom: 0, left: 56 }}
-            tooptip
-            brush
-          /> */}
         </Grid>
       </Grid>
 
-      {/* <pre>{JSON.stringify(bar, null, 2)}</pre> */}
     </AppShell>
   );
 }

@@ -1,8 +1,8 @@
 import gql from "graphql-tag";
-import { MASTERCHEF_ADDRESS } from "../../config/index.ts";
+import { BAR_ADDRESS } from "../../config/index.ts";
 
 export const barQuery = gql`
-  query barQuery($id: String! = "${MASTERCHEF_ADDRESS}") {
+  query barQuery($id: String! = "${BAR_ADDRESS}") {
     bar(id: $id) {
       id
       totalSupply
@@ -15,21 +15,6 @@ export const barQuery = gql`
       joeHarvestedUSD
       xJoeAge
       xJoeAgeDestroyed
-      # histories(first: 1000) {
-      #   id
-      #   date
-      #   timeframe
-      #   joeStaked
-      #   joeStakedUSD
-      #   joeHarvested
-      #   joeHarvestedUSD
-      #   xJoeAge
-      #   xJoeAgeDestroyed
-      #   xJoeMinted
-      #   xJoeBurned
-      #   xJoeSupply
-      #   ratio
-      # }
     }
   }
 `;
