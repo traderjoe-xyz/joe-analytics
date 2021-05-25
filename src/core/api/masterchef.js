@@ -16,7 +16,7 @@ import { POOL_DENY } from "app/core/constants";
 import { getApollo } from "../apollo";
 import { sub } from "date-fns";
 
-import { JOE_TOKEN_ADDDRESS, MASTERCHEF_ADDRESS } from "../../config/index.ts"
+import { JOE_TOKEN_ADDDRESS, MASTERCHEF_ADDRESS } from "../../config/index.ts";
 
 export async function getPoolIds(client = getApollo()) {
   const {
@@ -145,9 +145,12 @@ export async function getPools(client = getApollo()) {
     fetchPolicy: "network-only",
   });
 
-  // AVAX price  
+  // AVAX price
   const { bundles } = await getAvaxPrice();
-  const avaxPrice = bundles[0] && bundles[0].hasOwnProperty("avaxPrice") ? bundles[0].avaxPrice : 0;
+  const avaxPrice =
+    bundles[0] && bundles[0].hasOwnProperty("avaxPrice")
+      ? bundles[0].avaxPrice
+      : 0;
 
   // JOE token
   const token_address = JOE_TOKEN_ADDDRESS;
@@ -175,16 +178,23 @@ export async function getPools(client = getApollo()) {
         )
         .map((pool) => {
           const pair = pairs.find((pair) => pair.id === pool.pair);
+          console.log("pair", pair);
+          console.log("LPs", liquidityPositions);
 
           // JOE rewards issued per sec
-          const balance = Number(pool.balance / 1e18) > 0 ? Number(pool.balance / 1e18) : 0.1
-          const totalSupply = pair.totalSupply > 0 ? pair.totalSupply : 0.1
-          const reserveUSD = pair.reserveUSD > 0 ? pair.reserveUSD : 0.1
-          const balanceUSD = (balance / Number(totalSupply)) * Number(reserveUSD)
-          const rewardPerSec = ((pool.allocPoint / pool.owner.totalAllocPoint) * pool.owner.joePerSec) / 1e18
-  
+          const balance =
+            Number(pool.balance / 1e18) > 0 ? Number(pool.balance / 1e18) : 0.1;
+          const totalSupply = pair.totalSupply > 0 ? pair.totalSupply : 0.1;
+          const reserveUSD = pair.reserveUSD > 0 ? pair.reserveUSD : 0.1;
+          const balanceUSD =
+            (balance / Number(totalSupply)) * Number(reserveUSD);
+          const rewardPerSec =
+            ((pool.allocPoint / pool.owner.totalAllocPoint) *
+              pool.owner.joePerSec) /
+            1e18;
+
           // calc yields
-          const roiPerSec = (rewardPerSec * joePrice) / balanceUSD
+          const roiPerSec = (rewardPerSec * joePrice) / balanceUSD;
           const aprDaily = roiPerSec * 60 * 60 * 24;
           const apr = aprDaily * 365;
 
@@ -192,11 +202,11 @@ export async function getPools(client = getApollo()) {
           const liquidityPosition = liquidityPositions.find(
             (liquidityPosition) => liquidityPosition.pair.id === pair.id
           );
-          
+
           return {
             ...pool,
             liquidityPair: pair,
-            rewardPerSec, 
+            rewardPerSec,
             aprDaily,
             apr,
             tvl:
