@@ -178,8 +178,6 @@ export async function getPools(client = getApollo()) {
         )
         .map((pool) => {
           const pair = pairs.find((pair) => pair.id === pool.pair);
-          console.log("pair", pair);
-          console.log("LPs", liquidityPositions);
 
           // JOE rewards issued per sec
           const balance =
@@ -195,8 +193,10 @@ export async function getPools(client = getApollo()) {
 
           // calc yields
           const roiPerSec = (rewardPerSec * joePrice) / balanceUSD;
-          const aprDaily = roiPerSec * 60 * 60 * 24;
-          const apr = aprDaily * 365;
+          const roiPerHour = roiPerSec * 60 * 60;
+          const roiPerDay = roiPerHour * 24;
+          const roiPerMonth = roiPerDay * 30;
+          const roiPerYear = roiPerMonth * 12;
 
           // TVL
           const liquidityPosition = liquidityPositions.find(
@@ -207,8 +207,10 @@ export async function getPools(client = getApollo()) {
             ...pool,
             liquidityPair: pair,
             rewardPerSec,
-            aprDaily,
-            apr,
+            roiPerHour,
+            roiPerDay,
+            roiPerMonth,
+            roiPerYear,
             tvl:
               (pair.reserveUSD / pair.totalSupply) *
               liquidityPosition.liquidityTokenBalance,

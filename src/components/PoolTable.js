@@ -50,15 +50,24 @@ export default function PoolTable({ pools, ...rest }) {
               `${Number(row.rewardPerSec).toFixed(2)} JOE per sec`,
           },
           {
-            key: "apr",
-            label: "APR / Daily",
+            key: "roi",
+            label: "Daily / Monthly / Yearly ROI",
             render: (row) => (
               <Typography variant="subtitle2" noWrap>
                 <Percent
-                  percent={Number(row.apr * 100).toFixed(2)}
+                  percent={Number(row.roiPerDay * 100).toFixed(2)}
                   display="inline"
                 />{" "}
-                / {Number(row.aprDaily * 100).toFixed(2)}%
+                /{" "}
+                <Percent
+                  percent={Number(row.roiPerMonth * 100).toFixed(2)}
+                  display="inline"
+                />{" "}
+                /{" "}
+                <Percent
+                  percent={Number(row.roiPerYear * 100).toFixed(2)}
+                  display="inline"
+                />
               </Typography>
             ),
           },
