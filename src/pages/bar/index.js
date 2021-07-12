@@ -25,7 +25,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useQuery } from "@apollo/client";
 import { JOE_TOKEN_ADDDRESS } from "config";
 
-const FEE_RATE = 0.0005 // 0.05% 
+const FEE_RATE = 0.0005; // 0.05%
 
 const useStyles = makeStyles((theme) => ({
   charts: {
@@ -129,8 +129,7 @@ function BarPage() {
         value: parseFloat(currentValue.xJoeSupply),
       });
       const apr =
-        (((dayData.volumeUSD * 0.05 * 0.01) / currentValue.xJoeSupply) *
-          365) /
+        (((dayData.volumeUSD * 0.05 * 0.01) / currentValue.xJoeSupply) * 365) /
         (currentValue.ratio * joePrice);
       previousValue["apr"].push({
         date,
@@ -158,22 +157,31 @@ function BarPage() {
     }
   );
 
-  console.log(`[bar] apys: ${JSON.stringify(apy)}`)
-  console.log(`[bar] factory: ${JSON.stringify(factory)}`)
-  console.log(`[bar] joeStaked: ${JSON.stringify(joeStakedUSD)}`)
-  console.log(`[bar] joeHarvested: ${JSON.stringify(joeHarvestedUSD)}`)
-  console.log(`[bar] xJoe: ${JSON.stringify(xJoe)}`)
-  console.log(`[bar] fees: ${JSON.stringify(fees)}`)
-      
-  const oneDayVolume = factory.oneDay.volumeUSD
-  const oneDayFees = oneDayVolume * FEE_RATE
-  const yearFees = oneDayFees * 365
-  const totalStakedUSD = bar.joeStaked * joePrice
+  console.log(`[bar] aprs: ${JSON.stringify(apr)}`);
+  // console.log(`[bar] apys: ${JSON.stringify(apy)}`);
+  // console.log(`[bar] factory: ${JSON.stringify(factory)}`)
+  // console.log(`[bar] joeStaked: ${JSON.stringify(joeStakedUSD)}`)
+  // console.log(`[bar] joeHarvested: ${JSON.stringify(joeHarvestedUSD)}`)
+  // console.log(`[bar] xJoe: ${JSON.stringify(xJoe)}`)
+  // console.log(`[bar] fees: ${JSON.stringify(fees)}`)
 
-  const APR = yearFees / totalStakedUSD
+  const averageApr =
+    apr.reduce((prevValue, currValue) => {
+      return prevValue + currValue.value;
+    }, 0) / apr.length;
+  const oneDayVolume = factory.oneDay.volumeUSD;
+  const oneDayFees = oneDayVolume * FEE_RATE;
+  const yearFees = oneDayFees * 365;
+  const totalStakedUSD = bar.joeStaked * joePrice;
+
+  const APR = yearFees / totalStakedUSD;
   const APY = Math.pow(1 + APR / 365, 365) - 1;
 
-  console.log(`[bar] APR: ${APR}, APY: ${APY}, JoePrice: ${joePrice}`)
+  console.log(
+    `[bar] APR: ${APR}, APY: ${APY}, JoePrice: ${joePrice}, average APR: ${averageApr}, ratio: ${Number(
+      bar.ratio
+    ).toFixed(4)}`
+  );
 
   return (
     <AppShell>
@@ -185,16 +193,20 @@ function BarPage() {
         <Grid item xs={12}>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6} md={3}>
-              <KPI title="Total Staked" value={totalStakedUSD} format="currency" />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <KPI title="Joe Price" value={joePrice} format="currency" />
+              <KPI
+                title="Total Staked"
+                value={totalStakedUSD}
+                format="currency"
+              />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <KPI title="Fees (24H)" value={oneDayFees} format="currency" />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <KPI title="APY (24H)" value={APY} format="percent" />
+              <KPI title="APR (from last 24H)" value={APR} format="percent" />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <KPI title="Average APR" value={averageApr} format="percent" />
             </Grid>
           </Grid>
         </Grid>
@@ -210,8 +222,8 @@ function BarPage() {
                   width={width}
                   height={height}
                   margin={{ top: 64, right: 32, bottom: 0, left: 64 }}
-                  data={[apy, apr]}
-                  labels={["APY", "APR"]}
+                  data={[apr]}
+                  labels={["APR"]}
                 />
               )}
             </ParentSize>
@@ -292,10 +304,8 @@ function BarPage() {
               )}
             </ParentSize>
           </Paper>
-
         </Grid>
       </Grid>
-
     </AppShell>
   );
 }

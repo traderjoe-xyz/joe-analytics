@@ -24,7 +24,7 @@ export { default as PairTable } from "./PairTable";
 export { default as Percent } from "./Percent";
 export { default as PoolTable } from "./PoolTable";
 export { default as Search } from "./Search";
-export { default as Sushi } from "./Sushi";
+export { default as Joe } from "./Joe";
 export { default as SortableTable } from "./SortableTable";
 export { default as SortableTableHead } from "./SortableTableHead";
 export { default as TokenIcon } from "./TokenIcon";

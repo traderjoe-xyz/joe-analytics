@@ -51,7 +51,7 @@ import {
 import React, { useState } from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 
-import Sushi from "./Sushi";
+import Joe from "./Joe";
 import { useRouter } from "next/router";
 
 const drawerWidth = 240;
@@ -93,7 +93,7 @@ export default function AppNavigation() {
         <Hidden smUp implementation="css">
           <Box display="flex" alignItems="center" py={0.5}>
             <IconButton edge={false} onClick={() => router.push("/")}>
-              <Sushi />
+              <Joe />
             </IconButton>
             <Typography variant="subtitle1" color="textPrimary" noWrap>
               Trader Joe
@@ -142,7 +142,6 @@ export default function AppNavigation() {
           <ListItemText primary="Pools" />
           {open ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
-
 
         <Collapse in={open} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
@@ -261,7 +260,6 @@ export default function AppNavigation() {
           </ListItemIcon>
           <ListItemText primary="Tokens" />
         </ListItem>
-
       </List>
       <Dialog
         maxWidth="sm"
