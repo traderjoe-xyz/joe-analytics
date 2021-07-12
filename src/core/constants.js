@@ -19,4 +19,4 @@ export const EXCHANGE_CREATED_TIMESTAMP = 1599214239;
 
 export const POOL_DENY = ["14", "29", "45", "30"];
 
-export const SUSHI_TOKEN = "0x6b3595068778dd592e39a122f4f5a5cf09c90fe2";
+export const SUSHI_TOKEN = "0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd";

@@ -1,11 +1,11 @@
 {
-    "graph_bar_uri": "https://api.thegraph.com/subgraphs/name/joe-defi/bar-rinkeby",
-    "graph_masterchef_uri": "https://api.thegraph.com/subgraphs/name/joe-defi/masterchef-rinkeby",
-    "graph_exchange_uri": "https://api.thegraph.com/subgraphs/name/joe-defi/exchange-rinkeby",
+    "graph_bar_uri": "https://api.thegraph.com/subgraphs/name/traderjoe-xyz/bar-rinkeby-ii",
+    "graph_masterchef_uri": "https://api.thegraph.com/subgraphs/name/traderjoe-xyz/masterchefv2-rinkeby",
+    "graph_exchange_uri": "https://api.thegraph.com/subgraphs/name/traderjoe-xyz/exchange-rinkeby-ii",
     "graph_blocks_uri": "https://api.thegraph.com/subgraphs/name/blocklytics/rinkeby-blocks", 
 
-    "factory_address": "0xE2eCc226Fd2D5CEad96F3f9f00eFaE9fAfe75eB8",
-    "masterchef_address": "0x861726BFE27931A4E22a7277bDe6cb8432b65856", 
-    "bar_address": "0x1528Bde49A4a693DDcD3dF9cBa56803C2f54629c", 
-    "joe_token_address": "0xB0c71B8d4928EdDB4be4Dee9FaA81d9aaFF40117"
+    "factory_address": "0xBB95aa2089A3494e466D3CBE6d6c21eEEFD7b337",
+    "masterchef_address": "0x927bE1425F2C3599Ced2146459f6491eE450848b", 
+    "bar_address": "0x0CC47Aa1252f25FD95b65F19C2fd6dB33366A557", 
+    "joe_token_address": "0xDDF06D89C908bC38e03067d65408D632fDA4fd9d"
 }

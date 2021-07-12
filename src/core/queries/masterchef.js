@@ -147,9 +147,11 @@ export const poolsQuery = gql`
         totalAllocPoint
       }
       liquidityPair @client
-      aprDaily @client
-      apr @client
       rewardPerSec @client
+      roiPerHour @client
+      roiPerDay @client
+      roiPerMonth @client
+      roiPerYear @client
       tvl @client
       timestamp
     }

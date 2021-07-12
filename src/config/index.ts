@@ -1,13 +1,14 @@
 export const GRAPH_BAR_URI =
-  "https://api.thegraph.com/subgraphs/name/traderjoe-xyz/bar-rinkeby-ii";
+  "https://api.thegraph.com/subgraphs/name/traderjoe-xyz/bar";
 export const GRAPH_MASTERCHEF_URI =
-  "https://api.thegraph.com/subgraphs/name/traderjoe-xyz/masterchef-rinkeby-ii";
+  "https://api.thegraph.com/subgraphs/name/traderjoe-xyz/masterchefv2";
 export const GRAPH_EXCHANGE_URI =
-  "https://api.thegraph.com/subgraphs/name/traderjoe-xyz/exchange-rinkeby-ii";
+  "https://api.thegraph.com/subgraphs/name/traderjoe-xyz/exchange";
 export const GRAPH_BLOCKS_URI =
-  "https://api.thegraph.com/subgraphs/name/blocklytics/rinkeby-blocks";
+  "https://api.thegraph.com/subgraphs/name/dasconnor/avalanche-blocks";
 
-export const FACTORY_ADDRESS = "0xDdCe22917110b2E0Fe72d80626bA3FBF286E9065".toLowerCase();
-export const JOE_TOKEN_ADDDRESS = "0x32A83BF2BD519e505f4e39182F214176162F7429".toLowerCase();
-export const MASTERCHEF_ADDRESS = "0xDa78543E5202216684734fBC003E578fd32c3869".toLowerCase();
-export const BAR_ADDRESS = "0x9B8536B0710196865b7bbc2BF2b448eC014C637b".toLowerCase();
+export const FACTORY_ADDRESS = "0x9Ad6C38BE94206cA50bb0d90783181662f0Cfa10".toLowerCase();
+export const JOE_TOKEN_ADDDRESS = "0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd".toLowerCase();
+export const MASTERCHEF_ADDRESS = "0xd6a4F121CA35509aF06A0Be99093d08462f53052".toLowerCase();
+export const BAR_ADDRESS = "0x57319d41F71E81F3c65F2a47CA4e001EbAFd4F33".toLowerCase();
+

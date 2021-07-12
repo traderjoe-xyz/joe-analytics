@@ -189,6 +189,7 @@ export async function getPools(client = getApollo()) {
           const rewardPerSec =
             ((pool.allocPoint / pool.owner.totalAllocPoint) *
               pool.owner.joePerSec) /
+            2 /
             1e18;
 
           // calc yields

@@ -21,12 +21,7 @@ function PoolsPage() {
       <Head>
         <title>Pools | Trader Joe Analytics</title>
       </Head>
-      <PoolTable
-        pools={pools}
-        orderBy="tvl"
-        order="desc"
-        rowsPerPage={100}
-      />
+      <PoolTable pools={pools} orderBy="tvl" order="desc" rowsPerPage={100} />
     </AppShell>
   );
 }
