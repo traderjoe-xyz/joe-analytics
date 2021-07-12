@@ -5,6 +5,13 @@ import css from "styled-jsx/css";
 export default css.global`
   /* latin */
   @font-face {
+    font-family: "Averta CY";
+    font-style: normal;
+    font-weight: 100;
+    font-display: block;
+    src: url(/fonts/Averta\ Cyrillic\ Regular.otf) format("opentype");
+  }
+  @font-face {
     font-family: "Inter";
     font-style: normal;
     font-weight: 100;

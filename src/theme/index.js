@@ -49,6 +49,7 @@ export const palette = {
 };
 
 const fontFamily = [
+  "Averta CY",
   "Inter",
   "-apple-system",
   "BlinkMacSystemFont",
