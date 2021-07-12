@@ -84,7 +84,7 @@ function PoolPage() {
     pollInterval: 60000,
   });
 
-  const token_address = JOE_TOKEN_ADDDRESS
+  const token_address = JOE_TOKEN_ADDDRESS;
   const {
     data: { token },
   } = useQuery(tokenQuery, {
@@ -199,9 +199,9 @@ function PoolPage() {
           </Grid>
           <Grid item xs={12} sm="auto" className={classes.links}>
             <Link
-              href={`https://joe.defi/farms/${
+              href={`https://traderjoexyz.com/pool/${
                 pool.liquidityPair.token0.symbol
-              }-${pool.liquidityPair.token1.symbol.replace(
+              }/${pool.liquidityPair.token1.symbol.replace(
                 "WAVAX",
                 "AVAX"
               )}%20LP`}

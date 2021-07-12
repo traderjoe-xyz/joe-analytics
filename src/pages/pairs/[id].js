@@ -205,7 +205,7 @@ function PairPage(props) {
           </Box>
           <Box display="flex" alignItems="center" className={classes.links}>
             <Link
-              href={`https://exchange.joe.defi/#/add/${pair.token0.id}/${pair.token1.id}`}
+              href={`https://traderjoexyz.com/#/pool/${pair.token0.id}/${pair.token1.id}`}
               target="_blank"
               variant="body1"
               className={classes.firstLink}
@@ -213,7 +213,7 @@ function PairPage(props) {
               Add Liquidity
             </Link>
             <Link
-              href={`https://exchange.joe.defi/#/swap?inputCurrency=${pair.token0.id}&outputCurrency=${pair.token1.id}`}
+              href={`https://traderjoexyz.com/#/trade`}
               target="_blank"
               variant="body1"
             >
@@ -408,7 +408,11 @@ function PairPage(props) {
             <Typography variant="body2" noWrap>
               {pair.token1.id}
             </Typography>,
-            <Link href={`https://cchain.explorer.avax.network/address/${pair.id}`}>View</Link>,
+            <Link
+              href={`https://cchain.explorer.avax.network/address/${pair.id}`}
+            >
+              View
+            </Link>,
           ]}
         />
       </Box>
@@ -425,7 +429,7 @@ function PairPage(props) {
 export async function getStaticProps({ params }) {
   const client = getApollo();
 
-  const id = params.id.toLowerCase()
+  const id = params.id.toLowerCase();
 
   // AvaxPrice
   await client.query({

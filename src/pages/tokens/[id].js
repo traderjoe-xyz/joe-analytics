@@ -148,7 +148,8 @@ function TokenPage() {
     parseFloat(token.oneDay?.derivedAVAX) *
     parseFloat(oneDayAvaxPriceData?.avaxPrice);
 
-  const price = parseFloat(token?.derivedAVAX) * parseFloat(bundles[0].avaxPrice);
+  const price =
+    parseFloat(token?.derivedAVAX) * parseFloat(bundles[0].avaxPrice);
 
   const priceYesterday =
     parseFloat(token.oneDay?.derivedAVAX) *
@@ -169,7 +170,8 @@ function TokenPage() {
     <AppShell>
       <Head>
         <title>
-          {currencyFormatter.format(price || 0)} | {token.symbol} | Trader Joe Analytics
+          {currencyFormatter.format(price || 0)} | {token.symbol} | Trader Joe
+          Analytics
         </title>
       </Head>
       <PageHeader>
@@ -195,14 +197,14 @@ function TokenPage() {
           </Grid>
           <Grid item xs={12} sm="auto" className={classes.links}>
             <Link
-              href={`https://exchange.joe.defi/#/add/${token.id}/AVAX`}
+              href={`https://traderjoexyz.com/#/pool/${token.id}/AVAX`}
               target="_blank"
               variant="body1"
             >
               Add Liquidity
             </Link>
             <Link
-              href={`https://exchange.joe.defi/#/swap?inputCurrency=${token.id}`}
+              href={`https://traderjoexyz.com/#/trade`}
               target="_blank"
               variant="body1"
             >
@@ -294,7 +296,11 @@ function TokenPage() {
             token.name,
             token.symbol,
             token.id,
-            <Link href={`https://etherscan.io/address/${token.id}`}>View</Link>,
+            <Link
+              href={`https://cchain.explorer.avax.network/address/${token.id}`}
+            >
+              View
+            </Link>,
           ]}
         />
       </Box>
