@@ -290,7 +290,7 @@ function TokenPage() {
             { key: "name", label: "Name" },
             { key: "symbol", label: "Symbol" },
             { key: "address", label: "Address" },
-            { key: "etherscan", label: "Etherscan", align: "right" },
+            { key: "etherscan", label: "Explorer", align: "right" },
           ]}
           bodyCells={[
             token.name,
