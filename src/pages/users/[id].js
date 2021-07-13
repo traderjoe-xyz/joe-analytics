@@ -318,8 +318,8 @@ function UserPage() {
                           className={classes.avatar}
                           imgProps={{ loading: "lazy" }}
                           alt="JOE"
-                          src={`https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/avaxereum/assets/${toChecksumAddress(
-                            "0x6b3595068778dd592e39a122f4f5a5cf09c90fe2"
+                          src={`https://raw.githubusercontent.com/traderjoe-xyz/joe-tokenlists/main/logos/${toChecksumAddress(
+                            "0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd"
                           )}/logo.png`}
                         />
                         <Link
