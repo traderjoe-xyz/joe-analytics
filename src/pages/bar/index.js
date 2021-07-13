@@ -169,6 +169,10 @@ function BarPage() {
     apr.reduce((prevValue, currValue) => {
       return prevValue + currValue.value;
     }, 0) / apr.length;
+  const averageApy =
+    apy.reduce((prevValue, currValue) => {
+      return prevValue + currValue.value;
+    }, 0) / apy.length;
   const oneDayVolume = factory.oneDay.volumeUSD;
   const oneDayFees = oneDayVolume * FEE_RATE;
   const yearFees = oneDayFees * 365;
@@ -178,7 +182,7 @@ function BarPage() {
   const APY = Math.pow(1 + APR / 365, 365) - 1;
 
   console.log(
-    `[bar] APR: ${APR}, APY: ${APY}, JoePrice: ${joePrice}, average APR: ${averageApr}, ratio: ${Number(
+    `[bar] APR: ${APR}, APY: ${APY}, JoePrice: ${joePrice}, average APR: ${averageApr}, average APY: ${averageApy}, ratio: ${Number(
       bar.ratio
     ).toFixed(4)}`
   );
@@ -206,7 +210,7 @@ function BarPage() {
               <KPI title="APR (from last 24H)" value={APR} format="percent" />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <KPI title="Average APR" value={averageApr} format="percent" />
+              <KPI title="APY (from last 24H)" value={APY} format="percent" />
             </Grid>
           </Grid>
         </Grid>
@@ -222,8 +226,8 @@ function BarPage() {
                   width={width}
                   height={height}
                   margin={{ top: 64, right: 32, bottom: 0, left: 64 }}
-                  data={[apr]}
-                  labels={["APR"]}
+                  data={[apr, apy]}
+                  labels={["APR", "APY"]}
                 />
               )}
             </ParentSize>
