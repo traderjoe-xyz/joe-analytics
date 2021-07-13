@@ -50,18 +50,19 @@ export default function Transactions({ transactions, txCount }) {
             label: "Type",
             render: (row) => {
               console.log(row);
+              const swapToken0ForToken1 = `${row.__typename} ${row.pair.token0.symbol} for ${row.pair.token1.symbol}`;
+              const swapToken1ForToken0 = `${row.__typename} ${row.pair.token1.symbol} for ${row.pair.token0.symbol}`;
+              const addLiquidity = `Add ${row.pair.token0.symbol} and ${row.pair.token1.symbol}`;
+              const removeLiquidity = `Remove ${row.pair.token0.symbol} and ${row.pair.token1.symbol}`;
               return (
                 <Typography variant="body2" noWrap>
-                  {row.__typename}{" "}
-                  {row.amount0In === "0" ||
-                  (row.__typename === "Mint" && !row.amount0In)
-                    ? row.pair.token1.symbol
-                    : row.pair.token0.symbol}{" "}
-                  for{" "}
-                  {row.amount1Out === "0" ||
-                  (row.__typename === "Mint" && !row.amount1Out)
-                    ? row.pair.token0.symbol
-                    : row.pair.token1.symbol}
+                  {row.__typename === "Swap"
+                    ? row.amount0In === "0"
+                      ? swapToken1ForToken0
+                      : swapToken0ForToken1
+                    : row.__typename === "Mint"
+                    ? addLiquidity
+                    : removeLiquidity}
                 </Typography>
               );
             },
@@ -75,7 +76,7 @@ export default function Transactions({ transactions, txCount }) {
           {
             key: "amount0",
             align: "right",
-            label: "In",
+            label: "Amount 0",
             render: (row) => (
               <Typography variant="body2" noWrap>
                 {decimalFormatter.format(row.amount0)}{" "}
@@ -88,7 +89,7 @@ export default function Transactions({ transactions, txCount }) {
           {
             key: "amount1",
             align: "right",
-            label: "Out",
+            label: "Amount 1",
             render: (row) => (
               <Typography variant="body2" noWrap>
                 {decimalFormatter.format(row.amount1)}{" "}
