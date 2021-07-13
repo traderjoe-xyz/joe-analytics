@@ -36,8 +36,6 @@ const poolUserFragment = gql`
     exitUSD
     joeHarvested
     joeHarvestedUSD
-    joeHarvestedSinceLockup
-    joeHarvestedSinceLockupUSD
   }
 `;
 

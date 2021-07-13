@@ -49,7 +49,6 @@ export default function Transactions({ transactions, txCount }) {
             key: "__typename",
             label: "Type",
             render: (row) => {
-              console.log(row);
               const swapToken0ForToken1 = `${row.__typename} ${row.pair.token0.symbol} for ${row.pair.token1.symbol}`;
               const swapToken1ForToken0 = `${row.__typename} ${row.pair.token1.symbol} for ${row.pair.token0.symbol}`;
               const addLiquidity = `Add ${row.pair.token0.symbol} and ${row.pair.token1.symbol}`;

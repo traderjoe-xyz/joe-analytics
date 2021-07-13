@@ -1,4 +1,11 @@
-import { AppShell, KPI, Link, PageHeader, PairIcon, Loading } from "app/components";
+import {
+  AppShell,
+  KPI,
+  Link,
+  Loading,
+  PageHeader,
+  PairIcon,
+} from "app/components";
 import {
   Avatar,
   Box,
@@ -14,14 +21,14 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import {
-  // barUserQuery,
+  barUserQuery,
   blockQuery,
   currencyFormatter,
   decimalFormatter,
   avaxPriceQuery,
   formatCurrency,
   getApollo,
-  // getBarUser,
+  getBarUser,
   getAvaxPrice,
   getLatestBlock,
   getPairs,
@@ -47,7 +54,6 @@ import { POOL_DENY } from "app/core/constants";
 import { toChecksumAddress } from "web3-utils";
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
-import { JOE_TOKEN_ADDDRESS } from "../../config/index.ts";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -70,7 +76,8 @@ function UserPage() {
   }
   const classes = useStyles();
 
-  const id = router && router.query && router.query.id && router.query.id.toLowerCase();
+  const id =
+    router && router.query && router.query.id && router.query.id.toLowerCase();
 
   const {
     data: { bundles },
@@ -96,22 +103,11 @@ function UserPage() {
     },
   });
 
-  const { data: lockupData } = useQuery(lockupUserQuery, {
-    variables: {
-      address: id.toLowerCase(),
-    },
-    context: {
-      clientName: "lockup",
-    },
-    fetchPolicy: 'no-cache'
-  });
-  
-  const token_address = JOE_TOKEN_ADDDRESS;
   const {
     data: { token },
   } = useQuery(tokenQuery, {
     variables: {
-      id: token_address,
+      id: "0x6e84a6216ea6dacc71ee8e6b0a5b7322eebc0fdd",
     },
   });
 
@@ -123,20 +119,21 @@ function UserPage() {
     (user) =>
       user.pool &&
       !POOL_DENY.includes(user.pool.id) &&
-      user.pool.allocPoint !== "0"
+      user.pool.allocPoint !== "0" &&
+      pairs.find((pair) => pair?.id === user.pool.pair)
   );
 
-  useInterval(
-    () =>
-      Promise.all([
-        getPairs,
-        getJoeToken,
-        getPoolUser(id.toLowerCase()),
-        getBarUser(id.toLocaleLowerCase()),
-        getAvaxPrice,
-      ]),
-    60000
-  );
+  // useInterval(
+  //   () =>
+  //     Promise.all([
+  //       getPairs,
+  //       getJoeToken,
+  //       getPoolUser(id.toLowerCase()),
+  //       getBarUser(id.toLocaleLowerCase()),
+  //       getAvaxPrice,
+  //     ]),
+  //   60000
+  // );
 
   const joePrice =
     parseFloat(token?.derivedAVAX) * parseFloat(bundles[0].avaxPrice);
@@ -150,10 +147,8 @@ function UserPage() {
 
   const xJoeTransfered =
     barData?.user?.xJoeIn > barData?.user?.xJoeOut
-      ? parseFloat(barData?.user?.xJoeIn) -
-        parseFloat(barData?.user?.xJoeOut)
-      : parseFloat(barData?.user?.xJoeOut) -
-        parseFloat(barData?.user?.xJoeIn);
+      ? parseFloat(barData?.user?.xJoeIn) - parseFloat(barData?.user?.xJoeOut)
+      : parseFloat(barData?.user?.xJoeOut) - parseFloat(barData?.user?.xJoeIn);
 
   const barStaked = barData?.user?.joeStaked;
 
@@ -185,8 +180,7 @@ function UserPage() {
   });
 
   const blockDifference =
-    parseInt(blocksData?.blocks[0].number) -
-    parseInt(barData?.user?.createdAtBlock);
+    parseInt(blocksData?.blocks[0].number) - parseInt(barData?.user?.updatedAt);
 
   const barRoiDailyJoe = (barRoiJoe / blockDifference) * 6440;
 
@@ -227,44 +221,18 @@ function UserPage() {
     [0, 0, 0]
   );
 
-  const lockedUSD = poolData?.users.reduce((previousValue, user) => {
-    const pendingJoe =
-      ((user.amount * user.pool.accJoePerShare) / 1e12 - user.rewardDebt) /
-      1e18;
-
-    const lockupUser = lockupData?.users.find(
-      (u) => u.pool.id === user.pool.id
-    );
-
-    const joeAtLockup = lockupUser
-      ? ((lockupUser.amount * lockupUser.pool.accJoePerShare) / 1e12 -
-          lockupUser.rewardDebt) /
-        1e18
-      : 0;
-
-    const joeLocked =
-      (parseFloat(user.joeHarvestedSinceLockup) +
-        pendingJoe -
-        joeAtLockup) *
-      2;
-
-    const joeLockedUSD = joeLocked * joePrice;
-
-    return previousValue + joeLockedUSD;
-  }, 0);
-
   // Global
 
-  const originalInvestments =
-    parseFloat(barData?.user?.joeStakedUSD) + parseFloat(poolEntriesUSD);
+  // const originalInvestments =
+  //   parseFloat(barData?.user?.joeStakedUSD) + parseFloat(poolEntriesUSD);
 
   const investments =
-    poolEntriesUSD + barPendingUSD + poolsPendingUSD + poolExitsUSD + lockedUSD;
+    poolEntriesUSD + barPendingUSD + poolsPendingUSD + poolExitsUSD;
 
   return (
     <AppShell>
       <Head>
-        <title>User {id} | Trader Joe Analytics</title>
+        <title>User {id} | JoeSwap Analytics</title>
       </Head>
 
       <PageHeader>
@@ -350,12 +318,12 @@ function UserPage() {
                           className={classes.avatar}
                           imgProps={{ loading: "lazy" }}
                           alt="JOE"
-                          src={`https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${toChecksumAddress(
+                          src={`https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/avaxereum/assets/${toChecksumAddress(
                             "0x6b3595068778dd592e39a122f4f5a5cf09c90fe2"
                           )}/logo.png`}
                         />
                         <Link
-                          href={`/tokens/0x6b3595068778dd592e39a122f4f5a5cf09c90fe2`}
+                          href={`/tokens/0x6e84a6216ea6dacc71ee8e6b0a5b7322eebc0fdd`}
                           variant="body2"
                           noWrap
                         >
@@ -433,14 +401,11 @@ function UserPage() {
               <Grid item xs>
                 <KPI
                   title="Value"
-                  value={formatCurrency(poolsUSD + poolsPendingUSD + lockedUSD)}
+                  value={formatCurrency(poolsUSD + poolsPendingUSD)}
                 />
               </Grid>
               <Grid item xs>
                 <KPI title="Invested" value={formatCurrency(poolEntriesUSD)} />
-              </Grid>
-              <Grid item xs>
-                <KPI title="Locked" value={formatCurrency(lockedUSD)} />
               </Grid>
               <Grid item xs>
                 <KPI
@@ -484,9 +449,6 @@ function UserPage() {
                     <TableCell key="joeHarvested" align="right">
                       Joe Harvested
                     </TableCell>
-                    <TableCell key="joeLocked" align="right">
-                      Joe Locked
-                    </TableCell>
                     <TableCell key="pl" align="right">
                       Profit/Loss
                     </TableCell>
@@ -511,34 +473,14 @@ function UserPage() {
                       ((user.amount * user.pool.accJoePerShare) / 1e12 -
                         user.rewardDebt) /
                       1e18;
-                    user.amount.mul(accJoePerShare).div(1e12).sub(user.rewardDebt);
+                    // user.amount.mul(accJoePerShare).div(1e12).sub(user.rewardDebt);
 
-                    console.log(
-                      user,
-                      user.entryUSD,
-                      user.exitUSD,
-                      pendingJoe * joePrice
-                    );
-
-                    const lockupUser = lockupData?.users.find(
-                      (u) => u.pool.id === user.pool.id
-                    );
-
-                    const joeAtLockup = lockupUser
-                      ? ((lockupUser.amount *
-                          lockupUser.pool.accJoePerShare) /
-                          1e12 -
-                          lockupUser.rewardDebt) /
-                        1e18
-                      : 0;
-
-                    const joeLocked =
-                      (parseFloat(user.joeHarvestedSinceLockup) +
-                        pendingJoe -
-                        joeAtLockup) *
-                      2;
-
-                    const joeLockedUSD = joeLocked * joePrice;
+                    // console.log(
+                    //   user,
+                    //   user.entryUSD,
+                    //   user.exitUSD,
+                    //   pendingJoe * joePrice
+                    // );
 
                     return (
                       <TableRow key={user.pool.id}>
@@ -588,22 +530,13 @@ function UserPage() {
                         <TableCell align="right">
                           <Typography noWrap variant="body2">
                             {decimalFormatter.format(pendingJoe)} (
-                            {currencyFormatter.format(
-                              pendingJoe * joePrice
-                            )}
-                            )
+                            {currencyFormatter.format(pendingJoe * joePrice)})
                           </Typography>
                         </TableCell>
                         <TableCell align="right">
                           <Typography noWrap variant="body2">
                             {decimalFormatter.format(user.joeHarvested)} (
                             {currencyFormatter.format(user.joeHarvestedUSD)})
-                          </Typography>
-                        </TableCell>
-                        <TableCell align="right">
-                          <Typography noWrap variant="body2">
-                            {decimalFormatter.format(joeLocked)} (
-                            {currencyFormatter.format(joeLockedUSD)})
                           </Typography>
                         </TableCell>
                         <TableCell align="right">
@@ -640,18 +573,7 @@ export async function getStaticProps({ params }) {
 
   await getJoeToken(client);
 
-  // await getBarUser(id.toLowerCase(), client);
-
-  await client.query({
-    query: lockupUserQuery,
-    variables: {
-      address: id.toLowerCase(),
-    },
-    context: {
-      clientName: "lockup",
-    },
-    fetchPolicy: "no-cache"
-  });
+  await getBarUser(id.toLowerCase(), client);
 
   await getPoolUser(id.toLowerCase(), client);
 

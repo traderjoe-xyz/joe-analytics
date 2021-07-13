@@ -61,7 +61,8 @@ export const barUserQuery = gql`
       joeOut
       usdIn
       usdOut
-      createdAt
+      updatedAt
+      # createdAt
       # createdAtBlock
     }
   }
