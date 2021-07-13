@@ -132,123 +132,145 @@ export default function AppNavigation() {
           <ListItemIcon>
             <FastfoodOutlined />
           </ListItemIcon>
-          <ListItemText primary="Bar" />
+          <ListItemText primary="Earn" />
         </ListItem>
 
-        <ListItem button>
+        <ListItem
+          key="/pools"
+          button
+          selected={router.pathname === "/pools"}
+          onClick={() => router.push("/pools")}
+        >
           <ListItemIcon>
             <WavesOutlined />
           </ListItemIcon>
           <ListItemText primary="Pools" />
-          {open ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
 
-        <Collapse in={open} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItem
-              button
-              selected={router.pathname === "/pools/recent"}
-              onClick={() => router.push("/pools/recent")}
-              className={classes.nested}
-            >
-              <ListItemIcon>
-                <FiberNewOutlined />
-              </ListItemIcon>
-              <ListItemText primary="Recent" />
-            </ListItem>
-            <ListItem
-              button
-              selected={router.pathname === "/pools"}
-              onClick={() => router.push("/pools")}
-              className={classes.nested}
-            >
-              <ListItemIcon>
-                <DetailsOutlined />
-              </ListItemIcon>
-              <ListItemText primary="All" />
-            </ListItem>
+        {/* <ListItem button> */}
+        {/*   <ListItemIcon> */}
+        {/*     <WavesOutlined /> */}
+        {/*   </ListItemIcon> */}
+        {/*   <ListItemText primary="Pools" /> */}
+        {/*   {open ? <ExpandLess /> : <ExpandMore />} */}
+        {/* </ListItem> */}
+        {/* <Collapse in={open} timeout="auto" unmountOnExit> */}
+        {/*   <List component="div" disablePadding> */}
+        {/*     <ListItem */}
+        {/*       button */}
+        {/*       selected={router.pathname === "/pools/recent"} */}
+        {/*       onClick={() => router.push("/pools/recent")} */}
+        {/*       className={classes.nested} */}
+        {/*     > */}
+        {/*       <ListItemIcon> */}
+        {/*         <FiberNewOutlined /> */}
+        {/*       </ListItemIcon> */}
+        {/*       <ListItemText primary="Recent" /> */}
+        {/*     </ListItem> */}
+        {/*     <ListItem */}
+        {/*       button */}
+        {/*       selected={router.pathname === "/pools"} */}
+        {/*       onClick={() => router.push("/pools")} */}
+        {/*       className={classes.nested} */}
+        {/*     > */}
+        {/*       <ListItemIcon> */}
+        {/*         <DetailsOutlined /> */}
+        {/*       </ListItemIcon> */}
+        {/*       <ListItemText primary="All" /> */}
+        {/*     </ListItem> */}
 
-            {/* <ListItem
-              button
-              selected={router.pathname === "/pools/gainers"}
-              onClick={() => router.push("/pools/gainers")}
-              className={classes.nested}
-            >
-              <ListItemIcon>
-                <TrendingUpOutlined />
-              </ListItemIcon>
-              <ListItemText primary="Gainers" />
-            </ListItem>
-            <ListItem
-              button
-              selected={router.pathname === "/pools/losers"}
-              onClick={() => router.push("/pools/losers")}
-              className={classes.nested}
-            >
-              <ListItemIcon>
-                <TrendingDownOutlined />
-              </ListItemIcon>
-              <ListItemText primary="Losers" />
-            </ListItem> */}
-          </List>
-        </Collapse>
-
-        <ListItem button>
+        {/*     {/1* <ListItem */}
+        {/*       button */}
+        {/*       selected={router.pathname === "/pools/gainers"} */}
+        {/*       onClick={() => router.push("/pools/gainers")} */}
+        {/*       className={classes.nested} */}
+        {/*     > */}
+        {/*       <ListItemIcon> */}
+        {/*         <TrendingUpOutlined /> */}
+        {/*       </ListItemIcon> */}
+        {/*       <ListItemText primary="Gainers" /> */}
+        {/*     </ListItem> */}
+        {/*     <ListItem */}
+        {/*       button */}
+        {/*       selected={router.pathname === "/pools/losers"} */}
+        {/*       onClick={() => router.push("/pools/losers")} */}
+        {/*       className={classes.nested} */}
+        {/*     > */}
+        {/*       <ListItemIcon> */}
+        {/*         <TrendingDownOutlined /> */}
+        {/*       </ListItemIcon> */}
+        {/*       <ListItemText primary="Losers" /> */}
+        {/*     </ListItem> *1/} */}
+        {/*   </List> */}
+        {/* </Collapse> */}
+        <ListItem
+          key="/pools"
+          button
+          selected={router.pathname === "/pairs"}
+          onClick={() => router.push("/pairs")}
+        >
           <ListItemIcon>
             <LinkOutlined />
           </ListItemIcon>
           <ListItemText primary="Pairs" />
-          {open ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
-        <Collapse in={open} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItem
-              button
-              selected={router.pathname === "/pairs/recent"}
-              onClick={() => router.push("/pairs/recent")}
-              className={classes.nested}
-            >
-              <ListItemIcon>
-                <FiberNewOutlined />
-              </ListItemIcon>
-              <ListItemText primary="Recent" />
-            </ListItem>
-            <ListItem
-              button
-              selected={router.pathname === "/pairs"}
-              onClick={() => router.push("/pairs")}
-              className={classes.nested}
-            >
-              <ListItemIcon>
-                <DetailsOutlined />
-              </ListItemIcon>
-              <ListItemText primary="All" />
-            </ListItem>
 
-            {/* <ListItem
-              button
-              selected={router.pathname === "/pairs/gainers"}
-              onClick={() => router.push("/pairs/gainers")}
-              className={classes.nested}
-            >
-              <ListItemIcon>
-                <TrendingUpOutlined />
-              </ListItemIcon>
-              <ListItemText primary="Gainers" />
-            </ListItem> */}
-            {/* <ListItem
-              button
-              selected={router.pathname === "/pairs/losers"}
-              onClick={() => router.push("/pairs/losers")}
-              className={classes.nested}
-            >
-              <ListItemIcon>
-                <TrendingDownOutlined />
-              </ListItemIcon>
-              <ListItemText primary="Losers" />
-            </ListItem> */}
-          </List>
-        </Collapse>
+        {/* <ListItem button> */}
+        {/*   <ListItemIcon> */}
+        {/*     <LinkOutlined /> */}
+        {/*   </ListItemIcon> */}
+        {/*   <ListItemText primary="Pairs" /> */}
+        {/*   {open ? <ExpandLess /> : <ExpandMore />} */}
+        {/* </ListItem> */}
+        {/* <Collapse in={open} timeout="auto" unmountOnExit> */}
+        {/*   <List component="div" disablePadding> */}
+        {/*     <ListItem */}
+        {/*       button */}
+        {/*       selected={router.pathname === "/pairs/recent"} */}
+        {/*       onClick={() => router.push("/pairs/recent")} */}
+        {/*       className={classes.nested} */}
+        {/*     > */}
+        {/*       <ListItemIcon> */}
+        {/*         <FiberNewOutlined /> */}
+        {/*       </ListItemIcon> */}
+        {/*       <ListItemText primary="Recent" /> */}
+        {/*     </ListItem> */}
+        {/*     <ListItem */}
+        {/*       button */}
+        {/*       selected={router.pathname === "/pairs"} */}
+        {/*       onClick={() => router.push("/pairs")} */}
+        {/*       className={classes.nested} */}
+        {/*     > */}
+        {/*       <ListItemIcon> */}
+        {/*         <DetailsOutlined /> */}
+        {/*       </ListItemIcon> */}
+        {/*       <ListItemText primary="All" /> */}
+        {/*     </ListItem> */}
+
+        {/*     {/1* <ListItem */}
+        {/*       button */}
+        {/*       selected={router.pathname === "/pairs/gainers"} */}
+        {/*       onClick={() => router.push("/pairs/gainers")} */}
+        {/*       className={classes.nested} */}
+        {/*     > */}
+        {/*       <ListItemIcon> */}
+        {/*         <TrendingUpOutlined /> */}
+        {/*       </ListItemIcon> */}
+        {/*       <ListItemText primary="Gainers" /> */}
+        {/*     </ListItem> *1/} */}
+        {/*     {/1* <ListItem */}
+        {/*       button */}
+        {/*       selected={router.pathname === "/pairs/losers"} */}
+        {/*       onClick={() => router.push("/pairs/losers")} */}
+        {/*       className={classes.nested} */}
+        {/*     > */}
+        {/*       <ListItemIcon> */}
+        {/*         <TrendingDownOutlined /> */}
+        {/*       </ListItemIcon> */}
+        {/*       <ListItemText primary="Losers" /> */}
+        {/*     </ListItem> *1/} */}
+        {/*   </List> */}
+        {/* </Collapse> */}
         <ListItem
           key="/tokens"
           button
@@ -259,6 +281,24 @@ export default function AppNavigation() {
             <MoneyOutlined />
           </ListItemIcon>
           <ListItemText primary="Tokens" />
+        </ListItem>
+        <ListItem
+          button
+          key="/portfolio"
+          selected={router.pathname.includes("/portfolio")}
+          onClick={() => {
+            const defaultAddress = localStorage.getItem("defaultAddress");
+            if (defaultAddress) {
+              router.push("/users/" + defaultAddress);
+            } else {
+              handleClickOpen();
+            }
+          }}
+        >
+          <ListItemIcon>
+            <AccountTreeOutlined />
+          </ListItemIcon>
+          <ListItemText primary="Portfolio" />
         </ListItem>
       </List>
       <Dialog
