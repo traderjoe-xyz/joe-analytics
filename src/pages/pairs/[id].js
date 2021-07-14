@@ -396,7 +396,7 @@ function PairPage(props) {
               label: `${pair.token1.symbol} Address`,
               maxWidth: "250px",
             },
-            { key: "etherscan", label: "Etherscan", align: "right" },
+            { key: "etherscan", label: "Explorer", align: "right" },
           ]}
           bodyCells={[
             <Typography variant="body2" noWrap>

@@ -124,10 +124,10 @@ export default function AppNavigation() {
         </ListItem>
 
         <ListItem
-          key="/bar"
+          key="/earn"
           button
-          selected={router.pathname === "/bar"}
-          onClick={() => router.push("/bar")}
+          selected={router.pathname === "/earn"}
+          onClick={() => router.push("/earn")}
         >
           <ListItemIcon>
             <FastfoodOutlined />

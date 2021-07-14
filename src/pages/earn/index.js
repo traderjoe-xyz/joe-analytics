@@ -190,7 +190,7 @@ function BarPage() {
   return (
     <AppShell>
       <Head>
-        <title>Joe Bar | Trader Joe Analytics</title>
+        <title>Joe Earn | Trader Joe Analytics</title>
       </Head>
 
       <Grid container spacing={3}>
