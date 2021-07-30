@@ -129,7 +129,7 @@ function BarPage() {
         value: parseFloat(currentValue.xJoeSupply),
       });
       const apr =
-        (((dayData.volumeUSD * 0.05 * 0.01) / currentValue.xJoeSupply) * 365) /
+        (((dayData.volumeUSD * FEE_RATE) / currentValue.xJoeSupply) * 365) /
         (currentValue.ratio * joePrice);
       previousValue["apr"].push({
         date,
@@ -157,7 +157,7 @@ function BarPage() {
     }
   );
 
-  console.log(`[bar] aprs: ${JSON.stringify(apr)}`);
+  // console.log(`[bar] aprs: ${JSON.stringify(apr)}`);
   // console.log(`[bar] apys: ${JSON.stringify(apy)}`);
   // console.log(`[bar] factory: ${JSON.stringify(factory)}`)
   // console.log(`[bar] joeStaked: ${JSON.stringify(joeStakedUSD)}`)
@@ -165,32 +165,30 @@ function BarPage() {
   // console.log(`[bar] xJoe: ${JSON.stringify(xJoe)}`)
   // console.log(`[bar] fees: ${JSON.stringify(fees)}`)
 
-  const averageApr =
-    apr.reduce((prevValue, currValue) => {
-      return prevValue + currValue.value;
-    }, 0) / apr.length;
+  // average APY of days histories
   const averageApy =
     apy.reduce((prevValue, currValue) => {
       return prevValue + currValue.value;
     }, 0) / apy.length;
-  const oneDayVolume = factory.oneDay.volumeUSD;
+  
+  // get last day volume and APY
+  const oneDayVolume = factory.volumeUSD - factory.oneDay.volumeUSD;
   const oneDayFees = oneDayVolume * FEE_RATE;
-  const yearFees = oneDayFees * 365;
   const totalStakedUSD = bar.joeStaked * joePrice;
 
-  const APR = yearFees / totalStakedUSD;
+  const APR = oneDayFees * 365 / totalStakedUSD
   const APY = Math.pow(1 + APR / 365, 365) - 1;
 
-  console.log(
-    `[bar] APR: ${APR}, APY: ${APY}, JoePrice: ${joePrice}, average APR: ${averageApr}, average APY: ${averageApy}, ratio: ${Number(
-      bar.ratio
-    ).toFixed(4)}`
-  );
+  // console.log(
+  //   `[bar] APR: ${APR}, APY: ${APY}, JoePrice: ${joePrice}, average APR: ${averageApr}, average APY: ${averageApy}, ratio: ${Number(
+  //     bar.ratio
+  //   ).toFixed(4)}`
+  // );
 
   return (
     <AppShell>
       <Head>
-        <title>Joe Earn | Trader Joe Analytics</title>
+        <title>Joe Stake | Trader Joe Analytics</title>
       </Head>
 
       <Grid container spacing={3}>
@@ -207,10 +205,10 @@ function BarPage() {
               <KPI title="Fees (24H)" value={oneDayFees} format="currency" />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <KPI title="APR (from last 24H)" value={APR} format="percent" />
+              <KPI title="APY (24H)" value={APY * 100} format="percent" />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <KPI title="APY (from last 24H)" value={APY} format="percent" />
+              <KPI title="APY (Avg)" value={averageApy} format="percent" />
             </Grid>
           </Grid>
         </Grid>

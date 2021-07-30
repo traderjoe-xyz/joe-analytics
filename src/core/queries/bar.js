@@ -19,9 +19,12 @@ export const barQuery = gql`
   }
 `;
 
+// JOE launched on 2021/07/03
+// We called first staking around 2021/07/05
+// We filter dates to avoid weird numbers
 export const barHistoriesQuery = gql`
   query barHistoriesQuery {
-    histories(first: 1000) {
+    histories(first: 1000, where:{ date_gte: 1625616000}) {
       id
       date
       timeframe

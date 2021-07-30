@@ -101,16 +101,7 @@ export default function AppNavigation() {
           </Box>
         </Hidden>
       </div>
-      <List
-        className={classes.list}
-        // aria-labelledby="nested-list-subheader"
-        // subheader={
-        //   <ListSubheader component="div" id="nested-list-subheader">
-        //     Overview
-        //   </ListSubheader>
-        // }
-        direction="horizontal"
-      >
+      <List className={classes.list} direction="horizontal">
         <ListItem
           key="/"
           button
@@ -124,15 +115,15 @@ export default function AppNavigation() {
         </ListItem>
 
         <ListItem
-          key="/earn"
+          key="/stake"
           button
-          selected={router.pathname === "/earn"}
-          onClick={() => router.push("/earn")}
+          selected={router.pathname === "/stake"}
+          onClick={() => router.push("/stake")}
         >
           <ListItemIcon>
             <FastfoodOutlined />
           </ListItemIcon>
-          <ListItemText primary="Earn" />
+          <ListItemText primary="Stake" />
         </ListItem>
 
         <ListItem
@@ -147,64 +138,8 @@ export default function AppNavigation() {
           <ListItemText primary="Pools" />
         </ListItem>
 
-        {/* <ListItem button> */}
-        {/*   <ListItemIcon> */}
-        {/*     <WavesOutlined /> */}
-        {/*   </ListItemIcon> */}
-        {/*   <ListItemText primary="Pools" /> */}
-        {/*   {open ? <ExpandLess /> : <ExpandMore />} */}
-        {/* </ListItem> */}
-        {/* <Collapse in={open} timeout="auto" unmountOnExit> */}
-        {/*   <List component="div" disablePadding> */}
-        {/*     <ListItem */}
-        {/*       button */}
-        {/*       selected={router.pathname === "/pools/recent"} */}
-        {/*       onClick={() => router.push("/pools/recent")} */}
-        {/*       className={classes.nested} */}
-        {/*     > */}
-        {/*       <ListItemIcon> */}
-        {/*         <FiberNewOutlined /> */}
-        {/*       </ListItemIcon> */}
-        {/*       <ListItemText primary="Recent" /> */}
-        {/*     </ListItem> */}
-        {/*     <ListItem */}
-        {/*       button */}
-        {/*       selected={router.pathname === "/pools"} */}
-        {/*       onClick={() => router.push("/pools")} */}
-        {/*       className={classes.nested} */}
-        {/*     > */}
-        {/*       <ListItemIcon> */}
-        {/*         <DetailsOutlined /> */}
-        {/*       </ListItemIcon> */}
-        {/*       <ListItemText primary="All" /> */}
-        {/*     </ListItem> */}
-
-        {/*     {/1* <ListItem */}
-        {/*       button */}
-        {/*       selected={router.pathname === "/pools/gainers"} */}
-        {/*       onClick={() => router.push("/pools/gainers")} */}
-        {/*       className={classes.nested} */}
-        {/*     > */}
-        {/*       <ListItemIcon> */}
-        {/*         <TrendingUpOutlined /> */}
-        {/*       </ListItemIcon> */}
-        {/*       <ListItemText primary="Gainers" /> */}
-        {/*     </ListItem> */}
-        {/*     <ListItem */}
-        {/*       button */}
-        {/*       selected={router.pathname === "/pools/losers"} */}
-        {/*       onClick={() => router.push("/pools/losers")} */}
-        {/*       className={classes.nested} */}
-        {/*     > */}
-        {/*       <ListItemIcon> */}
-        {/*         <TrendingDownOutlined /> */}
-        {/*       </ListItemIcon> */}
-        {/*       <ListItemText primary="Losers" /> */}
-        {/*     </ListItem> *1/} */}
-        {/*   </List> */}
-        {/* </Collapse> */}
         <ListItem
-          key="/pools"
+          key="/pairs"
           button
           selected={router.pathname === "/pairs"}
           onClick={() => router.push("/pairs")}
@@ -215,62 +150,6 @@ export default function AppNavigation() {
           <ListItemText primary="Pairs" />
         </ListItem>
 
-        {/* <ListItem button> */}
-        {/*   <ListItemIcon> */}
-        {/*     <LinkOutlined /> */}
-        {/*   </ListItemIcon> */}
-        {/*   <ListItemText primary="Pairs" /> */}
-        {/*   {open ? <ExpandLess /> : <ExpandMore />} */}
-        {/* </ListItem> */}
-        {/* <Collapse in={open} timeout="auto" unmountOnExit> */}
-        {/*   <List component="div" disablePadding> */}
-        {/*     <ListItem */}
-        {/*       button */}
-        {/*       selected={router.pathname === "/pairs/recent"} */}
-        {/*       onClick={() => router.push("/pairs/recent")} */}
-        {/*       className={classes.nested} */}
-        {/*     > */}
-        {/*       <ListItemIcon> */}
-        {/*         <FiberNewOutlined /> */}
-        {/*       </ListItemIcon> */}
-        {/*       <ListItemText primary="Recent" /> */}
-        {/*     </ListItem> */}
-        {/*     <ListItem */}
-        {/*       button */}
-        {/*       selected={router.pathname === "/pairs"} */}
-        {/*       onClick={() => router.push("/pairs")} */}
-        {/*       className={classes.nested} */}
-        {/*     > */}
-        {/*       <ListItemIcon> */}
-        {/*         <DetailsOutlined /> */}
-        {/*       </ListItemIcon> */}
-        {/*       <ListItemText primary="All" /> */}
-        {/*     </ListItem> */}
-
-        {/*     {/1* <ListItem */}
-        {/*       button */}
-        {/*       selected={router.pathname === "/pairs/gainers"} */}
-        {/*       onClick={() => router.push("/pairs/gainers")} */}
-        {/*       className={classes.nested} */}
-        {/*     > */}
-        {/*       <ListItemIcon> */}
-        {/*         <TrendingUpOutlined /> */}
-        {/*       </ListItemIcon> */}
-        {/*       <ListItemText primary="Gainers" /> */}
-        {/*     </ListItem> *1/} */}
-        {/*     {/1* <ListItem */}
-        {/*       button */}
-        {/*       selected={router.pathname === "/pairs/losers"} */}
-        {/*       onClick={() => router.push("/pairs/losers")} */}
-        {/*       className={classes.nested} */}
-        {/*     > */}
-        {/*       <ListItemIcon> */}
-        {/*         <TrendingDownOutlined /> */}
-        {/*       </ListItemIcon> */}
-        {/*       <ListItemText primary="Losers" /> */}
-        {/*     </ListItem> *1/} */}
-        {/*   </List> */}
-        {/* </Collapse> */}
         <ListItem
           key="/tokens"
           button
