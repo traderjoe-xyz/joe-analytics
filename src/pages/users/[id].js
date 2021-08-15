@@ -50,7 +50,6 @@ import { getUnixTime, startOfMinute, startOfSecond } from "date-fns";
 
 import { AvatarGroup } from "@material-ui/lab";
 import Head from "next/head";
-import { POOL_DENY } from "app/core/constants";
 import { toChecksumAddress } from "web3-utils";
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
@@ -103,6 +102,7 @@ function UserPage() {
     },
   });
 
+
   const {
     data: { token },
   } = useQuery(tokenQuery, {
@@ -118,10 +118,11 @@ function UserPage() {
   const poolUsers = poolData.users.filter(
     (user) =>
       user.pool &&
-      !POOL_DENY.includes(user.pool.id) &&
       user.pool.allocPoint !== "0" &&
       pairs.find((pair) => pair?.id === user.pool.pair)
   );
+
+  console.log(poolData, poolUsers)
 
   // useInterval(
   //   () =>
