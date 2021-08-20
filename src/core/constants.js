@@ -22,4 +22,4 @@ export const POOL_DENY = ["14", "29", "45", "30"];
 export const SUSHI_TOKEN = "0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd";
 
 // used to blacklist farms
-export const FARMS_BLACKLIST = []
+export const FARMS_BLACKLIST = ["35", "36"]
