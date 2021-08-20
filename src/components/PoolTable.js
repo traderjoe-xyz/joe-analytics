@@ -1,5 +1,7 @@
-import { Box, Divider, Typography } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import { formatCurrency, formatDecimal } from "app/core";
+import { makeStyles } from "@material-ui/core/styles";
+import { FARMS_BLACKLIST } from "app/core/constants";
 
 import Link from "./Link";
 import PairIcon from "./PairIcon";
@@ -7,7 +9,6 @@ import Percent from "./Percent";
 import React from "react";
 import SortableTable from "./SortableTable";
 import TokenIcon from "./TokenIcon";
-import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -20,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
 export default function PoolTable({ pools, ...rest }) {
   const classes = useStyles();
 
+  const filteredPools = pools.filter((pool)=> !FARMS_BLACKLIST.includes(pool.id))
   return (
     <div className={classes.root}>
       <SortableTable
@@ -111,7 +113,7 @@ export default function PoolTable({ pools, ...rest }) {
             render: (row) => formatCurrency(row.tvl),
           },
         ]}
-        rows={pools}
+        rows={filteredPools}
         {...rest}
       />
     </div>
