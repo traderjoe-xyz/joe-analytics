@@ -27,6 +27,7 @@
     "d3-array": "^2.8.0",
     "d3-time-format": "^3.0.0",
     "date-fns": "^2.16.1",
+    "dayjs": "^1.10.5",
     "graphql": "^15.3.0",
     "lodash.merge": "^4.6.2",
     "millify": "^3.3.0",
