@@ -129,7 +129,7 @@ function BarPage() {
         value: parseFloat(currentValue.xJoeSupply),
       });
       const apr =
-        (((dayData.volumeUSD * FEE_RATE) / currentValue.xJoeSupply) * 365) /
+        (((dayData?.volumeUSD * FEE_RATE) / currentValue.xJoeSupply) * 365) /
         (currentValue.ratio * joePrice);
       previousValue["apr"].push({
         date,
@@ -141,7 +141,7 @@ function BarPage() {
       });
       previousValue["fees"].push({
         date,
-        value: parseFloat(dayData.volumeUSD * FEE_RATE),
+        value: parseFloat(dayData?.volumeUSD * FEE_RATE),
       });
       return previousValue;
     },
@@ -166,13 +166,17 @@ function BarPage() {
   // console.log(`[bar] fees: ${JSON.stringify(fees)}`)
 
   // average APY of days histories
+  console.log(apy)
   const averageApy =
     apy.reduce((prevValue, currValue) => {
-      return prevValue + currValue.value;
+      console.log(prevValue)
+      console.log(currValue)
+
+      return prevValue + (currValue.value || 0);
     }, 0) / apy.length;
   
   // get last day volume and APY
-  const oneDayVolume = factory.volumeUSD - factory.oneDay.volumeUSD;
+  const oneDayVolume = factory?.volumeUSD - factory?.oneDay.volumeUSD;
   const oneDayFees = oneDayVolume * FEE_RATE;
   const totalStakedUSD = bar.joeStaked * joePrice;
 

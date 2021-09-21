@@ -14,6 +14,8 @@ export async function getGainers(client = getApollo()) {
     query: gainersQuery,
   });
 
+  const FEE_RATE = 0.0025 // 0.25% of volume are fees
+
   const pairAddresses = pairs.map((pair) => pair.id).sort();
 
   const oneDayBlock = await getOneDayBlock();
@@ -49,8 +51,8 @@ export async function getGainers(client = getApollo()) {
         const twoDayPair = twoDayPairs.find(({ id }) => pair.id === id);
         const volumeUSDGained = pair.volumeUSD - oneDayPair?.volumeUSD;
         const volumeUSDGainedYesterday = oneDayPair?.volumeUSD - twoDayPair?.volumeUSD;
-        const feesUSDGained = volumeUSDGained * 0.003;
-        const feesUSDGainedYesterday = volumeUSDGainedYesterday * 0.003;
+        const feesUSDGained = volumeUSDGained * .0025;
+        const feesUSDGainedYesterday = volumeUSDGainedYesterday * .0025;
         const reserveUSDGained = pair.reserveUSD - oneDayPair?.reserveUSD;
         const reserveUSDGainedYesterday = oneDayPair?.reserveUSD - twoDayPair?.reserveUSD;
         return {
@@ -113,8 +115,8 @@ export async function getLosers(client = getApollo()) {
         const twoDayPair = twoDayPairs.find(({ id }) => pair.id === id);
         const volumeUSDLost = pair.volumeUSD - oneDayPair?.volumeUSD;
         const volumeUSDLostYesterday = oneDayPair?.volumeUSD - twoDayPair?.volumeUSD;
-        const feesUSDLost = volumeUSDLost * 0.003;
-        const feesUSDLostYesterday = volumeUSDLostYesterday * 0.003;
+        const feesUSDLost = volumeUSDLost * .0025;
+        const feesUSDLostYesterday = volumeUSDLostYesterday * .0025;
         const reserveUSDLost = pair.reserveUSD - oneDayPair?.reserveUSD;
         const reserveUSDLostYesterday = oneDayPair?.reserveUSD - twoDayPair?.reserveUSD;
         return {
