@@ -166,9 +166,13 @@ function BarPage() {
   // console.log(`[bar] fees: ${JSON.stringify(fees)}`)
 
   // average APY of days histories
+  console.log(apy)
   const averageApy =
     apy.reduce((prevValue, currValue) => {
-      return prevValue + currValue.value;
+      console.log(prevValue)
+      console.log(currValue)
+
+      return prevValue + (currValue.value || 0);
     }, 0) / apy.length;
   
   // get last day volume and APY
