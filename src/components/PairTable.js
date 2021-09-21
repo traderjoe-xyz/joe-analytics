@@ -12,8 +12,6 @@ import utc from 'dayjs/plugin/utc'
 
 dayjs.extend(utc)
 
-const FEE_RATE = 0.0025 // 0.25% of volume are fees
-
 const useStyles = makeStyles((theme) => ({
   root: {},
 }));
@@ -25,6 +23,8 @@ const useStyles = makeStyles((theme) => ({
  */ 
 export default function PairTable({ pairs, title, ...rest }) {
   const classes = useStyles();
+
+  const FEE_RATE = 0.0025 // 0.25% of volume are fees
 
   const rows = pairs
     .filter((row) => {

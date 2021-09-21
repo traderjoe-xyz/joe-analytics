@@ -89,6 +89,8 @@ function PairPage(props) {
 
   const id = router.query.id.toLowerCase();
 
+  const FEE_RATE = 0.0025 // 0.25% of volume are fees
+
   const {
     data: { bundles },
   } = useQuery(avaxPriceQuery, {
@@ -157,9 +159,9 @@ function PairPage(props) {
 
   const volumeChange = ((volumeToday - volumeYesterday) / volumeYesterday) * 100;
 
-  const fees = volumeToday * 0.003;
+  const fees = volumeToday * FEE_RATE;
 
-  const feesYesterday = volumeYesterday * 0.003;
+  const feesYesterday = volumeYesterday * FEE_RATE;
 
   const avgTradePriceToday = volumeToday / (txCountToday);
 
