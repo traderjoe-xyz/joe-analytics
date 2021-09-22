@@ -145,12 +145,16 @@ function PairPage(props) {
     if (date && date >= utc24HoursAgo) {
       volumeToday += volumeForHour
       txCountToday += txCountForHour
+      console.log("today" + i)
     } else {
       volumeYesterday += volumeForHour
       txCountYesterday += txCountForHour
+      console.log("yesterday: " + i)
     }
   }
-
+  console.log(pair)
+  console.log(volumeToday)
+  console.log(volumeYesterday)
   const volumeChange = ((volumeToday - volumeYesterday) / volumeYesterday) * 100;
 
   const fees = volumeToday * FEE_RATE;
