@@ -103,6 +103,12 @@ function PairPage(props) {
   .subtract(1, 'day')
   .unix()
 
+  const utc48HoursAgo = dayjs()
+  .utc()
+  .startOf('hour')
+  .subtract(2, 'day')
+  .unix()
+
   const {
     data: { pair },
   } = useQuery(pairQuery, {
@@ -145,16 +151,12 @@ function PairPage(props) {
     if (date && date >= utc24HoursAgo) {
       volumeToday += volumeForHour
       txCountToday += txCountForHour
-      console.log("today" + i)
-    } else {
+    } else if (date && date >= utc48HoursAgo) {
       volumeYesterday += volumeForHour
       txCountYesterday += txCountForHour
-      console.log("yesterday: " + i)
     }
   }
-  console.log(pair)
-  console.log(volumeToday)
-  console.log(volumeYesterday)
+
   const volumeChange = ((volumeToday - volumeYesterday) / volumeYesterday) * 100;
 
   const fees = volumeToday * FEE_RATE;
