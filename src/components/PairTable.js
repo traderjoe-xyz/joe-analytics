@@ -7,8 +7,10 @@ import React from "react";
 import SortableTable from "./SortableTable";
 import { currencyFormatter } from "app/core";
 import { makeStyles } from "@material-ui/core/styles";
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
 
-const FEE_RATE = 0.0025 // 0.25% of volume are fees
+dayjs.extend(utc)
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -22,6 +24,8 @@ const useStyles = makeStyles((theme) => ({
 export default function PairTable({ pairs, title, ...rest }) {
   const classes = useStyles();
 
+  const FEE_RATE = 0.0025 // 0.25% of volume are fees
+
   const rows = pairs
     .filter((row) => {
       return !PAIR_DENY.includes(row.id);
@@ -29,20 +33,28 @@ export default function PairTable({ pairs, title, ...rest }) {
     .map((pair) => {
 
       const displayName = getDisplayName(pair)
+    
+      const utc24HoursAgo = dayjs()
+      .utc()
+      .startOf('hour')
+      .subtract(1, 'day')
+      .unix()
 
-      // last 1 day
-      const oneDayVolumeUSD = 
-      pair?.oneDay?.volumeUSD === "0"
-          ? pair?.oneDay?.untrackedVolumeUSD
-          : pair?.oneDay?.volumeUSD;
+      let oneDayVolumeUSD = 0;
+      let sevenDayVolumeUSD = 0;
+
+      for (let i = 0; i < pair.hourData?.length; i++) {
+        const volumeForHour = pair.hourData && pair.hourData[i] ? Number(pair.hourData[i].volumeUSD) : 0
+        const date = pair.hourData && pair.hourData[i] ? Number(pair.hourData[i].date) : 0
+        if (date >= utc24HoursAgo) {
+          oneDayVolumeUSD += volumeForHour   
+        } 
+        sevenDayVolumeUSD += volumeForHour   
+      }
+
       const oneDayVolume = !isNaN(oneDayVolumeUSD) ? oneDayVolumeUSD : 0 // check for 'undefined'
       const oneDayFees = oneDayVolume * FEE_RATE
 
-      // last 7 days
-      const sevenDayVolumeUSD =
-      pair?.sevenDay?.volumeUSD === "0"
-        ? pair?.sevenDay?.untrackedVolumeUSD
-        : pair?.sevenDay?.volumeUSD;
       const sevenDayVolume = !isNaN(sevenDayVolumeUSD) ? sevenDayVolumeUSD : 0 // check for 'undefined'
       const sevenDayFees = sevenDayVolume * FEE_RATE
 

@@ -153,11 +153,15 @@ export const pairFieldsQuery = gql`
 `;
 
 export const pairQuery = gql`
-  query pairQuery($id: String!) {
+  query pairQuery($id: String!, $dateAfter: Int! = 1622419200) {
     pair(id: $id) {
       ...pairFields
-      oneDay @client
-      twoDay @client
+      hourData(first: 168, where: { date_gt: $dateAfter }, orderBy: date, orderDirection: desc) {
+        volumeUSD
+        date
+        txCount
+        reserveUSD
+      }
     }
   }
   ${pairFieldsQuery}
