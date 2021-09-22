@@ -176,27 +176,11 @@ export const pairsQuery = gql`
     $dateAfter: Int! = 1622419200
   ) {
     pairs(first: $first, skip: $skip, orderBy: $orderBy, orderDirection: $orderDirection) {
-      id
-      name
-      token0 {
-        id
-        symbol
-        decimals
-      }
-      token1 {
-        id
-        symbol
-        decimals
-      }
-      reserve0
-      reserve1
-      reserveUSD
-      volumeUSD
+      ...pairFields
       hourData(first: 168, where: { date_gt: $dateAfter }, orderBy: date, orderDirection: desc) {
         volumeUSD
         date
       }
-      timestamp
     }
   }
   ${pairFieldsQuery}
