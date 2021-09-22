@@ -97,12 +97,6 @@ function PairPage(props) {
     pollInterval: 60000,
   });
 
-  const utcTwoDayBack = dayjs()
-  .utc()
-  .startOf('hour')
-  .subtract(2, 'day')
-  .unix()
-
   const utc24HoursAgo = dayjs()
   .utc()
   .startOf('hour')
@@ -113,7 +107,7 @@ function PairPage(props) {
     data: { pair },
   } = useQuery(pairQuery, {
     query: pairQuery,
-    variables: { id, dateAfter: utcTwoDayBack},
+    variables: { id },
   });
 
   useInterval(async () => {
