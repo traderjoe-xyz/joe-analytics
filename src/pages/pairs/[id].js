@@ -97,23 +97,23 @@ function PairPage(props) {
     pollInterval: 60000,
   });
 
-  const utcTwoDayBack = dayjs()
-  .utc()
-  .startOf('hour')
-  .subtract(2, 'day')
-  .unix()
-
   const utc24HoursAgo = dayjs()
   .utc()
   .startOf('hour')
   .subtract(1, 'day')
   .unix()
 
+  const utc48HoursAgo = dayjs()
+  .utc()
+  .startOf('hour')
+  .subtract(2, 'day')
+  .unix()
+
   const {
     data: { pair },
   } = useQuery(pairQuery, {
     query: pairQuery,
-    variables: { id, dateAfter: utcTwoDayBack},
+    variables: { id },
   });
 
   useInterval(async () => {
@@ -151,7 +151,7 @@ function PairPage(props) {
     if (date && date >= utc24HoursAgo) {
       volumeToday += volumeForHour
       txCountToday += txCountForHour
-    } else {
+    } else if (date && date >= utc48HoursAgo) {
       volumeYesterday += volumeForHour
       txCountYesterday += txCountForHour
     }
