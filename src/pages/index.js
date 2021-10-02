@@ -63,7 +63,8 @@ function IndexPage() {
     60000
   );
 
-  const [liquidity, volume] = dayDatas
+  console.log(dayDatas)
+  const [liquidity, volume]  = dayDatas
     .filter((d) => d.liquidityUSD !== "0")
     .reduce(
       (previousValue, currentValue) => {
