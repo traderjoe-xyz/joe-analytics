@@ -122,8 +122,6 @@ function UserPage() {
       pairs.find((pair) => pair?.id === user.pool.pair)
   );
 
-  console.log(poolData, poolUsers)
-
   // useInterval(
   //   () =>
   //     Promise.all([

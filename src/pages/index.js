@@ -80,6 +80,9 @@ function IndexPage() {
       [[], []]
     );
 
+  // console.log('[main] liquidity: ' + JSON.stringify(liquidity))
+  // console.log('[main] volume: ' + JSON.stringify(volume))
+
   return (
     <AppShell>
       <Head>
