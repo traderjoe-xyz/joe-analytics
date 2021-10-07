@@ -7,7 +7,7 @@ import {
   defaultStyles,
   withTooltip,
 } from "@visx/tooltip";
-import { currencyFormatter, oneMonth, oneWeek } from "app/core";
+import { currencyFormatter, avaxFormatter, oneMonth, oneWeek } from "app/core";
 import { scaleLinear, scaleTime } from "@visx/scale";
 import { useCallback, useMemo, useState } from "react";
 
@@ -79,9 +79,13 @@ function AreaChart({
 
   data = data.filter((d) => timespan <= d.date);
   var lastData = data.length > 1 ? data[data.length - 1] : null;
+  const lastDataValue = lastData ? lastData.value : 0;
+  console.log("lastDataVale", lastDataValue);
   const [overlay, setOverlay] = useState({
     title,
-    value: currencyFormatter.format(lastData ? lastData.value : 0),
+    value: useUSD
+      ? currencyFormatter.format(lastDataValue)
+      : avaxFormatter.format(lastDataValue),
     date: lastData ? lastData.date : 0,
   });
 
@@ -131,10 +135,12 @@ function AreaChart({
             ? d1
             : d0;
       }
-      // console.log("show ", d);
+      const lastDataValue = d ? d.value : 0;
       setOverlay({
         ...overlay,
-        value: currencyFormatter.format(d ? d.value : 0),
+        value: useUSD
+          ? currencyFormatter.format(lastDataValue)
+          : avaxFormatter.format(lastDataValue),
         date: d && d.hasOwnProperty("date") ? d.date : 0,
       });
       showTooltip({
@@ -180,12 +186,14 @@ function AreaChart({
           onTouchMove={handleTooltip}
           onMouseMove={handleTooltip}
           onMouseLeave={() => {
+            const lastDataValue =
+              data && data.length > 0 ? data[data.length - 1].value : 0;
             hideTooltip();
             setOverlay({
               ...overlay,
-              value: currencyFormatter.format(
-                data && data.length > 0 ? data[data.length - 1].value : 0
-              ),
+              value: useUSD
+                ? currencyFormatter.format(lastDataValue)
+                : avaxFormatter.format(lastDataValue),
               date: data && data.length ? data[data.length - 1].date : 0,
             });
           }}

@@ -14,6 +14,12 @@ export const decimalFormatter = new Intl.NumberFormat(locales, {
   maximumSignificantDigits: 4,
 });
 
+export const avaxFormatter = new Intl.NumberFormat(locales, {
+  style: "decimal",
+  minimumSignificantDigits: 1,
+  maximumSignificantDigits: 8,
+});
+
 export const formatDate = timeFormat("%b %d, '%y");
 
 export function formatCurrency(value) {
