@@ -145,7 +145,10 @@ function PairPage(props) {
   let reserveYesterday = pair.hourData && pair.hourData[24] ? Number(pair.hourData[24].reserveUSD) : 0;
 
   for (let i = 0; i < pair.hourData?.length; i++) {
-    const volumeForHour = pair.hourData && pair.hourData[i] ? Number(pair.hourData[i].volumeUSD) : 0
+    let volumeForHour = pair.hourData && pair.hourData[i] ? Number(pair.hourData[i].volumeUSD) : 0
+    if (volumeForHour === 0 && pair.hourData && pair.hourData[i]) {
+      volumeForHour = (Number(pair.hourData[i].volumeToken0) * Number(pair.token0Price)) + (Number(pair.hourData[i].volumeToken1) * Number(pair.token1Price))
+    } 
     const txCountForHour = pair.hourData && pair.hourData[i] ? Number(pair.hourData[i].txCount) : 0
     const date = pair.hourData && pair.hourData[i] ? Number(pair.hourData[i].date) : 0
     if (date && date >= utc24HoursAgo) {

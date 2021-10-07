@@ -153,14 +153,18 @@ export const pairFieldsQuery = gql`
 `;
 
 export const pairQuery = gql`
-  query pairQuery($id: String!, $dateAfter: Int! = 1622419200) {
+  query pairQuery($id: ID!, $dateAfter: Int! = 1622419200) {
     pair(id: $id) {
       ...pairFields
+      token0Price
+      token1Price
       hourData(first: 168, where: { date_gt: $dateAfter }, orderBy: date, orderDirection: desc) {
         volumeUSD
         date
         txCount
         reserveUSD
+        volumeToken0
+        volumeToken1
       }
     }
   }
@@ -177,9 +181,13 @@ export const pairsQuery = gql`
   ) {
     pairs(first: $first, skip: $skip, orderBy: $orderBy, orderDirection: $orderDirection) {
       ...pairFields
+      token0Price
+      token1Price
       hourData(first: 168, where: { date_gt: $dateAfter }, orderBy: date, orderDirection: desc) {
         volumeUSD
         date
+        volumeToken0
+        volumeToken1
       }
     }
   }
