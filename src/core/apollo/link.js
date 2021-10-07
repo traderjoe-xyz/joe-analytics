@@ -5,7 +5,8 @@ import { RetryLink } from "@apollo/client/link/retry";
 import { GRAPH_BAR_URI, 
   GRAPH_MASTERCHEF_URI, 
   GRAPH_EXCHANGE_URI, 
-  GRAPH_BLOCKS_URI
+  GRAPH_BLOCKS_URI,
+  GRAPH_LENDING_URI
 } from "../../config/index.ts"; 
 
 export const uniswap = from([
@@ -36,6 +37,14 @@ export const exchange = from([
   new RetryLink(),
   new HttpLink({
     uri: GRAPH_EXCHANGE_URI, 
+    shouldBatch: true,
+  }),
+]);
+
+export const lending = from([
+  new RetryLink(),
+  new HttpLink({
+    uri: GRAPH_LENDING_URI, 
     shouldBatch: true,
   }),
 ]);

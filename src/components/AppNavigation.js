@@ -179,6 +179,17 @@ export default function AppNavigation() {
           </ListItemIcon>
           <ListItemText primary="Portfolio" />
         </ListItem>
+        <ListItem
+          button
+          key="/lending"
+          selected={router.pathname.includes("/lending")}
+          onClick={() => router.push("/lending")}
+        >
+          <ListItemIcon>
+            <StarBorder />
+          </ListItemIcon>
+          <ListItemText primary="Lending" />
+        </ListItem>
       </List>
       <Dialog
         maxWidth="sm"
