@@ -80,7 +80,6 @@ function AreaChart({
   data = data.filter((d) => timespan <= d.date);
   var lastData = data.length > 1 ? data[data.length - 1] : null;
   const lastDataValue = lastData ? lastData.value : 0;
-  console.log("lastDataVale", lastDataValue);
   const [overlay, setOverlay] = useState({
     title,
     value: useUSD
