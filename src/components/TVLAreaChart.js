@@ -7,9 +7,9 @@ import {
   defaultStyles,
   withTooltip,
 } from "@visx/tooltip";
-import { currencyFormatter, oneMonth, oneWeek } from "app/core";
+import { currencyFormatter, avaxFormatter, oneMonth, oneWeek } from "app/core";
 import { scaleLinear, scaleTime } from "@visx/scale";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import ChartOverlay from "./ChartOverlay";
 import { GradientTealBlue } from "@visx/gradient";
@@ -19,6 +19,7 @@ import { deepPurple } from "@material-ui/core/colors";
 import { localPoint } from "@visx/event";
 import millify from "millify";
 import { timeFormat } from "d3-time-format";
+import CurrencyPicker from "./CurrencyPicker";
 
 const tooltipStyles = {
   ...defaultStyles,
@@ -34,7 +35,7 @@ const getValue = (d) => (d && d.hasOwnProperty("value") ? d.value : 0);
 
 const formatDate = timeFormat("%b %d, '%y");
 
-function AreaChart({
+function TVLAreaChart({
   data,
   tooltipDisabled = false,
   overlayEnabled = false,
@@ -47,6 +48,8 @@ function AreaChart({
   tooltipTop = 0,
   tooltipLeft = 0,
   onTimespanChange,
+  useUSD,
+  setUseUSD,
   margin = {
     top: 0,
     bottom: 0,
@@ -66,14 +69,37 @@ function AreaChart({
     }
   }
 
+  function onCurrencySwitch(e) {
+    if (e.currentTarget.value === "USD") {
+      setUseUSD(true);
+    } else if (e.currentTarget.value == "AVAX") {
+      setUseUSD(false);
+    }
+  }
+
   data = data.filter((d) => timespan <= d.date);
   var lastData = data.length > 1 ? data[data.length - 1] : null;
   const lastDataValue = lastData ? lastData.value : 0;
   const [overlay, setOverlay] = useState({
     title,
-    value: currencyFormatter.format(lastDataValue),
+    value: useUSD
+      ? currencyFormatter.format(lastDataValue)
+      : avaxFormatter.format(lastDataValue),
     date: lastData ? lastData.date : 0,
   });
+
+  useEffect(() => {
+    data = data.filter((d) => timespan <= d.date);
+    var lastData = data.length > 1 ? data[data.length - 1] : null;
+    const lastDataValue = lastData ? lastData.value : 0;
+    setOverlay({
+      title,
+      value: useUSD
+        ? currencyFormatter.format(lastDataValue)
+        : avaxFormatter.format(lastDataValue),
+      date: lastData ? lastData.date : 0,
+    });
+  }, [data]);
 
   // Max
   const xMax = width - margin.left - margin.right;
@@ -124,7 +150,9 @@ function AreaChart({
       const lastDataValue = d ? d.value : 0;
       setOverlay({
         ...overlay,
-        value: currencyFormatter.format(lastDataValue),
+        value: useUSD
+          ? currencyFormatter.format(lastDataValue)
+          : avaxFormatter.format(lastDataValue),
         date: d && d.hasOwnProperty("date") ? d.date : 0,
       });
       showTooltip({
@@ -143,6 +171,7 @@ function AreaChart({
       {overlayEnabled && (
         <>
           <ChartOverlay overlay={overlay} onTimespanChange={onTimespanChange} />
+          <CurrencyPicker useUSD={useUSD} onCurrencySwitch={onCurrencySwitch} />
         </>
       )}
       <svg width={width} height={height}>
@@ -174,7 +203,9 @@ function AreaChart({
             hideTooltip();
             setOverlay({
               ...overlay,
-              value: currencyFormatter.format(lastDataValue),
+              value: useUSD
+                ? currencyFormatter.format(lastDataValue)
+                : avaxFormatter.format(lastDataValue),
               date: data && data.length ? data[data.length - 1].date : 0,
             });
           }}
@@ -232,4 +263,4 @@ function AreaChart({
   );
 }
 
-export default withTooltip(AreaChart);
+export default withTooltip(TVLAreaChart);

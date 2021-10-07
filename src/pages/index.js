@@ -1,6 +1,6 @@
 import {
   AppShell,
-  AreaChart,
+  TVLAreaChart,
   BarChart,
   PairTable,
   PoolTable,
@@ -101,7 +101,7 @@ function IndexPage() {
           <Paper variant="outlined" style={{ height: 300 }}>
             <ParentSize>
               {({ width, height }) => (
-                <AreaChart
+                <TVLAreaChart
                   title="Liquidity"
                   width={width}
                   height={height}
