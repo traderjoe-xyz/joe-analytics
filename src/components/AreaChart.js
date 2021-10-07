@@ -9,7 +9,7 @@ import {
 } from "@visx/tooltip";
 import { currencyFormatter, avaxFormatter, oneMonth, oneWeek } from "app/core";
 import { scaleLinear, scaleTime } from "@visx/scale";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import ChartOverlay from "./ChartOverlay";
 import { GradientTealBlue } from "@visx/gradient";
@@ -87,6 +87,19 @@ function AreaChart({
       : avaxFormatter.format(lastDataValue),
     date: lastData ? lastData.date : 0,
   });
+
+  useEffect(() => {
+    data = data.filter((d) => timespan <= d.date);
+    var lastData = data.length > 1 ? data[data.length - 1] : null;
+    const lastDataValue = lastData ? lastData.value : 0;
+    setOverlay({
+      title,
+      value: useUSD
+        ? currencyFormatter.format(lastDataValue)
+        : avaxFormatter.format(lastDataValue),
+      date: lastData ? lastData.date : 0,
+    });
+  }, [data]);
 
   // Max
   const xMax = width - margin.left - margin.right;
