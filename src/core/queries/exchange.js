@@ -181,9 +181,13 @@ export const pairsQuery = gql`
   ) {
     pairs(first: $first, skip: $skip, orderBy: $orderBy, orderDirection: $orderDirection) {
       ...pairFields
+      token0Price
+      token1Price
       hourData(first: 168, where: { date_gt: $dateAfter }, orderBy: date, orderDirection: desc) {
         volumeUSD
         date
+        volumeToken0
+        volumeToken1
       }
     }
   }
