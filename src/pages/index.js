@@ -63,13 +63,17 @@ function IndexPage() {
     60000
   );
 
+  const [useUSD, setUseUSD] = useState(true);
+
   const [liquidity, volume] = dayDatas
     .filter((d) => d.liquidityUSD !== "0")
     .reduce(
       (previousValue, currentValue) => {
         previousValue[0].unshift({
           date: currentValue.date,
-          value: parseFloat(currentValue.liquidityUSD),
+          value: parseFloat(
+            useUSD ? currentValue.liquidityUSD : currentValue.liquidityAVAX
+          ),
         });
         previousValue[1].unshift({
           date: currentValue.date,
@@ -105,6 +109,8 @@ function IndexPage() {
                   margin={{ top: 125, right: 0, bottom: 0, left: 0 }}
                   tooltipDisabled
                   overlayEnabled
+                  useUSD={useUSD}
+                  setUseUSD={setUseUSD}
                 />
               )}
             </ParentSize>

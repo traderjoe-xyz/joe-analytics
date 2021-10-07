@@ -19,6 +19,7 @@ import { deepPurple } from "@material-ui/core/colors";
 import { localPoint } from "@visx/event";
 import millify from "millify";
 import { timeFormat } from "d3-time-format";
+import CurrencyPicker from "./CurrencyPicker";
 
 const tooltipStyles = {
   ...defaultStyles,
@@ -30,7 +31,7 @@ const tooltipStyles = {
 
 const getDate = (d) => new Date(d.date);
 const bisectDate = bisector((d) => new Date(d.date)).left;
-const getValue = (d) => d && d.hasOwnProperty("value") ? d.value : 0 ;
+const getValue = (d) => (d && d.hasOwnProperty("value") ? d.value : 0);
 
 const formatDate = timeFormat("%b %d, '%y");
 
@@ -47,6 +48,8 @@ function AreaChart({
   tooltipTop = 0,
   tooltipLeft = 0,
   onTimespanChange,
+  useUSD,
+  setUseUSD,
   margin = {
     top: 0,
     bottom: 0,
@@ -66,8 +69,16 @@ function AreaChart({
     }
   }
 
-  data = data.filter((d) => timespan <= d.date)
-  var lastData = data.length > 1 ? data[data.length - 1] : null
+  function onCurrencySwitch(e) {
+    if (e.currentTarget.value === "USD") {
+      setUseUSD(true);
+    } else if (e.currentTarget.value == "AVAX") {
+      setUseUSD(false);
+    }
+  }
+
+  data = data.filter((d) => timespan <= d.date);
+  var lastData = data.length > 1 ? data[data.length - 1] : null;
   const [overlay, setOverlay] = useState({
     title,
     value: currencyFormatter.format(lastData ? lastData.value : 0),
@@ -123,7 +134,7 @@ function AreaChart({
       // console.log("show ", d);
       setOverlay({
         ...overlay,
-        value: currencyFormatter.format(d ? d.value : 0 ),
+        value: currencyFormatter.format(d ? d.value : 0),
         date: d && d.hasOwnProperty("date") ? d.date : 0,
       });
       showTooltip({
@@ -140,7 +151,10 @@ function AreaChart({
   return (
     <div style={{ position: "relative" }}>
       {overlayEnabled && (
-        <ChartOverlay overlay={overlay} onTimespanChange={onTimespanChange} />
+        <>
+          <ChartOverlay overlay={overlay} onTimespanChange={onTimespanChange} />
+          <CurrencyPicker useUSD={useUSD} onCurrencySwitch={onCurrencySwitch} />
+        </>
       )}
       <svg width={width} height={height}>
         <GradientTealBlue id="teal" fromOffset={0.5} />
@@ -169,7 +183,9 @@ function AreaChart({
             hideTooltip();
             setOverlay({
               ...overlay,
-              value: currencyFormatter.format(data && data.length > 0 ? data[data.length - 1].value : 0 ),
+              value: currencyFormatter.format(
+                data && data.length > 0 ? data[data.length - 1].value : 0
+              ),
               date: data && data.length ? data[data.length - 1].date : 0,
             });
           }}
