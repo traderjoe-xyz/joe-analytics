@@ -7,7 +7,7 @@ import {
   TokenIcon
 } from "app/components";
 import { withStyles } from "@material-ui/core/styles";
-import { Box, Card, CardContent, Grid, Paper, Typography, List, ListItem, CircularProgress } from "@material-ui/core";
+import { Box, Card, CardContent, Grid, Paper, Typography } from "@material-ui/core";
 import {
   currencyFormatter,
   decimalFormatter,
@@ -17,43 +17,9 @@ import {
 import PurpleBar from "../../components/PurpleBar";
 import Head from "next/head";
 import { ParentSize } from "@visx/responsive";
-import { makeStyles } from "@material-ui/core/styles";
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
-
-const useStyles = makeStyles((theme) => ({
-  title: {
-    display: "flex",
-    flexDirection: "column",
-    // marginBottom: theme.spacing(1),
-    [theme.breakpoints.up("sm")]: {
-      flexDirection: "row",
-      justifyContent: "flex-start",
-      marginBottom: 0,
-      "& > div:first-of-type": {
-        marginRight: theme.spacing(1),
-      },
-    },
-  },
-  links: {
-    "& > a:first-of-type": {
-      marginRight: theme.spacing(4),
-    },
-  },
-  avatar: {
-    marginRight: theme.spacing(2),
-  },
-  paper: {
-    padding: theme.spacing(2),
-  },
-  price: {
-    margin: theme.spacing(2, 0),
-    [theme.breakpoints.up("sm")]: {
-      margin: 0,
-    },
-  },
-}));
 
 function LendingPage() {
   const router = useRouter();
@@ -62,8 +28,6 @@ function LendingPage() {
     return <AppShell />;
   }
 
-  const classes = useStyles();
-  console.log(router)
   const id = router.query.id
 
   const SupplyText = withStyles({
@@ -78,17 +42,15 @@ function LendingPage() {
     }
   })(Typography);
 
-  const useStylesContainer = makeStyles(theme => ({
-    root: {
-      height: '100vh',
-    }
-  }));
-
-  const classesContainer = useStylesContainer();
-
   const {
     data: { market },
-  } = useQuery(marketQuery);
+  } = useQuery(marketQuery,
+    {
+      variables: { 
+        id 
+      }
+    }
+  );
 
   const SECONDS_PER_YEAR = 86400 * 365
 
@@ -263,37 +225,21 @@ function LendingPage() {
   );
 }
 
-export async function getStaticProps() {
+export async function getStaticProps({ params }) {
   const APIURL = "https://api.thegraph.com/subgraphs/name/traderjoe-xyz/lending-rinkeby";
-
-  const marketQuery1 = gql`
-    query marketQuery($id: ID! = "0xaafe9d8346aefd57399e86d91bbfe256dc0dcac0") {
-      market(id: $id) {
-        id
-        supplyRate
-        borrowRate
-        cash
-        collateralFactor
-        reserveFactor
-        exchangeRate
-        name
-        totalSupply
-        totalBorrows
-        reserves
-        underlyingAddress
-        underlyingSymbol
-        underlyingPriceUSD
-      }
-    }
-  `
   
   const client = new ApolloClient({
     uri: APIURL,
     cache: new InMemoryCache()
   });
     
+  const id = params.id.toLowerCase();
+
   await client.query({
-    query: marketQuery1
+    query: marketQuery,
+    variables: {
+      id: id
+    }
   });
 
   return {
@@ -305,17 +251,6 @@ export async function getStaticProps() {
 }
 
 export async function getStaticPaths() {
-  // Call an external API endpoint to get posts
-  // const apollo = getApollo();
-
-  // const { data } = await apollo.query({
-  //   query: tokenIdsQuery,
-  // });
-
-  // const paths = data.tokens.map(({ id }) => ({
-  //   params: { id },
-  // }));
-
   return { paths: [], fallback: true };
 }
 

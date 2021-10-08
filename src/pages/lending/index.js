@@ -82,7 +82,7 @@ function LendingsPage() {
             Total Reserves
           </Typography>
           <Typography variant="h6">
-            {currencyFormatter.format(totalSupply)}
+            {currencyFormatter.format(totalReserves)}
           </Typography>
         </CardContent>
       </Card>

@@ -29,7 +29,7 @@ export const marketsQuery = gql`
 `;
 
 export const marketQuery = gql`
-  query marketQuery($id: ID! = "0xaafe9d8346aefd57399e86d91bbfe256dc0dcac0") {
+  query marketQuery($id: ID!) {
     market(id: $id) {
       id
       supplyRate

@@ -1,18 +1,11 @@
 import { Box, Typography } from "@material-ui/core";
-import {
-  avaxPriceQuery,
-  oneDayAvaxPriceQuery,
-  sevenDayAvaxPriceQuery,
-} from "app/core";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 
 import Link from "./Link";
-import Percent from "./Percent";
 import React from "react";
 import SortableTable from "./SortableTable";
 import TokenIcon from "./TokenIcon";
 import { currencyFormatter, decimalFormatter } from "app/core";
-import { useQuery } from "@apollo/client";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -76,19 +69,19 @@ export default function MarketTable({ markets, title }) {
             key: "supplyAPR",
             align: "right",
             label: "Supply APR",
-            render: (row) => row.supplyAPR + "%",
-          },
-          {
-            key: "borrowAPR",
-            align: "right",
-            label: "Borrow APR",
-            render: (row) => row.borrowAPR + "%",
+            render: (row) => Number(row.supplyAPR).toFixed(5) + "%",
           },
           {
             key: "totalBorrows",
             align: "right",
             label: "Total Borrow",
             render: (row) => currencyFormatter.format(row.totalBorrows),
+          },
+          {
+            key: "borrowAPR",
+            align: "right",
+            label: "Borrow APR",
+            render: (row) => Number(row.borrowAPR).toFixed(5) + "%",
           },
         ]}
         rows={rows}
