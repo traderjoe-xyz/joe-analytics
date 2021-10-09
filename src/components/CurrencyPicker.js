@@ -33,7 +33,7 @@ export default function CurrencyPicker({ useUSD, onCurrencySwitch }) {
             aria-label="USD currency"
             variant={useUSD ? "contained" : "outlined"}
             size="small"
-            color="rice"
+            color="default"
             onClick={onCurrencySwitch}
           >
             USD
@@ -44,7 +44,7 @@ export default function CurrencyPicker({ useUSD, onCurrencySwitch }) {
             aria-label="AVAX currency"
             variant={useUSD ? "outlined" : "contained"}
             size="small"
-            color="rice"
+            color="default"
             onClick={onCurrencySwitch}
           >
             AVAX
