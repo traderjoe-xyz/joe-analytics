@@ -44,7 +44,10 @@ export default function PairTable({ pairs, title, ...rest }) {
       let sevenDayVolumeUSD = 0;
 
       for (let i = 0; i < pair.hourData?.length; i++) {
-        const volumeForHour = pair.hourData && pair.hourData[i] ? Number(pair.hourData[i].volumeUSD) : 0
+        let volumeForHour = pair.hourData && pair.hourData[i] ? Number(pair.hourData[i].volumeUSD) : 0
+        if (volumeForHour === 0 && pair.hourData && pair.hourData[i]) {
+          volumeForHour = (Number(pair.hourData[i].volumeToken0) * Number(pair.token0Price)) + (Number(pair.hourData[i].volumeToken1) * Number(pair.token1Price))
+        } 
         const date = pair.hourData && pair.hourData[i] ? Number(pair.hourData[i].date) : 0
         if (date >= utc24HoursAgo) {
           oneDayVolumeUSD += volumeForHour   
