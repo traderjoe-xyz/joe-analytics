@@ -17,15 +17,15 @@ import {
   getMarkets
 } from "app/core/api";
 
+import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
+
 import Head from "next/head";
 import React from "react";
 import { useQuery } from "@apollo/client";
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
-import { makeStyles } from "@material-ui/core/styles";
 
 dayjs.extend(utc)
-import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
 
 function LendingsPage() {
   //Styled Components
@@ -55,21 +55,28 @@ function LendingsPage() {
     marketsQuery
   );
   
-  // useInterval(async () => {
-  //   await Promise.all([getMarkets]);
-  // }, 60000);
+  useInterval(async () => {
+    await Promise.all([getMarkets]);
+  }, 60000);
 
   let totalBorrows = 0;
   let totalSupply = 0;
   let totalReserves = 0;
+  let totalBorrowsUSD = 0;
+  let totalSupplyUSD = 0;
+  let totalReservesUSD = 0;
   markets.forEach(market => {
+    debugger
+    totalBorrowsUSD += Number(market.totalBorrows * market.underlyingPriceUSD) || 0
+    totalSupplyUSD += Number(market.cash * market.underlyingPriceUSD) || 0
+    totalReservesUSD += Number(market.reserves * market.underlyingPriceUSD) || 0
     totalBorrows += Number(market.totalBorrows) || 0
-    totalSupply += Number(market.totalSupply) || 0
+    totalSupply += Number(market.cash) || 0
     totalReserves += Number(market.reserves) || 0
   })
 
-  const topSupplyMarkets = [...markets].sort((a, b) => ((Number(a.totalSupply) < Number(b.totalSupply)) ? 1 : -1)).slice(0, 3)
-  const topBorrowMarkets = [...markets].sort((a, b) => ((Number(a.totalBorrows) < Number(b.totalBorrows)) ? 1 : -1)).slice(0, 3)
+  const topSupplyMarkets = [...markets].sort((a, b) => ((Number(a.cash * a.underlyingPriceUSD) < Number(b.cash * b.underlyingPriceUSD)) ? 1 : -1)).slice(0, 3)
+  const topBorrowMarkets = [...markets].sort((a, b) => ((Number(a.totalBorrows * a.underlyingPriceUSD) < Number(b.totalBorrows * b.underlyingPriceUSD)) ? 1 : -1)).slice(0, 3)
 
   return (
     <AppShell>
@@ -95,7 +102,7 @@ function LendingsPage() {
                 Total Supply
               </Typography>
               <SupplyText variant="h4">
-                {currencyFormatter.format(totalSupply)}
+                {currencyFormatter.format(totalSupplyUSD)}
               </SupplyText>
             </CardContent>
             <CardContent>
@@ -112,9 +119,9 @@ function LendingsPage() {
                           {market.underlyingSymbol}
                         </Typography>
                       </Box>
-                      <SupplyBar style={{ width: '100%' }} value={(market.totalSupply/totalSupply) * 100}/>
+                      <SupplyBar style={{ width: '100%' }} value={(Number(market.cash * market.underlyingPriceUSD)/totalSupplyUSD) * 100}/>
                       <Box style={{ minWidth: '80px' }} ml={3}>
-                        <Typography> {decimalFormatter.format((market.totalSupply/totalSupply) * 100)}%  </Typography>
+                        <Typography> {decimalFormatter.format(Number((market.cash * market.underlyingPriceUSD)/totalSupplyUSD).toFixed(2) * 100)}%  </Typography>
                       </Box>
                     </Box>
                   </ListItem> 
@@ -130,7 +137,7 @@ function LendingsPage() {
                 Total Borrow
               </Typography>
               <BorrowText variant="h4">
-                {currencyFormatter.format(totalBorrows)}
+                {currencyFormatter.format(totalBorrowsUSD)}
               </BorrowText>
             </CardContent>
             <CardContent>
@@ -147,9 +154,9 @@ function LendingsPage() {
                           {market.underlyingSymbol}
                         </Typography>
                       </Box>
-                      <BorrowBar style={{ width: '100%' }} value={(market.totalBorrows/totalBorrows) * 100}/>
+                      <BorrowBar style={{ width: '100%' }} value={(Number(market.totalBorrows * market.underlyingPriceUSD)/totalBorrowsUSD) * 100}/>
                       <Box style={{ minWidth: '80px' }} ml={3}>
-                        <Typography> {decimalFormatter.format((market.totalBorrows/totalBorrows) * 100)}%  </Typography>
+                        <Typography> {decimalFormatter.format(Number((market.totalBorrows * market.underlyingPriceUSD)/totalBorrowsUSD).toFixed(2) * 100)}% </Typography>
                       </Box>
                     </Box>
                   </ListItem> 
@@ -168,27 +175,6 @@ function LendingsPage() {
 export async function getStaticProps() {
   const APIURL = "https://api.thegraph.com/subgraphs/name/traderjoe-xyz/lending-rinkeby";
 
-  const marketsQuery = gql`
-    query {
-      markets {
-        id
-        supplyRate
-        borrowRate
-        cash
-        collateralFactor
-        reserveFactor
-        exchangeRate
-        name
-        totalSupply
-        totalBorrows
-        reserves
-        underlyingAddress
-        underlyingSymbol
-        underlyingPriceUSD
-      }
-    }
-  `
-  
   const client = new ApolloClient({
     uri: APIURL,
     cache: new InMemoryCache()

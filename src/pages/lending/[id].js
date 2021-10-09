@@ -14,6 +14,9 @@ import {
   marketQuery,
   useInterval,
 } from "app/core";
+import {
+  getMarket
+} from "app/core/api";
 import PurpleBar from "../../components/PurpleBar";
 import Head from "next/head";
 import { ParentSize } from "@visx/responsive";
@@ -52,12 +55,16 @@ function LendingPage() {
     }
   );
 
+  useInterval(async () => {
+    await Promise.all([getMarket]);
+  }, 60000);
+
   const SECONDS_PER_YEAR = 86400 * 365
 
   const supplyAPR = 
-    decimalFormatter.format(((parseFloat(market.supplyRate || 0) * SECONDS_PER_YEAR) / 1e18) * 100)
+    decimalFormatter.format(((parseFloat(market.supplyRate || 0) * SECONDS_PER_YEAR) / 1e18).toFixed(2) * 100)
   const borrowAPR = 
-    decimalFormatter.format(((parseFloat(market.borrowRate || 0) * SECONDS_PER_YEAR) / 1e18) * 100)
+    decimalFormatter.format(((parseFloat(market.borrowRate || 0) * SECONDS_PER_YEAR) / 1e18).toFixed(2) * 100)
 
   return (
     <AppShell>
@@ -82,7 +89,7 @@ function LendingPage() {
                   Total Supply
                 </Typography>
                 <SupplyText variant="h4">
-                  {currencyFormatter.format(market.totalSupply)}
+                  {currencyFormatter.format(market.cash * market.underlyingPriceUSD)}
                 </SupplyText>
               </Box>
               <Box ml={6} style={{marginLeft: "auto"}}>
@@ -122,7 +129,7 @@ function LendingPage() {
                   Total Borrow
                 </Typography>
                 <BorrowText variant="h4">
-                  {currencyFormatter.format(market.totalBorrows)}
+                  {currencyFormatter.format(market.totalBorrows * market.underlyingPriceUSD)}
                 </BorrowText>
               </Box>
               <Box ml={6} style={{marginLeft: "auto"}}>
@@ -165,7 +172,7 @@ function LendingPage() {
                   Available Liquidity
                 </Typography>
                 <SupplyText variant="h4" style={{ color: "#cdc5ff"}} >
-                  {currencyFormatter.format(market.totalSupply)}
+                  {currencyFormatter.format(market.cash)}
                 </SupplyText>
               </Box>
             </CardContent>
@@ -205,19 +212,13 @@ function LendingPage() {
         <Grid item xs={12} md={4}>
           <KPI
             title="Reserve Factor"
-            value={Number(market.reserveFactor).toFixed(2)+"%"}
+            value={Number(market.reserveFactor * 100).toFixed(2) + "%"}
           />
         </Grid>
         <Grid item xs={12} md={4}>
           <KPI
             title="Collateral Factor"
-            value={Number(market.collateralFactor).toFixed(2)+"%"}
-          />
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <KPI
-            title="Exchange Rate"
-            value={Number(market.exchangeRate).toFixed(2)+"%"}
+            value={Number(market.collateralFactor * 100).toFixed(2) + "%"}
           />
         </Grid>
       </Grid>  

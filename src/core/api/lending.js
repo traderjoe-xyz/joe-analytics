@@ -5,7 +5,14 @@ import {
 } from "../queries/lending";
 import { getApollo } from "../apollo";
 
-export async function getMarkets(client = getApollo()) {
+export async function getMarkets() {
+  const APIURL = "https://api.thegraph.com/subgraphs/name/traderjoe-xyz/lending-rinkeby";
+  
+  const client = new ApolloClient({
+    uri: APIURL,
+    cache: new InMemoryCache()
+  });
+
   const {
     data: { markets },
   } = await client.query({
@@ -15,7 +22,14 @@ export async function getMarkets(client = getApollo()) {
   return markets;
 }
 
-export async function getMarket(id, client = getApollo()) {
+export async function getMarket(id) {
+  const APIURL = "https://api.thegraph.com/subgraphs/name/traderjoe-xyz/lending-rinkeby";
+  
+  const client = new ApolloClient({
+    uri: APIURL,
+    cache: new InMemoryCache()
+  });
+
   const {
     data: { market },
   } = await client.query({

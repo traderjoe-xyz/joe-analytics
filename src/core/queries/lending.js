@@ -31,20 +31,7 @@ export const marketsQuery = gql`
 export const marketQuery = gql`
   query marketQuery($id: ID!) {
     market(id: $id) {
-      id
-      supplyRate
-      borrowRate
-      cash
-      collateralFactor
-      reserveFactor
-      exchangeRate
-      name
-      totalSupply
-      totalBorrows
-      reserves
-      underlyingAddress
-      underlyingSymbol
-      underlyingPriceUSD
+      ...marketFields
     }
   }
   ${marketFieldsQuery}
