@@ -121,7 +121,7 @@ function LendingsPage() {
                       </Box>
                       <SupplyBar style={{ width: '100%' }} value={(Number(market.cash * market.underlyingPriceUSD)/totalSupplyUSD) * 100}/>
                       <Box style={{ minWidth: '80px' }} ml={3}>
-                        <Typography> {decimalFormatter.format(Number((market.cash * market.underlyingPriceUSD)/totalSupplyUSD).toFixed(2) * 100)}%  </Typography>
+                        <Typography> {decimalFormatter.format((Number((market.cash * market.underlyingPriceUSD)/totalSupplyUSD) * 100).toFixed(2))}%  </Typography>
                       </Box>
                     </Box>
                   </ListItem> 
@@ -156,7 +156,7 @@ function LendingsPage() {
                       </Box>
                       <BorrowBar style={{ width: '100%' }} value={(Number(market.totalBorrows * market.underlyingPriceUSD)/totalBorrowsUSD) * 100}/>
                       <Box style={{ minWidth: '80px' }} ml={3}>
-                        <Typography> {decimalFormatter.format(Number((market.totalBorrows * market.underlyingPriceUSD)/totalBorrowsUSD).toFixed(2) * 100)}% </Typography>
+                        <Typography> {decimalFormatter.format((Number((market.totalBorrows * market.underlyingPriceUSD)/totalBorrowsUSD) * 100).toFixed(2))}% </Typography>
                       </Box>
                     </Box>
                   </ListItem> 

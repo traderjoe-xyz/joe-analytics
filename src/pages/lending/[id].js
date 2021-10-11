@@ -32,6 +32,7 @@ function LendingPage() {
   }
 
   const id = router.query.id
+  const totalLiquidityUSD = router.query.tl
 
   const SupplyText = withStyles({
     root: {
@@ -61,12 +62,14 @@ function LendingPage() {
 
   const SECONDS_PER_YEAR = 86400 * 365
 
-  const supplyAPR = 
+  const supplyAPY = 
     decimalFormatter.format(((parseFloat(market.supplyRate || 0) * SECONDS_PER_YEAR) / 1e18).toFixed(2) * 100)
-  const borrowAPR = 
+  const borrowAPY = 
     decimalFormatter.format(((parseFloat(market.borrowRate || 0) * SECONDS_PER_YEAR) / 1e18).toFixed(2) * 100)
+  const utilizationRate = (market.totalBorrows/market.cash) * 100
+  const liquidityUSD = (market.cash - market.reserves) * market.underlyingPriceUSD
 
-  return (
+    return (
     <AppShell>
       <Head>
         <title>
@@ -94,10 +97,10 @@ function LendingPage() {
               </Box>
               <Box ml={6} style={{marginLeft: "auto"}}>
                 <Typography variant="subtitle2" component="div">
-                  Supply APR
+                  Supply APY
                 </Typography>
                 <SupplyText variant="h4">
-                  {Number(supplyAPR).toFixed(2) + "%"}
+                  {Number(supplyAPY).toFixed(2) + "%"}
                 </SupplyText>
               </Box>
               <Paper
@@ -134,10 +137,10 @@ function LendingPage() {
               </Box>
               <Box ml={6} style={{marginLeft: "auto"}}>
                 <Typography variant="subtitle2" component="div">
-                  Borrow APR
+                  Borrow APY
                 </Typography>
                 <BorrowText variant="h4">
-                  {Number(borrowAPR).toFixed(2) + "%"}
+                  {Number(borrowAPY).toFixed(2) + "%"}
                 </BorrowText>
               </Box>
               <Paper
@@ -172,11 +175,11 @@ function LendingPage() {
                   Available Liquidity
                 </Typography>
                 <SupplyText variant="h4" style={{ color: "#cdc5ff"}} >
-                  {currencyFormatter.format(market.cash)}
+                  {currencyFormatter.format(liquidityUSD)}
                 </SupplyText>
               </Box>
             </CardContent>
-            <PurpleBar style={{ width: '100%', marginRight: "20px"}} value={63.4}/>
+            <PurpleBar style={{ width: '100%', marginRight: "20px"}} value={(liquidityUSD/totalLiquidityUSD) * 100}/>
           </Card>
         </Grid>
         <Grid item xs={6}>
@@ -187,11 +190,11 @@ function LendingPage() {
                   Utilization Rate
                 </Typography>
                 <BorrowText variant="h4" style={{ color: "#cdc5ff" }}>
-                  {Number(35.4).toFixed(2) + "%"}
+                  { utilizationRate.toFixed(2) + "%" }
                 </BorrowText>
               </Box>
             </CardContent>
-            <PurpleBar style={{ width: '100%', marginRight: "20px"}} value={35.4}/>
+            <PurpleBar style={{ width: '100%', marginRight: "20px"}} value={utilizationRate}/>
           </Card>
         </Grid>
       </Grid>

@@ -24,6 +24,7 @@ import {
   TrendingUpOutlined,
   ViewStreamOutlined,
   WavesOutlined,
+  AccountBalanceOutlined
 } from "@material-ui/icons";
 import {
   Box,
@@ -186,7 +187,7 @@ export default function AppNavigation() {
           onClick={() => router.push("/lending")}
         >
           <ListItemIcon>
-            <StarBorder />
+            <AccountBalanceOutlined />
           </ListItemIcon>
           <ListItemText primary="Lending" />
         </ListItem>
