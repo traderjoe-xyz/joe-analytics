@@ -64,7 +64,7 @@ export default function MarketTable({ markets, title }) {
             key: "totalSupply",
             align: "right",
             label: "Total Supply",
-            render: (row) => currencyFormatter.format(row.totalSupply),
+            render: (row) => currencyFormatter.format(row.totalSupply * row.exchangeRate * row.underlyingPriceUSD),
           },
           {
             key: "supplyAPY",
@@ -76,7 +76,7 @@ export default function MarketTable({ markets, title }) {
             key: "totalBorrows",
             align: "right",
             label: "Total Borrow",
-            render: (row) => currencyFormatter.format(row.totalBorrows),
+            render: (row) => currencyFormatter.format(row.totalBorrows * row.underlyingPriceUSD),
           },
           {
             key: "borrowAPY",

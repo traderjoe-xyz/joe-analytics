@@ -113,14 +113,14 @@ function LendingsPage() {
   let totalReservesUSD = 0;
   markets.forEach(market => {
     totalBorrowsUSD += Number(market.totalBorrows * market.underlyingPriceUSD) || 0
-    totalSupplyUSD += Number(market.cash * market.underlyingPriceUSD) || 0
+    totalSupplyUSD += Number(market.totalSupply * market.exchangeRate * market.underlyingPriceUSD) || 0
     totalReservesUSD += Number(market.reserves * market.underlyingPriceUSD) || 0
     totalBorrows += Number(market.totalBorrows) || 0
-    totalSupply += Number(market.cash) || 0
+    totalSupply += Number(market.totalSupply) || 0
     totalReserves += Number(market.reserves) || 0
   })
 
-  const topSupplyMarkets = [...markets].sort((a, b) => ((Number(a.cash * a.underlyingPriceUSD) < Number(b.cash * b.underlyingPriceUSD)) ? 1 : -1)).slice(0, 3)
+  const topSupplyMarkets = [...markets].sort((a, b) => ((Number(a.totalSupply * a.exchangeRate * a.underlyingPriceUSD) < Number(b.totalSupply * b.exchangeRate * b.underlyingPriceUSD)) ? 1 : -1)).slice(0, 3)
   const topBorrowMarkets = [...markets].sort((a, b) => ((Number(a.totalBorrows * a.underlyingPriceUSD) < Number(b.totalBorrows * b.underlyingPriceUSD)) ? 1 : -1)).slice(0, 3)
 
   return (
@@ -163,9 +163,9 @@ function LendingsPage() {
                           {market.underlyingSymbol}
                         </Typography>
                       </Box>
-                      <SupplyBar style={{ width: '100%' }} value={(Number(market.cash * market.underlyingPriceUSD)/totalSupplyUSD) * 100}/>
+                      <SupplyBar style={{ width: '100%' }} value={(Number(market.totalSupply * market.exchangeRate * market.underlyingPriceUSD)/totalSupplyUSD) * 100}/>
                       <Box style={{ minWidth: '80px' }} ml={3}>
-                        <Typography> {decimalFormatter.format((Number((market.cash * market.underlyingPriceUSD)/totalSupplyUSD) * 100).toFixed(2))}%  </Typography>
+                        <Typography> {decimalFormatter.format((Number((market.totalSupply * market.exchangeRate * market.underlyingPriceUSD)/totalSupplyUSD) * 100).toFixed(2))}%  </Typography>
                       </Box>
                     </Box>
                   </ListItem> 

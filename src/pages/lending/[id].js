@@ -116,7 +116,7 @@ function LendingPage() {
                   Total Supply
                 </Typography>
                 <SupplyText variant="h4">
-                  {currencyFormatter.format(market.cash * market.underlyingPriceUSD)}
+                  {currencyFormatter.format(market.totalSupply * market.exchangeRate * market.underlyingPriceUSD)}
                 </SupplyText>
               </Box>
               <Box ml={6} style={{marginLeft: "auto"}}>
