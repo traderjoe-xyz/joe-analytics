@@ -61,22 +61,24 @@ function LendingsPage() {
   } = useQuery(
     liquidationDayDatasQuery
   );
-  
-  const _date = new Date(2021, 9, 10)
-  const lendingReleaseDate = dayjs(_date).utc().startOf('day').unix()
 
-  const today = dayjs()
-  .utc()
-  .startOf('day')
-  .unix()
-  
-  function zeroDataChartCalculator(lendingReleaseDate, now) {
-    let liquidationDayDatas = []
-    let numberOfZeroDays = Number((today - lendingReleaseDate)/86400).toFixed(0)
-    for (let i = 0; i < numberOfZeroDays; i++) {
-      liquidationDayDatas.push(new Object({date: now - (86400 * i), repaidUSD: 0 }))
+  let mergedLiquidationDayDatas = []
+
+  liquidationDayDatas.forEach(data => {
+    let existing = mergedLiquidationDayDatas.filter(function(pastData, i) {
+      return pastData.date == data.date;
+    });
+    if (existing.length) {
+      let existingIndex = mergedLiquidationDayDatas.indexOf(existing[0]);
+      mergedLiquidationDayDatas[existingIndex].repaidUSD = Number(mergedLiquidationDayDatas[existingIndex].repaidUSD) + Number(data.repaidUSD)
+    } else {
+      data = {date: data.date, repaidUSD: Number(data.repaidUSD)};
+      mergedLiquidationDayDatas.push(data);
     }
-    return liquidationDayDatas.reduce(
+  });
+
+  const chartDatas =
+    mergedLiquidationDayDatas.reduce(
       (previousValue, currentValue) => {
         previousValue["repaidUSD"].unshift({
           date: currentValue.date,
@@ -86,20 +88,6 @@ function LendingsPage() {
       },
       { repaidUSD: [] }
     )
-  }
-
-  const chartDatas = liquidationDayDatas.length > 0  ? 
-    liquidationDayDatas.reduce(
-      (previousValue, currentValue) => {
-        previousValue["repaidUSD"].unshift({
-          date: currentValue.date,
-          value: parseFloat(currentValue.repaidUSD) || 0,
-        });
-        return previousValue || 0;
-      },
-      { repaidUSD: [] }
-    ) : 
-    zeroDataChartCalculator(lendingReleaseDate, today)
 
   useInterval(async () => {
     await Promise.all([getMarkets]);
