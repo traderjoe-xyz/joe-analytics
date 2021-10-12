@@ -14,7 +14,6 @@ export { default as Difference } from "./Difference";
 export { default as GainersList } from "./GainersList";
 export { default as IntoTheBlock } from "./IntoTheBlock";
 export { default as KPI } from "./KPI";
-export { default as RowKPI } from "./RowKPI";
 export { default as Lines } from "./Lines";
 export { default as Link } from "./Link";
 export { default as LiquidityProviderList } from "./LiquidityProviderList";

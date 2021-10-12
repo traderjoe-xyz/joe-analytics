@@ -103,7 +103,7 @@ function LendingPage() {
       <Box display="flex" alignItems="center" marginBottom="30px">
         <TokenIcon id={market.underlyingAddress} />
         <Typography variant="h5" component="h1" noWrap>
-          {market.name}
+          {market.underlyingSymbol}
         </Typography>
       </Box>
 

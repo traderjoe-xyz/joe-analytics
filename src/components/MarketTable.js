@@ -15,8 +15,6 @@ export default function MarketTable({ markets, title }) {
   const classes = useStyles();
   const theme = useTheme();
 
-  const SECONDS_PER_YEAR = 86400 * 365
-
   let totalLiquidityUSD = 0;
   const rows = markets
     .map((market) => {
