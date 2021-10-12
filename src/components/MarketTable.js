@@ -23,16 +23,17 @@ export default function MarketTable({ markets, title }) {
       const liquidityUSD =
         parseFloat((market.cash - market.reserves) * market.underlyingPriceUSD)
       totalLiquidityUSD += liquidityUSD
-      const supplyAPY = 
-        decimalFormatter.format(((parseFloat(market.supplyRate || 0) * SECONDS_PER_YEAR)/1e18) * 100)
-      const borrowAPY = 
-        decimalFormatter.format(((parseFloat(market.borrowRate || 0) * SECONDS_PER_YEAR)/1e18) * 100)
-      return {
-        ...market,
-        liquidityUSD: liquidityUSD || 0,
-        supplyAPY: supplyAPY || 0,
-        borrowAPY: borrowAPY || 0,
-      };
+    const supplyAPY = 
+      decimalFormatter.format(parseFloat(market.supplyRate * 100).toFixed(2))
+    const borrowAPY = 
+      decimalFormatter.format(parseFloat(market.borrowRate * 100).toFixed(2))
+
+    return {
+      ...market,
+      liquidityUSD: liquidityUSD || 0,
+      supplyAPY: supplyAPY || 0,
+      borrowAPY: borrowAPY || 0,
+    };
     });
   
   return (
@@ -71,7 +72,7 @@ export default function MarketTable({ markets, title }) {
             key: "supplyAPY",
             align: "right",
             label: "Supply APY",
-            render: (row) => Number(row.supplyAPY).toFixed(5) + "%",
+            render: (row) => Number(row.supplyAPY).toFixed(2) + "%",
           },
           {
             key: "totalBorrows",
@@ -83,7 +84,7 @@ export default function MarketTable({ markets, title }) {
             key: "borrowAPY",
             align: "right",
             label: "Borrow APY",
-            render: (row) => Number(row.borrowAPY).toFixed(5) + "%",
+            render: (row) => Number(row.borrowAPY).toFixed(2) + "%",
           },
         ]}
         rows={rows}

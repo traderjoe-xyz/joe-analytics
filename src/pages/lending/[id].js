@@ -12,6 +12,7 @@ import {
   currencyFormatter,
   decimalFormatter,
   marketQuery,
+  marketDayDatasQuery,
   useInterval,
 } from "app/core";
 import {
@@ -56,20 +57,43 @@ function LendingPage() {
     }
   );
 
+  const {
+    data: { marketDayDatas },
+  } = useQuery(marketDayDatasQuery,
+    {
+      variables: { 
+        markets: [id] 
+      }
+    }
+  );
+
+  const chartDatas = marketDayDatas.reduce(
+    (previousValue, currentValue) => {
+      previousValue["totalBorrowsUSD"].unshift({
+        date: currentValue.date,
+        value: parseFloat(currentValue.totalBorrowsUSD),
+      });
+      previousValue["totalSupplyUSD"].unshift({
+        date: currentValue.date,
+        value: parseFloat(currentValue.totalSupplyUSD),
+      });
+      return previousValue;
+    },
+    { totalBorrowsUSD: [], totalSupplyUSD: [] }
+  );
+
   useInterval(async () => {
     await Promise.all([getMarket]);
   }, 60000);
 
-  const SECONDS_PER_YEAR = 86400 * 365
-
   const supplyAPY = 
-    decimalFormatter.format(((parseFloat(market.supplyRate || 0) * SECONDS_PER_YEAR) / 1e18).toFixed(2) * 100)
+    decimalFormatter.format(parseFloat(market.supplyRate * 100).toFixed(2))
   const borrowAPY = 
-    decimalFormatter.format(((parseFloat(market.borrowRate || 0) * SECONDS_PER_YEAR) / 1e18).toFixed(2) * 100)
+    decimalFormatter.format(parseFloat(market.borrowRate * 100).toFixed(2))
   const utilizationRate = (market.totalBorrows/market.cash) * 100
   const liquidityUSD = (market.cash - market.reserves) * market.underlyingPriceUSD
 
-    return (
+  return (
     <AppShell>
       <Head>
         <title>
@@ -83,7 +107,7 @@ function LendingPage() {
         </Typography>
       </Box>
 
-      <Grid container spacing={6} style={{ marginBottom: "10px", height: "40%"}}>
+      <Grid container spacing={6} style={{ height: "40%"}}>
         <Grid item xs={6}>
           <Card variant="outlined" style={{ backgroundColor: "#2b281e" }}>
             <CardContent style={{display: "flex", displayDirection: "col"}}>
@@ -103,15 +127,17 @@ function LendingPage() {
                   {Number(supplyAPY).toFixed(2) + "%"}
                 </SupplyText>
               </Box>
-              <Paper
-                variant="outlined"
-                style={{ height: 300, position: "relative" }}
-              >
+            </CardContent>
+          </Card>
+          <Paper
+                  variant="outlined"
+                  style={{ height: 300, marginTop: "40px", position: "relative" }}
+                >
                 <ParentSize>
                   {({ width, height }) => (
-                    <AreaChart
-                      title="Liquidity"
-                      data={[1, 2, 3, 5, 6, 7]}
+                    <BarChart
+                      title="Total Supply (USD)"
+                      data={chartDatas.totalSupplyUSD}
                       width={width}
                       height={height}
                       margin={{ top: 125, right: 0, bottom: 0, left: 0 }}
@@ -121,8 +147,6 @@ function LendingPage() {
                   )}
                 </ParentSize>
               </Paper>
-            </CardContent>
-          </Card>
         </Grid>
         <Grid item xs={6}>
           <Card variant="outlined" style={{ backgroundColor: "#1e2738"}}>
@@ -143,15 +167,17 @@ function LendingPage() {
                   {Number(borrowAPY).toFixed(2) + "%"}
                 </BorrowText>
               </Box>
-              <Paper
+            </CardContent>
+          </Card>
+          <Paper
                 variant="outlined"
-                style={{ height: 300, position: "relative" }}
+                style={{ height: 300, marginTop: "40px", position: "relative"}}
               >
                 <ParentSize>
                   {({ width, height }) => (
-                    <AreaChart
-                      title="Liquidity"
-                      data={[1, 2, 3, 5, 6, 7]}
+                    <BarChart
+                      title="Total Borrows (USD)"
+                      data={chartDatas.totalBorrowsUSD}
                       width={width}
                       height={height}
                       margin={{ top: 125, right: 0, bottom: 0, left: 0 }}
@@ -161,15 +187,13 @@ function LendingPage() {
                   )}
                 </ParentSize>
               </Paper>
-            </CardContent>
-          </Card>
         </Grid>
       </Grid>
                     
-      <Grid container spacing={6} style={{ marginBottom: "10px", height: "40%"}}>
+      <Grid container spacing={6} style={{ marginTop: "20px", height: "40%"}}>
         <Grid item xs={6}>
           <Card variant="outlined" style={{ display: "flex", alignItems: "center", backgroundColor: "#221e38" }}>
-            <CardContent style={{display: "flex", displayDirection: "col", marginRight: "10px"}}>
+            <CardContent style={{display: "flex", displayDirection: "col", marginRight: "100px"}}>
               <Box width="150px">
                 <Typography variant="subtitle2" component="div" nowrap>
                   Available Liquidity
@@ -194,12 +218,12 @@ function LendingPage() {
                 </BorrowText>
               </Box>
             </CardContent>
-            <PurpleBar style={{ width: '100%', marginRight: "20px"}} value={utilizationRate}/>
+            <PurpleBar style={{ width: '100%', marginRight: "20px"}} value={utilizationRate < 100 ? utilizationRate : 100}/>
           </Card>
         </Grid>
       </Grid>
 
-      <Grid container spacing={4}>
+      <Grid container spacing={4} style={{marginTop: "30px"}}>
         <Grid item xs={12} md={4}>
           <KPI
             title="Price"
@@ -209,13 +233,13 @@ function LendingPage() {
         <Grid item xs={12} md={4}>
           <KPI
             title="Reserves"
-            value={currencyFormatter.format(market.reserves || 0)}
+            value={currencyFormatter.format((market.reserves * market.underlyingPriceUSD) || 0)}
           />
         </Grid>
         <Grid item xs={12} md={4}>
           <KPI
             title="Reserve Factor"
-            value={Number(market.reserveFactor * 100).toFixed(2) + "%"}
+            value={Number((market.reserveFactor * 100)/1e18).toFixed(2) + "%"}
           />
         </Grid>
         <Grid item xs={12} md={4}>
@@ -230,7 +254,7 @@ function LendingPage() {
 }
 
 export async function getStaticProps({ params }) {
-  const APIURL = "https://api.thegraph.com/subgraphs/name/traderjoe-xyz/lending-rinkeby";
+  const APIURL = "https://api.thegraph.com/subgraphs/name/traderjoe-xyz/lending";
   
   const client = new ApolloClient({
     uri: APIURL,
@@ -243,6 +267,13 @@ export async function getStaticProps({ params }) {
     query: marketQuery,
     variables: {
       id: id
+    }
+  });
+
+  await client.query({
+    query: marketDayDatasQuery,
+    variables: {
+      markets: [id]
     }
   });
 

@@ -1,9 +1,9 @@
 import { getApollo, useInterval, currencyFormatter, decimalFormatter } from "app/core";
-import { AppShell } from "app/components";
-import { Card, CardContent, Grid, Typography, List, ListItem, ListItemText, Box, LinearProgress } from "@material-ui/core";
+import { AppShell, BarChart } from "app/components";
+import { Card, CardContent, Grid, Typography, List, ListItem, Box, Paper } from "@material-ui/core";
+import { ParentSize } from "@visx/responsive";
 import { withStyles } from "@material-ui/core/styles";
 import TokenIcon from "../../components/TokenIcon";
-import KPI from "../../components/KPI";
 import BorrowBar from "../../components/BorrowBar";
 import SupplyBar from "../../components/SupplyBar";
 
@@ -11,6 +11,7 @@ import MarketTable from "../../components/MarketTable";
 
 import {
   marketsQuery,
+  liquidationDayDatasQuery
 } from "app/core";
 
 import {
@@ -55,6 +56,51 @@ function LendingsPage() {
     marketsQuery
   );
   
+  const {
+    data: { liquidationDayDatas },
+  } = useQuery(
+    liquidationDayDatasQuery
+  );
+  
+  const _date = new Date(2021, 9, 10)
+  const lendingReleaseDate = dayjs(_date).utc().startOf('day').unix()
+
+  const today = dayjs()
+  .utc()
+  .startOf('day')
+  .unix()
+  
+  function zeroDataChartCalculator(lendingReleaseDate, now) {
+    let liquidationDayDatas = []
+    let numberOfZeroDays = Number((today - lendingReleaseDate)/86400).toFixed(0)
+    for (let i = 0; i < numberOfZeroDays; i++) {
+      liquidationDayDatas.push(new Object({date: now - (86400 * i), repaidUSD: 0 }))
+    }
+    return liquidationDayDatas.reduce(
+      (previousValue, currentValue) => {
+        previousValue["repaidUSD"].unshift({
+          date: currentValue.date,
+          value: parseFloat(currentValue.repaidUSD) || 0,
+        });
+        return previousValue || 0;
+      },
+      { repaidUSD: [] }
+    )
+  }
+
+  const chartDatas = liquidationDayDatas.length > 0  ? 
+    liquidationDayDatas.reduce(
+      (previousValue, currentValue) => {
+        previousValue["repaidUSD"].unshift({
+          date: currentValue.date,
+          value: parseFloat(currentValue.repaidUSD) || 0,
+        });
+        return previousValue || 0;
+      },
+      { repaidUSD: [] }
+    ) : 
+    zeroDataChartCalculator(lendingReleaseDate, today)
+
   useInterval(async () => {
     await Promise.all([getMarkets]);
   }, 60000);
@@ -66,7 +112,6 @@ function LendingsPage() {
   let totalSupplyUSD = 0;
   let totalReservesUSD = 0;
   markets.forEach(market => {
-    debugger
     totalBorrowsUSD += Number(market.totalBorrows * market.underlyingPriceUSD) || 0
     totalSupplyUSD += Number(market.cash * market.underlyingPriceUSD) || 0
     totalReservesUSD += Number(market.reserves * market.underlyingPriceUSD) || 0
@@ -89,11 +134,10 @@ function LendingsPage() {
             Total Reserves
           </Typography>
           <Typography variant="h6">
-            {currencyFormatter.format(totalReserves)}
+            {currencyFormatter.format(totalReservesUSD)}
           </Typography>
         </CardContent>
       </Card>
-      {/* <KPI title="Total Reserves" value={totalReserves} format="currency" style={{border: "none"}}/> */}
       <Grid container spacing={6} style={{ marginBottom: "10px"}}>
         <Grid item xs={6}>
           <Card variant="outlined" style={{ backgroundColor: "#2b281e" }}>
@@ -166,6 +210,24 @@ function LendingsPage() {
           </Card>
         </Grid>
       </Grid>
+      <Paper
+          variant="outlined"
+          style={{ height: 300, marginTop: "30px", marginBottom: "40px", position: "relative" }}
+        >
+        <ParentSize>
+          {({ width, height }) => (
+            <BarChart
+              title="Total Liquidations"
+              data={chartDatas.repaidUSD}
+              width={width}
+              height={height}
+              margin={{ top: 125, right: 0, bottom: 0, left: 0 }}
+              tooltipDisabled
+              overlayEnabled
+            />
+          )}
+        </ParentSize>
+      </Paper>
       <MarketTable markets={markets} title="Markets"/>
     </AppShell>
   );
@@ -173,7 +235,7 @@ function LendingsPage() {
 
 
 export async function getStaticProps() {
-  const APIURL = "https://api.thegraph.com/subgraphs/name/traderjoe-xyz/lending-rinkeby";
+  const APIURL = "https://api.thegraph.com/subgraphs/name/traderjoe-xyz/lending";
 
   const client = new ApolloClient({
     uri: APIURL,
@@ -182,6 +244,10 @@ export async function getStaticProps() {
     
   await client.query({
     query: marketsQuery,
+  });
+
+  await client.query({
+    query: liquidationDayDatasQuery
   });
 
   return {

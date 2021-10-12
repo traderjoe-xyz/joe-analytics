@@ -36,3 +36,44 @@ export const marketQuery = gql`
   }
   ${marketFieldsQuery}
 `;
+
+export const marketDayDatasQuery = gql`
+  query marketDayDatas(
+    $first: Int = 1000
+    $date: Int = 0
+    $markets: [Bytes]!
+  ) {
+    marketDayDatas(
+      first: $first
+      orderBy: date
+      orderDirection: desc
+      where: { market_in: $markets, date_gte: $date }
+    ) {
+      id
+      date
+      totalBorrows  
+      totalBorrowsUSD
+      totalSupplyUSD
+      totalSupply
+    }
+  }
+`;
+
+export const liquidationDayDatasQuery = gql`
+  query liquidationDayDatas(
+    $first: Int = 1000
+    $date: Int = 0
+  ) {
+    liquidationDayDatas(
+      first: $first
+      orderBy: date
+      orderDirection: desc
+      where: { date_gte: $date }
+    ) {
+      id
+      date 
+      repaidUSD
+      amount
+    }
+  }
+`;

@@ -6,7 +6,7 @@ import {
 import { getApollo } from "../apollo";
 
 export async function getMarkets() {
-  const APIURL = "https://api.thegraph.com/subgraphs/name/traderjoe-xyz/lending-rinkeby";
+  const APIURL = "https://api.thegraph.com/subgraphs/name/traderjoe-xyz/lending";
   
   const client = new ApolloClient({
     uri: APIURL,
@@ -23,7 +23,7 @@ export async function getMarkets() {
 }
 
 export async function getMarket(id) {
-  const APIURL = "https://api.thegraph.com/subgraphs/name/traderjoe-xyz/lending-rinkeby";
+  const APIURL = "https://api.thegraph.com/subgraphs/name/traderjoe-xyz/lending";
   
   const client = new ApolloClient({
     uri: APIURL,

@@ -3,7 +3,7 @@
     "graph_masterchef_uri": "https://api.thegraph.com/subgraphs/name/traderjoe-xyz/masterchefv2",
     "graph_exchange_uri": "https://api.thegraph.com/subgraphs/name/traderjoe-xyz/exchange",
     "graph_blocks_uri": "https://api.thegraph.com/subgraphs/name/dasconnor/avalanche-blocks", 
-    "graph_lending_uri": "https://api.thegraph.com/subgraphs/name/traderjoe-xyz/lending-rinkeby", 
+    "graph_lending_uri": "https://api.thegraph.com/subgraphs/name/traderjoe-xyz/lending", 
 
     "joe_token_address": "0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd",
     "factory_address": "0x9Ad6C38BE94206cA50bb0d90783181662f0Cfa10",
