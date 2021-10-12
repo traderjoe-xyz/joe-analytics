@@ -108,7 +108,7 @@ function LendingPage() {
       </Box>
 
       <Grid container spacing={6} style={{ height: "40%"}}>
-        <Grid item xs={6}>
+        <Grid item xs={12} md={6}>
           <Card variant="outlined" style={{ backgroundColor: "#2b281e" }}>
             <CardContent style={{display: "flex", displayDirection: "col"}}>
               <Box>
@@ -148,7 +148,7 @@ function LendingPage() {
                 </ParentSize>
               </Paper>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} md={6}>
           <Card variant="outlined" style={{ backgroundColor: "#1e2738"}}>
             <CardContent style={{display: "flex"}}>
               <Box>
@@ -191,7 +191,7 @@ function LendingPage() {
       </Grid>
                     
       <Grid container spacing={6} style={{ marginTop: "20px", height: "40%"}}>
-        <Grid item xs={6}>
+        <Grid item xs={12} md={6}>
           <Card variant="outlined" style={{ display: "flex", alignItems: "center", backgroundColor: "#221e38" }}>
             <CardContent style={{display: "flex", displayDirection: "col", marginRight: "100px"}}>
               <Box width="150px">
@@ -206,7 +206,7 @@ function LendingPage() {
             <PurpleBar style={{ width: '100%', marginRight: "20px"}} value={(liquidityUSD/totalLiquidityUSD) * 100}/>
           </Card>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} md={6}>
           <Card variant="outlined" style={{ display: "flex", alignItems: "center", backgroundColor: "#221e38" }}>
             <CardContent style={{display: "flex", displayDirection: "col", marginRight: "20px"}}>
               <Box width="150px">

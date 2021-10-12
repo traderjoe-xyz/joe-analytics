@@ -139,7 +139,7 @@ function LendingsPage() {
         </CardContent>
       </Card>
       <Grid container spacing={6} style={{ marginBottom: "10px"}}>
-        <Grid item xs={6}>
+        <Grid item xs={12} md={6}>
           <Card variant="outlined" style={{ backgroundColor: "#2b281e" }}>
             <CardContent>
               <Typography variant="subtitle2" component="div">
@@ -174,7 +174,7 @@ function LendingsPage() {
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} md={6}>
           <Card variant="outlined" style={{ backgroundColor: "#1e2738"}}>
             <CardContent>
               <Typography variant="subtitle2" component="div">
