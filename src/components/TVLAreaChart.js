@@ -77,8 +77,9 @@ function TVLAreaChart({
     }
   }
 
-  data = data.filter((d) => timespan <= d.date);
-  var lastData = data.length > 1 ? data[data.length - 1] : null;
+  const filteredData = data.filter((d) => timespan <= d.date);
+  var lastData =
+    filteredData.length > 1 ? filteredData[filteredData.length - 1] : null;
   const lastDataValue = lastData ? lastData.value : 0;
   const [overlay, setOverlay] = useState({
     title,
@@ -89,8 +90,8 @@ function TVLAreaChart({
   });
 
   useEffect(() => {
-    data = data.filter((d) => timespan <= d.date);
-    var lastData = data.length > 1 ? data[data.length - 1] : null;
+    var lastData =
+      filteredData.length > 1 ? filteredData[filteredData.length - 1] : null;
     const lastDataValue = lastData ? lastData.value : 0;
     setOverlay({
       title,
@@ -99,7 +100,7 @@ function TVLAreaChart({
         : avaxFormatter.format(lastDataValue),
       date: lastData ? lastData.date : 0,
     });
-  }, [data]);
+  }, [useUSD]);
 
   // Max
   const xMax = width - margin.left - margin.right;
@@ -112,23 +113,23 @@ function TVLAreaChart({
       scaleTime({
         range: [0, xMax],
         domain: [
-          Math.min(...data.map(getDate)),
-          Math.max(...data.map(getDate)),
+          Math.min(...filteredData.map(getDate)),
+          Math.max(...filteredData.map(getDate)),
         ],
       }),
-    [xMax, data]
+    [xMax, filteredData]
   );
   const yScale = useMemo(
     () =>
       scaleLinear({
         range: [yMax, 0],
         domain: [
-          Math.min(...data.map((d) => getValue(d))),
-          Math.max(...data.map((d) => getValue(d))),
+          Math.min(...filteredData.map((d) => getValue(d))),
+          Math.max(...filteredData.map((d) => getValue(d))),
         ],
         nice: true,
       }),
-    [yMax, data]
+    [yMax, filteredData]
   );
 
   // tooltip handler
@@ -136,9 +137,9 @@ function TVLAreaChart({
     (event) => {
       const { x } = localPoint(event) || { x: 0 };
       const x0 = xScale.invert(x);
-      const index = bisectDate(data, x0, 1);
-      const d0 = data[index - 1];
-      const d1 = data[index];
+      const index = bisectDate(filteredData, x0, 1);
+      const d0 = filteredData[index - 1];
+      const d1 = filteredData[index];
       let d = d0;
       if (d1 && getDate(d1)) {
         d =
@@ -180,7 +181,7 @@ function TVLAreaChart({
 
         <Group top={margin.top} left={margin.left}>
           <AreaClosed
-            data={data}
+            data={filteredData}
             x={(d) => xScale(getDate(d))}
             y={(d) => yScale(getValue(d))}
             yScale={yScale}
@@ -199,14 +200,19 @@ function TVLAreaChart({
           onMouseMove={handleTooltip}
           onMouseLeave={() => {
             const lastDataValue =
-              data && data.length > 0 ? data[data.length - 1].value : 0;
+              filteredData && filteredData.length > 0
+                ? filteredData[filteredData.length - 1].value
+                : 0;
             hideTooltip();
             setOverlay({
               ...overlay,
               value: useUSD
                 ? currencyFormatter.format(lastDataValue)
                 : avaxFormatter.format(lastDataValue),
-              date: data && data.length ? data[data.length - 1].date : 0,
+              date:
+                filteredData && filteredData.length
+                  ? filteredData[filteredData.length - 1].date
+                  : 0,
             });
           }}
         />
