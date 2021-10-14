@@ -12,7 +12,7 @@ import {
   poolsQuery,
 } from "../queries/masterchef";
 
-import { POOL_DENY } from "app/core/constants";
+import { FARMS_BLACKLIST } from "app/core/constants";
 import { getApollo } from "../apollo";
 import { sub } from "date-fns";
 
@@ -31,7 +31,7 @@ export async function getPoolIds(client = getApollo()) {
     query: poolIdsQuery,
     data: {
       pools: pools.filter(
-        (pool) => !POOL_DENY.includes(pool.id) && pool.allocPoint !== "0"
+        (pool) => !FARMS_BLACKLIST.includes(pool.id) && pool.allocPoint !== "0"
       ),
     },
   });
@@ -171,7 +171,7 @@ export async function getPools(client = getApollo()) {
       pools: pools
         .filter(
           (pool) =>
-            !POOL_DENY.includes(pool.id) &&
+            !FARMS_BLACKLIST.includes(pool.id) &&
             pool.allocPoint !== "0" &&
             pool.accJoePerShare !== "0" &&
             pairs.find((pair) => pair?.id === pool.pair)

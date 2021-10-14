@@ -32,7 +32,6 @@ import {
 } from "app/core";
 
 import Head from "next/head";
-import { POOL_DENY } from "app/core/constants";
 import { ParentSize } from "@visx/responsive";
 import { deepPurple } from "@material-ui/core/colors";
 import { useQuery } from "@apollo/client";
