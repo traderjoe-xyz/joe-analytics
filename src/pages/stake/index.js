@@ -157,33 +157,19 @@ function BarPage() {
     }
   );
 
-  // console.log(`[bar] aprs: ${JSON.stringify(apr)}`);
-  // console.log(`[bar] apys: ${JSON.stringify(apy)}`);
-  // console.log(`[bar] factory: ${JSON.stringify(factory)}`)
-  // console.log(`[bar] joeStaked: ${JSON.stringify(joeStakedUSD)}`)
-  // console.log(`[bar] joeHarvested: ${JSON.stringify(joeHarvestedUSD)}`)
-  // console.log(`[bar] xJoe: ${JSON.stringify(xJoe)}`)
-  // console.log(`[bar] fees: ${JSON.stringify(fees)}`)
-
   // average APY of days histories
   const averageApy =
     apy.reduce((prevValue, currValue) => {
       return prevValue + (currValue.value || 0);
     }, 0) / apy.length;
-  
+
   // get last day volume and APY
   const oneDayVolume = factory?.volumeUSD - factory?.oneDay.volumeUSD;
   const oneDayFees = oneDayVolume * FEE_RATE;
   const totalStakedUSD = bar.joeStaked * joePrice;
 
-  const APR = oneDayFees * 365 / totalStakedUSD
+  const APR = (oneDayFees * 365) / totalStakedUSD;
   const APY = Math.pow(1 + APR / 365, 365) - 1;
-
-  // console.log(
-  //   `[bar] APR: ${APR}, APY: ${APY}, JoePrice: ${joePrice}, average APR: ${averageApr}, average APY: ${averageApy}, ratio: ${Number(
-  //     bar.ratio
-  //   ).toFixed(4)}`
-  // );
 
   return (
     <AppShell>

@@ -102,7 +102,6 @@ function UserPage() {
     },
   });
 
-
   const {
     data: { token },
   } = useQuery(tokenQuery, {
@@ -204,21 +203,18 @@ function UserPage() {
       );
     }, 0) * joePrice;
 
-  const [
-    poolEntriesUSD,
-    poolExitsUSD,
-    poolHarvestedUSD,
-  ] = poolData?.users.reduce(
-    (previousValue, currentValue) => {
-      const [entries, exits, harvested] = previousValue;
-      return [
-        entries + parseFloat(currentValue.entryUSD),
-        exits + parseFloat(currentValue.exitUSD),
-        harvested + parseFloat(currentValue.joeHarvestedUSD),
-      ];
-    },
-    [0, 0, 0]
-  );
+  const [poolEntriesUSD, poolExitsUSD, poolHarvestedUSD] =
+    poolData?.users.reduce(
+      (previousValue, currentValue) => {
+        const [entries, exits, harvested] = previousValue;
+        return [
+          entries + parseFloat(currentValue.entryUSD),
+          exits + parseFloat(currentValue.exitUSD),
+          harvested + parseFloat(currentValue.joeHarvestedUSD),
+        ];
+      },
+      [0, 0, 0]
+    );
 
   // Global
 
@@ -472,14 +468,6 @@ function UserPage() {
                       ((user.amount * user.pool.accJoePerShare) / 1e12 -
                         user.rewardDebt) /
                       1e18;
-                    // user.amount.mul(accJoePerShare).div(1e12).sub(user.rewardDebt);
-
-                    // console.log(
-                    //   user,
-                    //   user.entryUSD,
-                    //   user.exitUSD,
-                    //   pendingJoe * joePrice
-                    // );
 
                     return (
                       <TableRow key={user.pool.id}>

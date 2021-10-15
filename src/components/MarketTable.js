@@ -17,7 +17,6 @@ export default function MarketTable({ markets, title }) {
 
   let totalLiquidityUSD = 0;
   const rows = markets.map((market) => {
-    console.log("market", market);
     const liquidityUSD = parseFloat(
       (market.cash - market.reserves) * market.underlyingPriceUSD
     );

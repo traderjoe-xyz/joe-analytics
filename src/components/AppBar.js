@@ -81,7 +81,6 @@ export default function AppBar({
   const matches = useMediaQuery(theme.breakpoints.up("sm"));
 
   function onToggleDarkMode() {
-    // console.log("toggleDarkMode");
     const value = !darkModeVar();
     darkModeVar(value);
     if (!value) {

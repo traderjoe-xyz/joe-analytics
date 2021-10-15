@@ -131,7 +131,6 @@ function LendingsPage() {
       mergedMarketDayDatas.push(data);
     }
   });
-  console.log("mergedMarketDayDatas", mergedMarketDayDatas);
 
   const marketChartDatas = mergedMarketDayDatas.reduce(
     (previousValue, currentValue) => {
