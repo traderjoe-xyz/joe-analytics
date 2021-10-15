@@ -16,15 +16,18 @@ export default function MarketTable({ markets, title }) {
   const theme = useTheme();
 
   let totalLiquidityUSD = 0;
-  const rows = markets
-    .map((market) => {
-      const liquidityUSD =
-        parseFloat((market.cash - market.reserves) * market.underlyingPriceUSD)
-      totalLiquidityUSD += liquidityUSD
-    const supplyAPY = 
-      decimalFormatter.format(parseFloat(market.supplyRate * 100).toFixed(2))
-    const borrowAPY = 
-      decimalFormatter.format(parseFloat(market.borrowRate * 100).toFixed(2))
+  const rows = markets.map((market) => {
+    console.log("market", market);
+    const liquidityUSD = parseFloat(
+      (market.cash - market.reserves) * market.underlyingPriceUSD
+    );
+    totalLiquidityUSD += liquidityUSD;
+    const supplyAPY = decimalFormatter.format(
+      parseFloat(market.supplyRate * 100).toFixed(2)
+    );
+    const borrowAPY = decimalFormatter.format(
+      parseFloat(market.borrowRate * 100).toFixed(2)
+    );
 
     return {
       ...market,
@@ -32,8 +35,8 @@ export default function MarketTable({ markets, title }) {
       supplyAPY: supplyAPY || 0,
       borrowAPY: borrowAPY || 0,
     };
-    });
-  
+  });
+
   return (
     <div className={classes.root}>
       <SortableTable
@@ -46,8 +49,14 @@ export default function MarketTable({ markets, title }) {
             render: (row, index) => (
               <Box display="flex" alignItems="center">
                 <TokenIcon id={row.underlyingAddress} />
-                <Link href={`/lending/${row.id}?tl=${totalLiquidityUSD.toFixed(0)}`}>
-                  <Typography variant="body2" style={{color: "#cdc5ff"}} noWrap>
+                <Link
+                  href={`/lending/${row.id}?tl=${totalLiquidityUSD.toFixed(0)}`}
+                >
+                  <Typography
+                    variant="body2"
+                    style={{ color: "#cdc5ff" }}
+                    noWrap
+                  >
                     {row.underlyingSymbol}
                   </Typography>
                 </Link>
@@ -64,7 +73,10 @@ export default function MarketTable({ markets, title }) {
             key: "totalSupply",
             align: "right",
             label: "Total Supply",
-            render: (row) => currencyFormatter.format(row.totalSupply * row.exchangeRate * row.underlyingPriceUSD),
+            render: (row) =>
+              currencyFormatter.format(
+                row.totalSupply * row.exchangeRate * row.underlyingPriceUSD
+              ),
           },
           {
             key: "supplyAPY",
@@ -76,7 +88,10 @@ export default function MarketTable({ markets, title }) {
             key: "totalBorrows",
             align: "right",
             label: "Total Borrows",
-            render: (row) => currencyFormatter.format(row.totalBorrows * row.underlyingPriceUSD),
+            render: (row) =>
+              currencyFormatter.format(
+                row.totalBorrows * row.underlyingPriceUSD
+              ),
           },
           {
             key: "borrowAPY",
