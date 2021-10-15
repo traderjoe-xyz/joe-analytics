@@ -24,7 +24,7 @@ import {
   TrendingUpOutlined,
   ViewStreamOutlined,
   WavesOutlined,
-  AccountBalanceOutlined
+  AccountBalanceOutlined,
 } from "@material-ui/icons";
 import {
   Box,
@@ -164,6 +164,17 @@ export default function AppNavigation() {
         </ListItem>
         <ListItem
           button
+          key="/lending"
+          selected={router.pathname.includes("/lending")}
+          onClick={() => router.push("/lending")}
+        >
+          <ListItemIcon>
+            <AccountBalanceOutlined />
+          </ListItemIcon>
+          <ListItemText primary="Lending" />
+        </ListItem>
+        <ListItem
+          button
           key="/portfolio"
           selected={router.pathname.includes("/portfolio")}
           onClick={() => {
@@ -179,17 +190,6 @@ export default function AppNavigation() {
             <AccountTreeOutlined />
           </ListItemIcon>
           <ListItemText primary="Portfolio" />
-        </ListItem>
-        <ListItem
-          button
-          key="/lending"
-          selected={router.pathname.includes("/lending")}
-          onClick={() => router.push("/lending")}
-        >
-          <ListItemIcon>
-            <AccountBalanceOutlined />
-          </ListItemIcon>
-          <ListItemText primary="Lending" />
         </ListItem>
       </List>
       <Dialog

@@ -70,7 +70,7 @@ function LendingPage() {
 
   const {
     data: { liquidationDayDatas },
-  } = useQuery(liquidationDayDatas,
+  } = useQuery(liquidationDayDatasQuery ,
     {
       variables: { 
         seizedAddress: [id] 
@@ -108,7 +108,7 @@ function LendingPage() {
     }
   });
 
-  const liquidationChartDatas = mergedLiquidationDayDatasx.reduce(
+  const liquidationChartDatas = mergedLiquidationDayDatas.reduce(
     (previousValue, currentValue) => {
       previousValue["underlyingCollateralSeizedAmountUSD"].unshift({
         date: currentValue.date,
