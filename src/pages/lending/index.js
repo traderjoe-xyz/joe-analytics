@@ -244,7 +244,7 @@ function LendingsPage() {
             <ParentSize>
               {({ width, height }) => (
                 <BarChart
-                  title="Total Supply Added Per Day"
+                  title="Total Supply Added"
                   data={marketChartDatas.totalSupplyUSD}
                   width={width}
                   height={height}
@@ -264,7 +264,7 @@ function LendingsPage() {
             <ParentSize>
               {({ width, height }) => (
                 <BarChart
-                  title="Total Borrows Added Per Day"
+                  title="Total Borrows Added"
                   data={marketChartDatas.totalBorrowsUSD}
                   width={width}
                   height={height}
