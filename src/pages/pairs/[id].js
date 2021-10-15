@@ -34,10 +34,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import { toChecksumAddress } from "web3-utils";
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
-
-dayjs.extend(utc)
 
 /*
  * TODO: disabled IntoTheBlock window widget
@@ -89,25 +85,11 @@ function PairPage(props) {
 
   const id = router.query.id.toLowerCase();
 
-  const FEE_RATE = 0.0025 // 0.25% of volume are fees
-
   const {
     data: { bundles },
   } = useQuery(avaxPriceQuery, {
     pollInterval: 60000,
   });
-
-  const utc24HoursAgo = dayjs()
-  .utc()
-  .startOf('hour')
-  .subtract(1, 'day')
-  .unix()
-
-  const utc48HoursAgo = dayjs()
-  .utc()
-  .startOf('hour')
-  .subtract(2, 'day')
-  .unix()
 
   const {
     data: { pair },
@@ -134,54 +116,51 @@ function PairPage(props) {
     pollInterval: 60000,
   });
 
-  /*
-    Note: Today refers to the last 24 hours from the User's current time, Yesterday refers to 48 hours ago to 24 hours ago
-  */
-  let volumeToday = 0;
-  let volumeYesterday = 0;
-  let txCountToday = 0;
-  let txCountYesterday = 0;
-  let reserveToday = pair.hourData && pair.hourData[0] ? Number(pair.hourData[0].reserveUSD) : 0;
-  let reserveYesterday = pair.hourData && pair.hourData[24] ? Number(pair.hourData[24].reserveUSD) : 0;
+  const volumeUSD =
+    pair?.volumeUSD === "0" ? pair?.untrackedVolumeUSD : pair?.volumeUSD;
 
-  for (let i = 0; i < pair.hourData?.length; i++) {
-    let volumeForHour = pair.hourData && pair.hourData[i] ? Number(pair.hourData[i].volumeUSD) : 0
-    if (volumeForHour === 0 && pair.hourData && pair.hourData[i]) {
-      volumeForHour = (Number(pair.hourData[i].volumeToken0) * Number(pair.token0Price)) + (Number(pair.hourData[i].volumeToken1) * Number(pair.token1Price))
-    } 
-    const txCountForHour = pair.hourData && pair.hourData[i] ? Number(pair.hourData[i].txCount) : 0
-    const date = pair.hourData && pair.hourData[i] ? Number(pair.hourData[i].date) : 0
-    if (date && date >= utc24HoursAgo) {
-      volumeToday += volumeForHour
-      txCountToday += txCountForHour
-    } else if (date && date >= utc48HoursAgo) {
-      volumeYesterday += volumeForHour
-      txCountYesterday += txCountForHour
-    }
-  }
+  const oneDayVolumeUSD =
+    pair?.oneDay?.volumeUSD === "0"
+      ? pair?.oneDay?.untrackedVolumeUSD
+      : pair?.oneDay?.volumeUSD;
 
-  const volumeChange = ((volumeToday - volumeYesterday) / volumeYesterday) * 100;
+  const twoDayVolumeUSD =
+    pair?.twoDay?.volumeUSD === "0"
+      ? pair?.twoDay?.untrackedVolumeUSD
+      : pair?.twoDay?.volumeUSD;
 
-  const fees = volumeToday * FEE_RATE;
+  const volume = volumeUSD - oneDayVolumeUSD;
+
+  const volumeYesterday = oneDayVolumeUSD - twoDayVolumeUSD;
+
+  const volumeChange = ((volume - volumeYesterday) / volumeYesterday) * 100;
+
+  const FEE_RATE = 0.0025;
+
+  const fees = volume * FEE_RATE;
 
   const feesYesterday = volumeYesterday * FEE_RATE;
 
-  const avgTradePriceToday = volumeToday / (txCountToday);
+  const avgTradePrice = volume / (pair?.txCount - pair?.oneDay?.txCount);
 
   const avgTradePriceYesturday =
-    volumeYesterday / (txCountYesterday);
+    volumeYesterday / (pair?.oneDay?.txCount - pair?.twoDay?.txCount);
 
   const avgTradePriceChange =
-    ((avgTradePriceToday - avgTradePriceYesturday) / avgTradePriceYesturday) * 100;
+    ((avgTradePrice - avgTradePriceYesturday) / avgTradePriceYesturday) * 100;
 
-  const utilisationToday = (volumeToday / reserveToday) * 100;
+  const utilisation = (volume / pair.reserveUSD) * 100;
 
-  const utilisationYesterday = (volumeYesterday / reserveYesterday) * 100;
+  const utilisationYesterday = (volumeYesterday / pair.oneDay.reserveUSD) * 100;
 
   const utilisationChange =
-    ((utilisationToday - utilisationYesterday) / utilisationYesterday) * 100;
+    ((utilisation - utilisationYesterday) / utilisationYesterday) * 100;
 
-  const txChange = ((txCountToday - txCountYesterday) / txCountYesterday) * 100;
+  const tx = pair.txCount - pair.oneDay.txCount;
+
+  const txYesterday = pair.oneDay.txCount - pair.twoDay.txCount;
+
+  const txChange = ((tx - txYesterday) / txYesterday) * 100;
 
   const chartDatas = pairDayDatas.reduce(
     (previousValue, currentValue) => {
@@ -209,8 +188,6 @@ function PairPage(props) {
     { liquidity: [], volume: [] }
   );
 
-  // console.log(pair);
-
   return (
     <AppShell>
       <Head>
@@ -228,7 +205,7 @@ function PairPage(props) {
           </Box>
           <Box display="flex" alignItems="center" className={classes.links}>
             <Link
-              href={`https://traderjoexyz.com/#/pool/${pair.token0.id}/${pair.token1.id}`}
+              href={`https://exchange.joe.defi/#/add/${pair.token0.id}/${pair.token1.id}`}
               target="_blank"
               variant="body1"
               className={classes.firstLink}
@@ -236,7 +213,7 @@ function PairPage(props) {
               Add Liquidity
             </Link>
             <Link
-              href={`https://traderjoexyz.com/#/trade`}
+              href={`https://exchange.joe.defi/#/swap?inputCurrency=${pair.token0.id}&outputCurrency=${pair.token1.id}`}
               target="_blank"
               variant="body1"
             >
@@ -347,8 +324,8 @@ function PairPage(props) {
             title="Liquidity (24h)"
             value={pair?.reserveUSD}
             difference={
-              ((reserveToday - reserveYesterday) /
-                reserveToday) *
+              ((pair?.reserveUSD - pair?.oneDay?.reserveUSD) /
+                pair?.oneDay?.reserveUSD) *
               100
             }
             format="currency"
@@ -357,7 +334,7 @@ function PairPage(props) {
         <Grid item xs={12} sm={6} md={4}>
           <KPI
             title="Volume (24h)"
-            value={volumeToday}
+            value={volume}
             difference={volumeChange}
             format="currency"
           />
@@ -377,7 +354,7 @@ function PairPage(props) {
         <Grid item xs={12} sm={6} md={4}>
           <KPI
             title="Tx (24h)"
-            value={txCountToday}
+            value={tx}
             difference={txChange}
             format="integer"
           />
@@ -385,7 +362,7 @@ function PairPage(props) {
         <Grid item xs={12} sm={6} md={4}>
           <KPI
             title="Avg. Trade (24h)"
-            value={avgTradePriceToday}
+            value={avgTradePrice}
             difference={avgTradePriceChange}
             format="currency"
           />
@@ -393,7 +370,7 @@ function PairPage(props) {
         <Grid item xs={12} sm={6} md={4}>
           <KPI
             title="Utilisation (24h)"
-            value={utilisationToday}
+            value={utilisation}
             difference={utilisationChange}
             format="percent"
           />
@@ -419,7 +396,7 @@ function PairPage(props) {
               label: `${pair.token1.symbol} Address`,
               maxWidth: "250px",
             },
-            { key: "etherscan", label: "Explorer", align: "right" },
+            { key: "etherscan", label: "Etherscan", align: "right" },
           ]}
           bodyCells={[
             <Typography variant="body2" noWrap>

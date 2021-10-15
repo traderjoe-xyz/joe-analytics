@@ -153,46 +153,15 @@ export const pairFieldsQuery = gql`
 `;
 
 export const pairQuery = gql`
-  query pairQuery($id: ID!, $dateAfter: Int! = 1622419200) {
+  query pairQuery($id: String!) {
     pair(id: $id) {
       ...pairFields
-      token0Price
-      token1Price
-      hourData(first: 168, where: { date_gt: $dateAfter }, orderBy: date, orderDirection: desc) {
-        volumeUSD
-        date
-        txCount
-        reserveUSD
-        volumeToken0
-        volumeToken1
-      }
+      oneDay @client
+      twoDay @client
     }
   }
   ${pairFieldsQuery}
 `;
-
-export const pairsQuery = gql`
-  query pairsQuery(
-    $first: Int! = 1000
-    $skip: Int! = 0
-    $orderBy: String! = "trackedReserveAVAX"
-    $orderDirection: String! = "desc"
-    $dateAfter: Int! = 1622419200
-  ) {
-    pairs(first: $first, skip: $skip, orderBy: $orderBy, orderDirection: $orderDirection) {
-      ...pairFields
-      token0Price
-      token1Price
-      hourData(first: 168, where: { date_gt: $dateAfter }, orderBy: date, orderDirection: desc) {
-        volumeUSD
-        date
-        volumeToken0
-        volumeToken1
-      }
-    }
-  }
-  ${pairFieldsQuery}
-`
 
 export const pairTimeTravelQuery = gql`
   query pairTimeTravelQuery($id: String!, $block: Block_height!) {
@@ -278,6 +247,21 @@ export const pairSubsetQuery = gql`
       orderDirection: $orderDirection
       where: { id_in: $pairAddresses }
     ) {
+      ...pairFields
+      oneDay @client
+      sevenDay @client
+    }
+  }
+  ${pairFieldsQuery}
+`;
+
+export const pairsQuery = gql`
+  query pairsQuery(
+    $first: Int! = 1000
+    $orderBy: String! = "trackedReserveAVAX"
+    $orderDirection: String! = "desc"
+  ) {
+    pairs(first: $first, orderBy: $orderBy, orderDirection: $orderDirection) {
       ...pairFields
       oneDay @client
       sevenDay @client

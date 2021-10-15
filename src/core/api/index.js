@@ -19,6 +19,7 @@ export * from "./blocks";
 export * from "./exchange";
 export * from "./masterchef";
 export * from "./pages";
+export * from "./lending";
 
 export async function preload() {
   // Pre-load anything that might be needed globally (stuff for search bar etc...)
@@ -134,8 +135,6 @@ export async function getPair(id, client = getApollo()) {
     },
     fetchPolicy: "no-cache",
   });
-
-  // console.log({ oneDayPair, twoDayPair });
 
   await client.cache.writeQuery({
     query: pairQuery,

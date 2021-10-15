@@ -4,21 +4,11 @@ import { getApollo, getPairs, pairsQuery, useInterval } from "app/core";
 import Head from "next/head";
 import React from "react";
 import { useQuery } from "@apollo/client";
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
-
-dayjs.extend(utc)
 
 function PairsPage() {
-  const utcSevenDayBack = dayjs()
-  .utc()
-  .startOf('hour')
-  .subtract(7, 'day')
-  .unix()
-
   const {
     data: { pairs },
-  } = useQuery(pairsQuery, { dateAfter: utcSevenDayBack });
+  } = useQuery(pairsQuery);
   useInterval(getPairs, 60000);
   return (
     <AppShell>

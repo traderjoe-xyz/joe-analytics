@@ -3,9 +3,11 @@
     "graph_masterchef_uri": "https://api.thegraph.com/subgraphs/name/traderjoe-xyz/masterchefv2-rinkeby",
     "graph_exchange_uri": "https://api.thegraph.com/subgraphs/name/traderjoe-xyz/exchange-rinkeby-ii",
     "graph_blocks_uri": "https://api.thegraph.com/subgraphs/name/blocklytics/rinkeby-blocks", 
+    "graph_lending_uri": "https://api.thegraph.com/subgraphs/name/traderjoe-xyz/lending", 
 
     "factory_address": "0xBB95aa2089A3494e466D3CBE6d6c21eEEFD7b337",
     "masterchef_address": "0x927bE1425F2C3599Ced2146459f6491eE450848b", 
     "bar_address": "0x0CC47Aa1252f25FD95b65F19C2fd6dB33366A557", 
-    "joe_token_address": "0xDDF06D89C908bC38e03067d65408D632fDA4fd9d"
+    "joe_token_address": "0xDDF06D89C908bC38e03067d65408D632fDA4fd9d",
+    "lending_address": "0x3d5BC3c8d13dcB8bF317092d84783c2697AE9258"
 }
