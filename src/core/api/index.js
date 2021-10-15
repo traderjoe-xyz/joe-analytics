@@ -136,8 +136,6 @@ export async function getPair(id, client = getApollo()) {
     fetchPolicy: "no-cache",
   });
 
-  // console.log({ oneDayPair, twoDayPair });
-
   await client.cache.writeQuery({
     query: pairQuery,
     variables: {
