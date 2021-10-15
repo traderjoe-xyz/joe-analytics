@@ -13,6 +13,7 @@ import {
   decimalFormatter,
   marketQuery,
   marketDayDatasQuery,
+  liquidationDayDatasQuery,
   useInterval,
 } from "app/core";
 import {
@@ -67,7 +68,17 @@ function LendingPage() {
     }
   );
 
-  const chartDatas = marketDayDatas.reduce(
+  const {
+    data: { liquidationDayDatas },
+  } = useQuery(liquidationDayDatas,
+    {
+      variables: { 
+        seizedAddress: [id] 
+      }
+    }
+  );
+
+  const marketChartDatas = marketDayDatas.reduce(
     (previousValue, currentValue) => {
       previousValue["totalBorrowsUSD"].unshift({
         date: currentValue.date,
@@ -80,6 +91,32 @@ function LendingPage() {
       return previousValue;
     },
     { totalBorrowsUSD: [], totalSupplyUSD: [] }
+  );
+
+  let mergedLiquidationDayDatas = []
+
+  liquidationDayDatas.forEach(data => {
+    let existing = mergedLiquidationDayDatas.filter(function(pastData, i) {
+      return pastData.date == data.date;
+    });
+    if (existing.length) {
+      let existingIndex = mergedLiquidationDayDatas.indexOf(existing[0]);
+      mergedLiquidationDayDatas[existingIndex].underlyingCollateralSeizedAmountUSD = Number(mergedLiquidationDayDatas[existingIndex].underlyingCollateralSeizedAmountUSD) + Number(data.underlyingCollateralSeizedAmountUSD)
+    } else {
+      data = {date: data.date, underlyingCollateralSeizedAmountUSD: Number(data.underlyingCollateralSeizedAmountUSD)};
+      mergedLiquidationDayDatas.push(data);
+    }
+  });
+
+  const liquidationChartDatas = mergedLiquidationDayDatasx.reduce(
+    (previousValue, currentValue) => {
+      previousValue["underlyingCollateralSeizedAmountUSD"].unshift({
+        date: currentValue.date,
+        value: parseFloat(currentValue.underlyingCollateralSeizedAmountUSD),
+      });
+      return previousValue;
+    },
+    { underlyingCollateralSeizedAmountUSD: [] }
   );
 
   useInterval(async () => {
@@ -137,7 +174,7 @@ function LendingPage() {
                   {({ width, height }) => (
                     <BarChart
                       title="Total Supply (USD)"
-                      data={chartDatas.totalSupplyUSD}
+                      data={marketChartDatas.totalSupplyUSD}
                       width={width}
                       height={height}
                       margin={{ top: 125, right: 0, bottom: 0, left: 0 }}
@@ -153,7 +190,7 @@ function LendingPage() {
             <CardContent style={{display: "flex"}}>
               <Box>
                 <Typography variant="subtitle2" component="div">
-                  Total Borrow
+                  Total Borrows
                 </Typography>
                 <BorrowText variant="h4">
                   {currencyFormatter.format(market.totalBorrows * market.underlyingPriceUSD)}
@@ -170,23 +207,23 @@ function LendingPage() {
             </CardContent>
           </Card>
           <Paper
-                variant="outlined"
-                style={{ height: 300, marginTop: "40px", position: "relative"}}
-              >
-                <ParentSize>
-                  {({ width, height }) => (
-                    <BarChart
-                      title="Total Borrows (USD)"
-                      data={chartDatas.totalBorrowsUSD}
-                      width={width}
-                      height={height}
-                      margin={{ top: 125, right: 0, bottom: 0, left: 0 }}
-                      tooltipDisabled
-                      overlayEnabled
-                    />
-                  )}
-                </ParentSize>
-              </Paper>
+            variant="outlined"
+            style={{ height: 300, marginTop: "40px", position: "relative"}}
+          >
+            <ParentSize>
+              {({ width, height }) => (
+                <BarChart
+                  title="Total Borrows (USD)"
+                  data={marketChartDatas.totalBorrowsUSD}
+                  width={width}
+                  height={height}
+                  margin={{ top: 125, right: 0, bottom: 0, left: 0 }}
+                  tooltipDisabled
+                  overlayEnabled
+                />
+              )}
+            </ParentSize>
+          </Paper>
         </Grid>
       </Grid>
                     
@@ -222,6 +259,25 @@ function LendingPage() {
           </Card>
         </Grid>
       </Grid>
+
+      <Paper
+        variant="outlined"
+        style={{ height: 300, marginTop: "40px", position: "relative"}}
+      >
+        <ParentSize>
+          {({ width, height }) => (
+            <BarChart
+              title="Total Liquidations (USD)"
+              data={liquidationChartDatas.underlyingCollateralSeizedAmountUSD}
+              width={width}
+              height={height}
+              margin={{ top: 125, right: 0, bottom: 0, left: 0 }}
+              tooltipDisabled
+              overlayEnabled
+            />
+          )}
+        </ParentSize>
+      </Paper>
 
       <Grid container spacing={4} style={{marginTop: "30px"}}>
         <Grid item xs={12} md={4}>
@@ -276,6 +332,14 @@ export async function getStaticProps({ params }) {
       markets: [id]
     }
   });
+
+  await client.query({
+    query: liquidationDayDatasQuery,
+    variables: {
+      seizedAddress: [id]
+    }
+  });
+
 
   return {
     props: {

@@ -75,7 +75,7 @@ export default function MarketTable({ markets, title }) {
           {
             key: "totalBorrows",
             align: "right",
-            label: "Total Borrow",
+            label: "Total Borrows",
             render: (row) => currencyFormatter.format(row.totalBorrows * row.underlyingPriceUSD),
           },
           {
