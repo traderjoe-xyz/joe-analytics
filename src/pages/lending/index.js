@@ -122,11 +122,15 @@ function LendingsPage() {
       mergedMarketDayDatas[existingIndex].totalBorrowsUSD =
         Number(mergedMarketDayDatas[existingIndex].totalBorrowsUSD) +
         Number(data.totalBorrowsUSD);
+      mergedMarketDayDatas[existingIndex].totalReservesUSD =
+        Number(mergedMarketDayDatas[existingIndex].totalReservesUSD) +
+        Number(data.totalReservesUSD);
     } else {
       data = {
         date: data.date,
         totalSupplyUSD: Number(data.totalSupplyUSD),
         totalBorrowsUSD: Number(data.totalBorrowsUSD),
+        totalReservesUSD: Number(data.totalReservesUSD),
       };
       mergedMarketDayDatas.push(data);
     }
@@ -149,7 +153,7 @@ function LendingsPage() {
 
     cumulativeSupplyUSD.push({date: data.date, value: Number(data.totalSupplyUSD)})
     cumulativeBorrowsUSD.push({date: data.date, value: Number(data.totalBorrowsUSD)})
-    cumulativeReservesUSD.push({date: data.date, value: Number(data.cumulativeReservesUSD)})
+    cumulativeReservesUSD.push({date: data.date, value: Number(data.totalReservesUSD)})
   })
 
   const marketChartDatas = { cumulativeBorrowsUSD, cumulativeSupplyUSD, cumulativeReservesUSD }
@@ -200,16 +204,6 @@ function LendingsPage() {
       <Head>
         <title>Lending | Trader Joe Analytics</title>
       </Head>
-      <Card style={{ boxShadow: "none" }}>
-        <CardContent>
-          <Typography variant="subtitle2" component="div">
-            Total Reserves
-          </Typography>
-          <Typography variant="h6">
-            {currencyFormatter.format(totalReservesUSD)}
-          </Typography>
-        </CardContent>
-      </Card>
       <Grid container spacing={6} style={{ marginBottom: "10px" }}>
         <Grid item xs={12} md={6}>
           <Card variant="outlined" style={{ backgroundColor: "#2b281e" }}>
@@ -352,7 +346,7 @@ function LendingsPage() {
         </Grid>
       </Grid>
       <Grid container spacing={6}>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={6} style={{ paddingBottom: "0" }}>
           <Paper
             variant="outlined"
             style={{
@@ -377,7 +371,7 @@ function LendingsPage() {
             </ParentSize>
           </Paper>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={6} style={{ paddingBottom: "0" }}>
           <Paper
             variant="outlined"
             style={{
@@ -402,7 +396,7 @@ function LendingsPage() {
             </ParentSize>
           </Paper>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={6} style={{ paddingTop: "0" }}>
           <Paper
             variant="outlined"
             style={{
@@ -414,7 +408,7 @@ function LendingsPage() {
           >
             <ParentSize>
               {({ width, height }) => (
-                <BarChart
+                <AreaChart
                   title="Total Reserves"
                   data={
                     marketChartDatas.cumulativeReservesUSD
@@ -429,7 +423,7 @@ function LendingsPage() {
             </ParentSize>
           </Paper>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={6} style={{ paddingTop: "0" }}>
           <Paper
             variant="outlined"
             style={{
