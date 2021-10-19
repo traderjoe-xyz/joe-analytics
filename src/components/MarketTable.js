@@ -48,14 +48,8 @@ export default function MarketTable({ markets, title }) {
             render: (row, index) => (
               <Box display="flex" alignItems="center">
                 <TokenIcon id={row.underlyingAddress} />
-                <Link
-                  href={`/lending/${row.id}?tl=${totalLiquidityUSD.toFixed(0)}`}
-                >
-                  <Typography
-                    variant="body2"
-                    style={{ color: "#cdc5ff" }}
-                    noWrap
-                  >
+                <Link href={`/lending/${row.id}?tl=${totalLiquidityUSD.toFixed(0)}`}>
+                  <Typography variant="body2" style={{color: "#8473e6"}} noWrap>
                     {row.underlyingSymbol}
                   </Typography>
                 </Link>

@@ -193,7 +193,7 @@ function LendingsPage() {
       <Head>
         <title>Lending | Trader Joe Analytics</title>
       </Head>
-      <Card>
+      <Card style={{ boxShadow: "none" }}>
         <CardContent>
           <Typography variant="subtitle2" component="div">
             Total Reserves
@@ -207,7 +207,7 @@ function LendingsPage() {
         <Grid item xs={12} md={6}>
           <Card variant="outlined" style={{ backgroundColor: "#2b281e" }}>
             <CardContent>
-              <Typography variant="subtitle2" component="div">
+              <Typography variant="subtitle2" component="div" style={{color: "white"}}>
                 Total Supply
               </Typography>
               <SupplyText variant="h4">
@@ -215,7 +215,7 @@ function LendingsPage() {
               </SupplyText>
             </CardContent>
             <CardContent>
-              <Typography>Top 3 Markets</Typography>
+              <Typography style={{color: "white"}}>Top 3 Markets</Typography>
               <List
                 sx={{
                   width: "100%",
@@ -238,7 +238,7 @@ function LendingsPage() {
                           mr={3}
                         >
                           <SmallTokenIcon id={market.underlyingAddress} />
-                          <Typography variant="body2">
+                          <Typography variant="body2" style={{color: "white"}}>
                             {market.underlyingSymbol}
                           </Typography>
                         </Box>
@@ -255,7 +255,7 @@ function LendingsPage() {
                           }
                         />
                         <Box style={{ minWidth: "80px" }} ml={3}>
-                          <Typography>
+                          <Typography style={{color: "white"}}>
                             {" "}
                             {decimalFormatter.format(
                               (
@@ -281,7 +281,7 @@ function LendingsPage() {
         <Grid item xs={12} md={6}>
           <Card variant="outlined" style={{ backgroundColor: "#1e2738" }}>
             <CardContent>
-              <Typography variant="subtitle2" component="div">
+              <Typography variant="subtitle2" component="div" style={{color: "white"}}>
                 Total Borrows
               </Typography>
               <BorrowText variant="h4">
@@ -289,7 +289,7 @@ function LendingsPage() {
               </BorrowText>
             </CardContent>
             <CardContent>
-              <Typography ml={3}>Top 3 Markets</Typography>
+              <Typography ml={3} style={{color: "white"}}>Top 3 Markets</Typography>
               <List style={{ width: "100%" }}>
                 {topBorrowMarkets.map((market) => {
                   return (
@@ -306,7 +306,7 @@ function LendingsPage() {
                           mr={3}
                         >
                           <SmallTokenIcon id={market.underlyingAddress} />
-                          <Typography variant="body2">
+                          <Typography variant="body2" style={{color: "white"}}>
                             {market.underlyingSymbol}
                           </Typography>
                         </Box>
@@ -321,7 +321,7 @@ function LendingsPage() {
                           }
                         />
                         <Box style={{ minWidth: "80px" }} ml={3}>
-                          <Typography>
+                          <Typography style={{color: "white"}}>
                             {" "}
                             {decimalFormatter.format(
                               (
