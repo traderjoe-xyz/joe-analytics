@@ -149,7 +149,7 @@ function LendingPage() {
           <Card variant="outlined" style={{ backgroundColor: "#2b281e" }}>
             <CardContent style={{display: "flex", displayDirection: "col"}}>
               <Box>
-                <Typography variant="subtitle2" component="div">
+                <Typography variant="subtitle2" component="div" style={{color: "white"}}>
                   Total Supply
                 </Typography>
                 <SupplyText variant="h4">
@@ -157,7 +157,7 @@ function LendingPage() {
                 </SupplyText>
               </Box>
               <Box ml={6} style={{marginLeft: "auto"}}>
-                <Typography variant="subtitle2" component="div">
+                <Typography variant="subtitle2" component="div" style={{color: "white"}}>
                   Supply APY
                 </Typography>
                 <SupplyText variant="h4">
@@ -189,7 +189,7 @@ function LendingPage() {
           <Card variant="outlined" style={{ backgroundColor: "#1e2738"}}>
             <CardContent style={{display: "flex"}}>
               <Box>
-                <Typography variant="subtitle2" component="div">
+                <Typography variant="subtitle2" component="div" style={{color: "white"}}>
                   Total Borrows
                 </Typography>
                 <BorrowText variant="h4">
@@ -197,7 +197,7 @@ function LendingPage() {
                 </BorrowText>
               </Box>
               <Box ml={6} style={{marginLeft: "auto"}}>
-                <Typography variant="subtitle2" component="div">
+                <Typography variant="subtitle2" component="div" style={{color: "white"}}>
                   Borrow APY
                 </Typography>
                 <BorrowText variant="h4">
@@ -232,7 +232,7 @@ function LendingPage() {
           <Card variant="outlined" style={{ display: "flex", alignItems: "center", backgroundColor: "#221e38" }}>
             <CardContent style={{display: "flex", displayDirection: "col", marginRight: "100px"}}>
               <Box width="150px">
-                <Typography variant="subtitle2" component="div" nowrap>
+                <Typography variant="subtitle2" component="div" style={{color: "white"}} nowrap>
                   Available Liquidity
                 </Typography>
                 <SupplyText variant="h4" style={{ color: "#cdc5ff"}} >
@@ -247,7 +247,7 @@ function LendingPage() {
           <Card variant="outlined" style={{ display: "flex", alignItems: "center", backgroundColor: "#221e38" }}>
             <CardContent style={{display: "flex", displayDirection: "col", marginRight: "20px"}}>
               <Box width="150px">
-                <Typography variant="subtitle2" component="div" >
+                <Typography variant="subtitle2" component="div" style={{color: "white"}} >
                   Utilization Rate
                 </Typography>
                 <BorrowText variant="h4" style={{ color: "#cdc5ff" }}>
