@@ -138,17 +138,21 @@ function LendingsPage() {
 
   let cumulativeBorrowsUSD = []
   let cumulativeSupplyUSD = []
+  let cumulativeReservesUSD = []
+
   mergedMarketDayDatas.forEach((data, index) => {
     if (index > 0) {
       data.totalSupplyUSD += mergedMarketDayDatas[index - 1].totalSupplyUSD
       data.totalBorrowsUSD += mergedMarketDayDatas[index - 1].totalBorrowsUSD
+      data.totalReservesUSD += mergedMarketDayDatas[index - 1].totalReservesUSD
     }
 
     cumulativeSupplyUSD.push({date: data.date, value: Number(data.totalSupplyUSD)})
     cumulativeBorrowsUSD.push({date: data.date, value: Number(data.totalBorrowsUSD)})
+    cumulativeReservesUSD.push({date: data.date, value: Number(data.cumulativeReservesUSD)})
   })
 
-  const marketChartDatas = { cumulativeBorrowsUSD, cumulativeSupplyUSD }
+  const marketChartDatas = { cumulativeBorrowsUSD, cumulativeSupplyUSD, cumulativeReservesUSD }
 
   useInterval(async () => {
     await Promise.all([getMarkets]);
@@ -348,7 +352,7 @@ function LendingsPage() {
         </Grid>
       </Grid>
       <Grid container spacing={6}>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={6}>
           <Paper
             variant="outlined"
             style={{
@@ -373,7 +377,7 @@ function LendingsPage() {
             </ParentSize>
           </Paper>
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={6}>
           <Paper
             variant="outlined"
             style={{
@@ -398,7 +402,34 @@ function LendingsPage() {
             </ParentSize>
           </Paper>
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={6}>
+          <Paper
+            variant="outlined"
+            style={{
+              height: 300,
+              marginTop: "30px",
+              marginBottom: "40px",
+              position: "relative",
+            }}
+          >
+            <ParentSize>
+              {({ width, height }) => (
+                <BarChart
+                  title="Total Reserves"
+                  data={
+                    marketChartDatas.cumulativeReservesUSD
+                  }
+                  width={width}
+                  height={height}
+                  margin={{ top: 125, right: 0, bottom: 0, left: 0 }}
+                  tooltipDisabled
+                  overlayEnabled
+                />
+              )}
+            </ParentSize>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} md={6}>
           <Paper
             variant="outlined"
             style={{
