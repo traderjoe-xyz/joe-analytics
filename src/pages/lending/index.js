@@ -1,5 +1,5 @@
 import { useInterval, currencyFormatter, decimalFormatter } from "app/core";
-import { AppShell, BarChart } from "app/components";
+import { AppShell, BarChart, AreaChart } from "app/components";
 import {
   Card,
   CardContent,
@@ -132,20 +132,23 @@ function LendingsPage() {
     }
   });
 
-  const marketChartDatas = mergedMarketDayDatas.reduce(
-    (previousValue, currentValue) => {
-      previousValue["totalSupplyUSD"].unshift({
-        date: currentValue.date,
-        value: parseFloat(currentValue.totalSupplyUSD) || 0,
-      });
-      previousValue["totalBorrowsUSD"].unshift({
-        date: currentValue.date,
-        value: parseFloat(currentValue.totalBorrowsUSD) || 0,
-      });
-      return previousValue || 0;
-    },
-    { totalBorrowsUSD: [], totalSupplyUSD: [] }
-  );
+  mergedMarketDayDatas = mergedMarketDayDatas.sort((a, b) =>
+    Number(a.date) > Number(b.date) ? 1 : -1
+  )
+
+  let cumulativeBorrowsUSD = []
+  let cumulativeSupplyUSD = []
+  mergedMarketDayDatas.forEach((data, index) => {
+    if (index > 0) {
+      data.totalSupplyUSD += mergedMarketDayDatas[index - 1].totalSupplyUSD
+      data.totalBorrowsUSD += mergedMarketDayDatas[index - 1].totalBorrowsUSD
+    }
+
+    cumulativeSupplyUSD.push({date: data.date, value: Number(data.totalSupplyUSD)})
+    cumulativeBorrowsUSD.push({date: data.date, value: Number(data.totalBorrowsUSD)})
+  })
+
+  const marketChartDatas = { cumulativeBorrowsUSD, cumulativeSupplyUSD }
 
   useInterval(async () => {
     await Promise.all([getMarkets]);
@@ -357,9 +360,9 @@ function LendingsPage() {
           >
             <ParentSize>
               {({ width, height }) => (
-                <BarChart
-                  title="Total Supply Added"
-                  data={marketChartDatas.totalSupplyUSD}
+                <AreaChart
+                  title="Total Supply"
+                  data={marketChartDatas.cumulativeSupplyUSD}
                   width={width}
                   height={height}
                   margin={{ top: 125, right: 0, bottom: 0, left: 0 }}
@@ -382,9 +385,9 @@ function LendingsPage() {
           >
             <ParentSize>
               {({ width, height }) => (
-                <BarChart
-                  title="Total Borrows Added"
-                  data={marketChartDatas.totalBorrowsUSD}
+                <AreaChart
+                  title="Total Borrows"
+                  data={marketChartDatas.cumulativeBorrowsUSD}
                   width={width}
                   height={height}
                   margin={{ top: 125, right: 0, bottom: 0, left: 0 }}
