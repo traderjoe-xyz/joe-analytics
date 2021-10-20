@@ -80,7 +80,7 @@ function TokenPage() {
 
   const id = router.query.id.toLowerCase();
 
-  const FEE_RATE = 0.0025 // 0.25% of volume are fees
+  const FEE_RATE = 0.0025; // 0.25% of volume are fees
 
   const {
     data: { token },
@@ -292,7 +292,7 @@ function TokenPage() {
             { key: "name", label: "Name" },
             { key: "symbol", label: "Symbol" },
             { key: "address", label: "Address" },
-            { key: "etherscan", label: "Explorer", align: "right" },
+            { key: "explorer", label: "Explorer", align: "right" },
           ]}
           bodyCells={[
             token.name,
