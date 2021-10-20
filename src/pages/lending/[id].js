@@ -93,16 +93,20 @@ function LendingPage() {
   let cumulativeSupplyUSD = []
   let cumulativeReservesUSD = []
 
-  sortedMarketDayDatas.forEach((data, index) => {
-    if (index > 0) {
-      data.totalSupplyUSD = Number(data.totalSupplyUSD) + Number(sortedMarketDayDatas[index - 1].totalSupplyUSD)
-      data.totalBorrowsUSD = Number(data.totalBorrowsUSD) + Number(sortedMarketDayDatas[index - 1].totalBorrowsUSD)
-      data.totalReservesUSD = Number(data.totalReservesUSD) + Number(sortedMarketDayDatas[index - 1].totalReservesUSD)
-    }
-    cumulativeSupplyUSD.push({date: data.date, value: Number(data.totalSupplyUSD)})
-    cumulativeBorrowsUSD.push({date: data.date, value: Number(data.totalBorrowsUSD)})
-    cumulativeReservesUSD.push({date: data.date, value: Number(data.totalReservesUSD)})
-  })
+  sortedMarketDayDatas.forEach((data) => {
+    cumulativeSupplyUSD.push({
+      date: data.date,
+      value: Number(data.totalSupplyUSD),
+    });
+    cumulativeBorrowsUSD.push({
+      date: data.date,
+      value: Number(data.totalBorrowsUSD),
+    });
+    cumulativeReservesUSD.push({
+      date: data.date,
+      value: Number(data.totalReservesUSD),
+    });
+  });
 
   const marketChartDatas = { cumulativeBorrowsUSD, cumulativeSupplyUSD, cumulativeReservesUSD }
   let mergedLiquidationDayDatas = []
