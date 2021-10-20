@@ -178,11 +178,6 @@ function LendingsPage() {
       Number(
         market.totalSupply * market.exchangeRate * market.underlyingPriceUSD
       ) || 0;
-    totalReservesUSD +=
-      Number(market.reserves * market.underlyingPriceUSD) || 0;
-    totalBorrows += Number(market.totalBorrows) || 0;
-    totalSupply += Number(market.totalSupply) || 0;
-    totalReserves += Number(market.reserves) || 0;
   });
 
   const topSupplyMarkets = [...markets]
