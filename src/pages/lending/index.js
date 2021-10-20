@@ -148,7 +148,6 @@ function LendingsPage() {
     if (index > 0) {
       data.totalSupplyUSD += mergedMarketDayDatas[index - 1].totalSupplyUSD
       data.totalBorrowsUSD += mergedMarketDayDatas[index - 1].totalBorrowsUSD
-      data.totalReservesUSD += mergedMarketDayDatas[index - 1].totalReservesUSD
     }
 
     cumulativeSupplyUSD.push({date: data.date, value: Number(data.totalSupplyUSD)})
