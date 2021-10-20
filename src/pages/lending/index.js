@@ -138,36 +138,39 @@ function LendingsPage() {
 
   mergedMarketDayDatas = mergedMarketDayDatas.sort((a, b) =>
     Number(a.date) > Number(b.date) ? 1 : -1
-  )
+  );
 
-  let cumulativeBorrowsUSD = []
-  let cumulativeSupplyUSD = []
-  let cumulativeReservesUSD = []
+  let cumulativeBorrowsUSD = [];
+  let cumulativeSupplyUSD = [];
+  let cumulativeReservesUSD = [];
 
   mergedMarketDayDatas.forEach((data, index) => {
-    if (index > 0) {
-      data.totalSupplyUSD += mergedMarketDayDatas[index - 1].totalSupplyUSD
-      data.totalBorrowsUSD += mergedMarketDayDatas[index - 1].totalBorrowsUSD
-      data.totalReservesUSD += mergedMarketDayDatas[index - 1].totalReservesUSD
-    }
+    cumulativeSupplyUSD.push({
+      date: data.date,
+      value: Number(data.totalSupplyUSD),
+    });
+    cumulativeBorrowsUSD.push({
+      date: data.date,
+      value: Number(data.totalBorrowsUSD),
+    });
+    cumulativeReservesUSD.push({
+      date: data.date,
+      value: Number(data.totalReservesUSD),
+    });
+  });
 
-    cumulativeSupplyUSD.push({date: data.date, value: Number(data.totalSupplyUSD)})
-    cumulativeBorrowsUSD.push({date: data.date, value: Number(data.totalBorrowsUSD)})
-    cumulativeReservesUSD.push({date: data.date, value: Number(data.totalReservesUSD)})
-  })
-
-  const marketChartDatas = { cumulativeBorrowsUSD, cumulativeSupplyUSD, cumulativeReservesUSD }
+  const marketChartDatas = {
+    cumulativeBorrowsUSD,
+    cumulativeSupplyUSD,
+    cumulativeReservesUSD,
+  };
 
   useInterval(async () => {
     await Promise.all([getMarkets]);
   }, 60000);
 
-  let totalBorrows = 0;
-  let totalSupply = 0;
-  let totalReserves = 0;
   let totalBorrowsUSD = 0;
   let totalSupplyUSD = 0;
-  let totalReservesUSD = 0;
   markets.forEach((market) => {
     totalBorrowsUSD +=
       Number(market.totalBorrows * market.underlyingPriceUSD) || 0;
@@ -208,7 +211,11 @@ function LendingsPage() {
         <Grid item xs={12} md={6}>
           <Card variant="outlined" style={{ backgroundColor: "#2b281e" }}>
             <CardContent>
-              <Typography variant="subtitle2" component="div" style={{color: "white"}}>
+              <Typography
+                variant="subtitle2"
+                component="div"
+                style={{ color: "white" }}
+              >
                 Total Supply
               </Typography>
               <SupplyText variant="h4">
@@ -216,7 +223,7 @@ function LendingsPage() {
               </SupplyText>
             </CardContent>
             <CardContent>
-              <Typography style={{color: "white"}}>Top 3 Markets</Typography>
+              <Typography style={{ color: "white" }}>Top 3 Markets</Typography>
               <List
                 sx={{
                   width: "100%",
@@ -239,7 +246,10 @@ function LendingsPage() {
                           mr={3}
                         >
                           <SmallTokenIcon id={market.underlyingAddress} />
-                          <Typography variant="body2" style={{color: "white"}}>
+                          <Typography
+                            variant="body2"
+                            style={{ color: "white" }}
+                          >
                             {market.underlyingSymbol}
                           </Typography>
                         </Box>
@@ -256,7 +266,7 @@ function LendingsPage() {
                           }
                         />
                         <Box style={{ minWidth: "80px" }} ml={3}>
-                          <Typography style={{color: "white"}}>
+                          <Typography style={{ color: "white" }}>
                             {" "}
                             {decimalFormatter.format(
                               (
@@ -282,7 +292,11 @@ function LendingsPage() {
         <Grid item xs={12} md={6}>
           <Card variant="outlined" style={{ backgroundColor: "#1e2738" }}>
             <CardContent>
-              <Typography variant="subtitle2" component="div" style={{color: "white"}}>
+              <Typography
+                variant="subtitle2"
+                component="div"
+                style={{ color: "white" }}
+              >
                 Total Borrows
               </Typography>
               <BorrowText variant="h4">
@@ -290,7 +304,9 @@ function LendingsPage() {
               </BorrowText>
             </CardContent>
             <CardContent>
-              <Typography ml={3} style={{color: "white"}}>Top 3 Markets</Typography>
+              <Typography ml={3} style={{ color: "white" }}>
+                Top 3 Markets
+              </Typography>
               <List style={{ width: "100%" }}>
                 {topBorrowMarkets.map((market) => {
                   return (
@@ -307,7 +323,10 @@ function LendingsPage() {
                           mr={3}
                         >
                           <SmallTokenIcon id={market.underlyingAddress} />
-                          <Typography variant="body2" style={{color: "white"}}>
+                          <Typography
+                            variant="body2"
+                            style={{ color: "white" }}
+                          >
                             {market.underlyingSymbol}
                           </Typography>
                         </Box>
@@ -322,7 +341,7 @@ function LendingsPage() {
                           }
                         />
                         <Box style={{ minWidth: "80px" }} ml={3}>
-                          <Typography style={{color: "white"}}>
+                          <Typography style={{ color: "white" }}>
                             {" "}
                             {decimalFormatter.format(
                               (
@@ -410,9 +429,7 @@ function LendingsPage() {
               {({ width, height }) => (
                 <AreaChart
                   title="Total Reserves"
-                  data={
-                    marketChartDatas.cumulativeReservesUSD
-                  }
+                  data={marketChartDatas.cumulativeReservesUSD}
                   width={width}
                   height={height}
                   margin={{ top: 125, right: 0, bottom: 0, left: 0 }}
