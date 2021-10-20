@@ -78,11 +78,22 @@ function LendingPage() {
     }
   );
 
-  let cumulativeBorrowsUSD = []
-  let cumulativeSupplyUSD = []
-  let cumulativeReservesUSD = []
+  const sortedMarketDayDatas = marketDayDatas.map(data => {
+    return {
+      date: data.date,
+      totalSupplyUSD: data.totalSupplyUSD,
+      totalBorrowsUSD: data.totalBorrowsUSD,
+      totalReservesUSD: data.totalReservesUSD
+    }
+  }).sort((a, b) =>
+    Number(a.date) > Number(b.date) ? 1 : -1
+  )
 
-  marketDayDatas.forEach((data) => {
+  let cumulativeBorrowsUSD = [];
+  let cumulativeSupplyUSD = [];
+  let cumulativeReservesUSD = [];
+
+  sortedMarketDayDatas.forEach((data) => {
     cumulativeSupplyUSD.push({
       date: data.date,
       value: Number(data.totalSupplyUSD),
