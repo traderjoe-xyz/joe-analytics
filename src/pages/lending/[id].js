@@ -78,22 +78,11 @@ function LendingPage() {
     }
   );
 
-  const sortedMarketDayDatas = marketDayDatas.map(data => {
-    return {
-      date: data.date,
-      totalSupplyUSD: data.totalSupplyUSD,
-      totalBorrowsUSD: data.totalBorrowsUSD,
-      totalReservesUSD: data.totalReservesUSD
-    }
-  }).sort((a, b) =>
-    Number(a.date) > Number(b.date) ? 1 : -1
-  )
-
   let cumulativeBorrowsUSD = []
   let cumulativeSupplyUSD = []
   let cumulativeReservesUSD = []
 
-  sortedMarketDayDatas.forEach((data) => {
+  marketDayDatas.forEach((data) => {
     cumulativeSupplyUSD.push({
       date: data.date,
       value: Number(data.totalSupplyUSD),
@@ -109,6 +98,7 @@ function LendingPage() {
   });
 
   const marketChartDatas = { cumulativeBorrowsUSD, cumulativeSupplyUSD, cumulativeReservesUSD }
+
   let mergedLiquidationDayDatas = []
 
   liquidationDayDatas.forEach(data => {
@@ -323,12 +313,6 @@ function LendingPage() {
           <KPI
             title="Price"
             value={currencyFormatter.format(market.underlyingPriceUSD || 0)}
-          />
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <KPI
-            title="Reserves"
-            value={currencyFormatter.format((market.reserves * market.underlyingPriceUSD) || 0)}
           />
         </Grid>
         <Grid item xs={12} md={4}>
