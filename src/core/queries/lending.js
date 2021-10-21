@@ -55,6 +55,7 @@ export const marketDayDatasQuery = gql`
       totalBorrowsUSD
       totalSupplyUSD
       totalSupply
+      totalReservesUSD
     }
   }
 `;

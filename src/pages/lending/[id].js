@@ -82,25 +82,33 @@ function LendingPage() {
     return {
       date: data.date,
       totalSupplyUSD: data.totalSupplyUSD,
-      totalBorrowsUSD: data.totalBorrowsUSD
+      totalBorrowsUSD: data.totalBorrowsUSD,
+      totalReservesUSD: data.totalReservesUSD
     }
   }).sort((a, b) =>
     Number(a.date) > Number(b.date) ? 1 : -1
   )
 
-  let cumulativeBorrowsUSD = []
-  let cumulativeSupplyUSD = []
-  sortedMarketDayDatas.forEach((data, index) => {
-    if (index > 0) {
-      data.totalSupplyUSD = Number(data.totalSupplyUSD) + Number(sortedMarketDayDatas[index - 1].totalSupplyUSD)
-      data.totalBorrowsUSD = Number(data.totalBorrowsUSD) + Number(sortedMarketDayDatas[index - 1].totalBorrowsUSD)
-    }
+  let cumulativeBorrowsUSD = [];
+  let cumulativeSupplyUSD = [];
+  let cumulativeReservesUSD = [];
 
-    cumulativeSupplyUSD.push({date: data.date, value: Number(data.totalSupplyUSD)})
-    cumulativeBorrowsUSD.push({date: data.date, value: Number(data.totalBorrowsUSD)})
-  })
+  sortedMarketDayDatas.forEach((data) => {
+    cumulativeSupplyUSD.push({
+      date: data.date,
+      value: Number(data.totalSupplyUSD),
+    });
+    cumulativeBorrowsUSD.push({
+      date: data.date,
+      value: Number(data.totalBorrowsUSD),
+    });
+    cumulativeReservesUSD.push({
+      date: data.date,
+      value: Number(data.totalReservesUSD),
+    });
+  });
 
-  const marketChartDatas = { cumulativeBorrowsUSD, cumulativeSupplyUSD }
+  const marketChartDatas = { cumulativeBorrowsUSD, cumulativeSupplyUSD, cumulativeReservesUSD }
 
   let mergedLiquidationDayDatas = []
 
@@ -136,7 +144,7 @@ function LendingPage() {
     decimalFormatter.format(parseFloat(market.supplyRate * 100).toFixed(2))
   const borrowAPY = 
     decimalFormatter.format(parseFloat(market.borrowRate * 100).toFixed(2))
-  const utilizationRate = (market.totalBorrows/market.cash) * 100
+  const utilizationRate = (Number(market.totalBorrows)/(Number(market.cash) + Number(market.totalBorrows) - Number(market.reserves))) * 100
   const liquidityUSD = (market.cash - market.reserves) * market.underlyingPriceUSD
 
   return (
@@ -268,37 +276,54 @@ function LendingPage() {
           </Card>
         </Grid>
       </Grid>
-
-      <Paper
-        variant="outlined"
-        style={{ height: 300, marginTop: "40px", position: "relative"}}
-      >
-        <ParentSize>
-          {({ width, height }) => (
-            <BarChart
-              title="Total Liquidations (USD)"
-              data={liquidationChartDatas.underlyingCollateralSeizedAmountUSD}
-              width={width}
-              height={height}
-              margin={{ top: 125, right: 0, bottom: 0, left: 0 }}
-              tooltipDisabled
-              overlayEnabled
-            />
-          )}
-        </ParentSize>
-      </Paper>
-
+      <Grid container spacing={6}>
+        <Grid item xs={12} md={6}>
+          <Paper
+            variant="outlined"
+            style={{ height: 300, marginTop: "40px", position: "relative"}}
+          >
+            <ParentSize>
+              {({ width, height }) => (
+                <BarChart
+                  title="Total Liquidations (USD)"
+                  data={liquidationChartDatas.underlyingCollateralSeizedAmountUSD}
+                  width={width}
+                  height={height}
+                  margin={{ top: 125, right: 0, bottom: 0, left: 0 }}
+                  tooltipDisabled
+                  overlayEnabled
+                />
+              )}
+            </ParentSize>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Paper
+            variant="outlined"
+            style={{ height: 300, marginTop: "40px", position: "relative"}}
+          >
+            <ParentSize>
+              {({ width, height }) => (
+                <AreaChart
+                  title="Total Reserves (USD)"
+                  data={marketChartDatas.cumulativeReservesUSD}
+                  width={width}
+                  height={height}
+                  margin={{ top: 125, right: 0, bottom: 0, left: 0 }}
+                  tooltipDisabled
+                  overlayEnabled
+                />
+              )}
+            </ParentSize>
+          </Paper>
+        </Grid>
+      </Grid>
+      
       <Grid container spacing={4} style={{marginTop: "30px"}}>
         <Grid item xs={12} md={4}>
           <KPI
             title="Price"
             value={currencyFormatter.format(market.underlyingPriceUSD || 0)}
-          />
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <KPI
-            title="Reserves"
-            value={currencyFormatter.format((market.reserves * market.underlyingPriceUSD) || 0)}
           />
         </Grid>
         <Grid item xs={12} md={4}>
