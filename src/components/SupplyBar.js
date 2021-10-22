@@ -9,10 +9,10 @@ class SupplyBar extends Component {
 
 const styles = props => ({
   colorPrimary: {
-    backgroundColor: "#a1916c",
+    backgroundColor: "#e9edfb",
   },
   barColorPrimary: {
-    backgroundColor: "#ffe7ac",
+    background: "linear-gradient(180deg, #6CE7D9 0%, #6383E2 100%)",
   }
 });
 

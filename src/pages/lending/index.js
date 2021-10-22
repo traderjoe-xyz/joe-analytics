@@ -39,15 +39,9 @@ dayjs.extend(utc);
 function LendingsPage() {
   //Styled Components
   const SupplyText = withStyles({
-    root: {
-      color: "#ffe7ac",
-    },
   })(Typography);
 
   const BorrowText = withStyles({
-    root: {
-      color: "#B2DFDB",
-    },
   })(Typography);
 
   const SmallTokenIcon = withStyles({
@@ -204,13 +198,9 @@ function LendingsPage() {
       </Head>
       <Grid container spacing={6} style={{ marginBottom: "10px" }}>
         <Grid item xs={12} md={6}>
-          <Card variant="outlined" style={{ backgroundColor: "#2b281e" }}>
+          <Card variant="outlined">
             <CardContent>
-              <Typography
-                variant="subtitle2"
-                component="div"
-                style={{ color: "white" }}
-              >
+              <Typography variant="subtitle2" component="div">
                 Total Supply
               </Typography>
               <SupplyText variant="h4">
@@ -218,7 +208,7 @@ function LendingsPage() {
               </SupplyText>
             </CardContent>
             <CardContent>
-              <Typography style={{ color: "white" }}>Top 3 Markets</Typography>
+              <Typography>Top 3 Markets</Typography>
               <List
                 sx={{
                   width: "100%",
@@ -243,7 +233,6 @@ function LendingsPage() {
                           <SmallTokenIcon id={market.underlyingAddress} />
                           <Typography
                             variant="body2"
-                            style={{ color: "white" }}
                           >
                             {market.underlyingSymbol}
                           </Typography>
@@ -261,7 +250,7 @@ function LendingsPage() {
                           }
                         />
                         <Box style={{ minWidth: "80px" }} ml={3}>
-                          <Typography style={{ color: "white" }}>
+                          <Typography>
                             {" "}
                             {decimalFormatter.format(
                               (
@@ -285,12 +274,11 @@ function LendingsPage() {
           </Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card variant="outlined" style={{ backgroundColor: "#1e2738" }}>
+          <Card variant="outlined">
             <CardContent>
               <Typography
                 variant="subtitle2"
                 component="div"
-                style={{ color: "white" }}
               >
                 Total Borrows
               </Typography>
@@ -299,7 +287,7 @@ function LendingsPage() {
               </BorrowText>
             </CardContent>
             <CardContent>
-              <Typography ml={3} style={{ color: "white" }}>
+              <Typography ml={3}>
                 Top 3 Markets
               </Typography>
               <List style={{ width: "100%" }}>
@@ -320,7 +308,6 @@ function LendingsPage() {
                           <SmallTokenIcon id={market.underlyingAddress} />
                           <Typography
                             variant="body2"
-                            style={{ color: "white" }}
                           >
                             {market.underlyingSymbol}
                           </Typography>
@@ -336,7 +323,7 @@ function LendingsPage() {
                           }
                         />
                         <Box style={{ minWidth: "80px" }} ml={3}>
-                          <Typography style={{ color: "white" }}>
+                          <Typography>
                             {" "}
                             {decimalFormatter.format(
                               (

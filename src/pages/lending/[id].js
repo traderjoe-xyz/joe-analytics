@@ -19,7 +19,7 @@ import {
 import {
   getMarket
 } from "app/core/api";
-import PurpleBar from "../../components/PurpleBar";
+import ProgressBar from "../../components/ProgressBar";
 import Head from "next/head";
 import { ParentSize } from "@visx/responsive";
 import { useQuery } from "@apollo/client";
@@ -37,23 +37,17 @@ function LendingPage() {
   const totalLiquidityUSD = router.query.tl
 
   const SupplyText = withStyles({
-    root: {
-      color: "#ffe7ac"
-    }
   })(Typography);
 
   const BorrowText = withStyles({
-    root: {
-      color: "#B2DFDB"
-    }
   })(Typography);
 
   const {
     data: { market },
   } = useQuery(marketQuery,
     {
-      variables: { 
-        id 
+      variables: {
+        id
       }
     }
   );
@@ -62,8 +56,8 @@ function LendingPage() {
     data: { marketDayDatas },
   } = useQuery(marketDayDatasQuery,
     {
-      variables: { 
-        markets: [id] 
+      variables: {
+        markets: [id]
       }
     }
   );
@@ -72,8 +66,8 @@ function LendingPage() {
     data: { liquidationDayDatas },
   } = useQuery(liquidationDayDatasQuery ,
     {
-      variables: { 
-        seizedAddress: [id] 
+      variables: {
+        seizedAddress: [id]
       }
     }
   );
@@ -124,7 +118,7 @@ function LendingPage() {
       mergedLiquidationDayDatas.push(data);
     }
   });
-  
+
   const liquidationChartDatas = mergedLiquidationDayDatas.reduce(
     (previousValue, currentValue) => {
       previousValue["underlyingCollateralSeizedAmountUSD"].unshift({
@@ -140,9 +134,9 @@ function LendingPage() {
     await Promise.all([getMarket]);
   }, 60000);
 
-  const supplyAPY = 
+  const supplyAPY =
     decimalFormatter.format(parseFloat(market.supplyRate * 100).toFixed(2))
-  const borrowAPY = 
+  const borrowAPY =
     decimalFormatter.format(parseFloat(market.borrowRate * 100).toFixed(2))
   const utilizationRate = (Number(market.totalBorrows)/(Number(market.cash) + Number(market.totalBorrows) - Number(market.reserves))) * 100
   const liquidityUSD = (market.cash - market.reserves) * market.underlyingPriceUSD
@@ -163,10 +157,10 @@ function LendingPage() {
 
       <Grid container spacing={6} style={{ height: "40%"}}>
         <Grid item xs={12} md={6}>
-          <Card variant="outlined" style={{ backgroundColor: "#2b281e" }}>
+          <Card variant="outlined">
             <CardContent style={{display: "flex", displayDirection: "col"}}>
               <Box>
-                <Typography variant="subtitle2" component="div" style={{color: "white"}}>
+                <Typography variant="subtitle2" component="div">
                   Total Supply
                 </Typography>
                 <SupplyText variant="h4">
@@ -174,7 +168,7 @@ function LendingPage() {
                 </SupplyText>
               </Box>
               <Box ml={6} style={{marginLeft: "auto"}}>
-                <Typography variant="subtitle2" component="div" style={{color: "white"}}>
+                <Typography variant="subtitle2" component="div">
                   Supply APY
                 </Typography>
                 <SupplyText variant="h4">
@@ -203,10 +197,10 @@ function LendingPage() {
         </Paper>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card variant="outlined" style={{ backgroundColor: "#1e2738"}}>
+          <Card variant="outlined">
             <CardContent style={{display: "flex"}}>
               <Box>
-                <Typography variant="subtitle2" component="div" style={{color: "white"}}>
+                <Typography variant="subtitle2" component="div">
                   Total Borrows
                 </Typography>
                 <BorrowText variant="h4">
@@ -214,7 +208,7 @@ function LendingPage() {
                 </BorrowText>
               </Box>
               <Box ml={6} style={{marginLeft: "auto"}}>
-                <Typography variant="subtitle2" component="div" style={{color: "white"}}>
+                <Typography variant="subtitle2" component="div">
                   Borrow APY
                 </Typography>
                 <BorrowText variant="h4">
@@ -243,36 +237,36 @@ function LendingPage() {
           </Paper>
         </Grid>
       </Grid>
-                    
+
       <Grid container spacing={6} style={{ marginTop: "20px", height: "40%"}}>
         <Grid item xs={12} md={6}>
-          <Card variant="outlined" style={{ display: "flex", alignItems: "center", backgroundColor: "#221e38" }}>
+          <Card variant="outlined" style={{ display: "flex", alignItems: "center" }}>
             <CardContent style={{display: "flex", displayDirection: "col", marginRight: "100px"}}>
               <Box width="150px">
-                <Typography variant="subtitle2" component="div" style={{color: "white"}} nowrap>
+                <Typography variant="subtitle2" component="div" nowrap>
                   Available Liquidity
                 </Typography>
-                <SupplyText variant="h4" style={{ color: "#cdc5ff"}} >
+                <SupplyText variant="h4">
                   {currencyFormatter.format(liquidityUSD)}
                 </SupplyText>
               </Box>
             </CardContent>
-            <PurpleBar style={{ width: '100%', marginRight: "20px"}} value={(liquidityUSD/totalLiquidityUSD) * 100}/>
+            <ProgressBar style={{ width: '100%', marginRight: "20px"}} value={(liquidityUSD/totalLiquidityUSD) * 100}/>
           </Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card variant="outlined" style={{ display: "flex", alignItems: "center", backgroundColor: "#221e38" }}>
+          <Card variant="outlined" style={{ display: "flex", alignItems: "center" }}>
             <CardContent style={{display: "flex", displayDirection: "col", marginRight: "20px"}}>
               <Box width="150px">
-                <Typography variant="subtitle2" component="div" style={{color: "white"}} >
+                <Typography variant="subtitle2" component="div">
                   Utilization Rate
                 </Typography>
-                <BorrowText variant="h4" style={{ color: "#cdc5ff" }}>
+                <BorrowText variant="h4">
                   { utilizationRate.toFixed(2) + "%" }
                 </BorrowText>
               </Box>
             </CardContent>
-            <PurpleBar style={{ width: '100%', marginRight: "20px"}} value={utilizationRate < 100 ? utilizationRate : 100}/>
+            <ProgressBar style={{ width: '100%', marginRight: "20px"}} value={utilizationRate < 100 ? utilizationRate : 100}/>
           </Card>
         </Grid>
       </Grid>
@@ -318,7 +312,7 @@ function LendingPage() {
           </Paper>
         </Grid>
       </Grid>
-      
+
       <Grid container spacing={4} style={{marginTop: "30px"}}>
         <Grid item xs={12} md={4}>
           <KPI
@@ -338,19 +332,19 @@ function LendingPage() {
             value={Number(market.collateralFactor * 100).toFixed(2) + "%"}
           />
         </Grid>
-      </Grid>  
+      </Grid>
     </AppShell>
   );
 }
 
 export async function getStaticProps({ params }) {
   const APIURL = "https://api.thegraph.com/subgraphs/name/traderjoe-xyz/lending";
-  
+
   const client = new ApolloClient({
     uri: APIURL,
     cache: new InMemoryCache()
   });
-    
+
   const id = params.id.toLowerCase();
 
   await client.query({
