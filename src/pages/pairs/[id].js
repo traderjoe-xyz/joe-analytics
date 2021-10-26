@@ -471,7 +471,7 @@ export async function getStaticPaths() {
   //   params: { id: pair.id },
   // }));
 
-  return { paths: [], fallback: true };
+  return { paths: [], fallback: false };
 }
 
 export default PairPage;

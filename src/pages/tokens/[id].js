@@ -369,7 +369,7 @@ export async function getStaticPaths() {
   //   params: { id },
   // }));
 
-  return { paths: [], fallback: true };
+  return { paths: [], fallback: false };
 }
 
 export default TokenPage;

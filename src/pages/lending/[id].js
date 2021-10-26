@@ -359,7 +359,7 @@ export async function getStaticProps({ params }) {
 }
 
 export async function getStaticPaths() {
-  return { paths: [], fallback: true };
+  return { paths: [], fallback: false };
 }
 
 export default LendingPage;
