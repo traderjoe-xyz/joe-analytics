@@ -36,6 +36,7 @@ import {
   getJoeToken,
   getToken,
   getUser,
+  getUsers,
   latestBlockQuery,
   lockupUserQuery,
   pairSubsetQuery,
@@ -568,9 +569,9 @@ export async function getStaticProps({ params }) {
 
   await getLatestBlock(client);
 
-  await client.query({
-    query: userIdsQuery
-  });
+  await getUser(id, client)
+
+  await getUsers(client)
 
   return {
     props: {
@@ -581,19 +582,17 @@ export async function getStaticProps({ params }) {
 }
 
 export async function getStaticPaths() {
-  const apollo = getApollo();
+  const client = getApollo();
 
-  const { data: { users }} = await apollo.query({
+  const { data: { users } } = await client.query({
     query: userIdsQuery,
   });
-  
+
   const paths = users.map(user => ({
     params: { id: user.id }
   }));
 
-  return {
-    paths, fallback: false,
-  };
+  return { paths, fallback: false };
 }
 
 export default UserPage;
