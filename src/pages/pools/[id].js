@@ -455,12 +455,12 @@ export async function getStaticProps({ params: { id } }) {
 }
 
 export async function getStaticPaths() {
-  // const client = getApollo();
-  // const { pools } = await getPoolIds(client);
-  // const paths = pools.map((pool) => ({
-  //   params: { id: pool.id },
-  // }));
-  return { paths: [], fallback: false };
+  const client = getApollo();
+  const { pools } = await getPoolIds(client);
+  const paths = pools.map((pool) => ({
+    params: { id: pool.id },
+  }));
+  return { paths, fallback: false };
 }
 
 export default PoolPage;

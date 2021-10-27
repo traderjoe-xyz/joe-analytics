@@ -568,6 +568,10 @@ export async function getStaticProps({ params }) {
 
   await getLatestBlock(client);
 
+  await client.query({
+    query: userIdsQuery
+  });
+
   return {
     props: {
       initialApolloState: client.cache.extract(),
@@ -577,9 +581,18 @@ export async function getStaticProps({ params }) {
 }
 
 export async function getStaticPaths() {
+  const apollo = getApollo();
+
+  const { data: { users }} = await apollo.query({
+    query: userIdsQuery,
+  });
+  
+  const paths = users.map(user => ({
+    params: { id: user.id }
+  }));
+
   return {
-    paths: [],
-    fallback: false,
+    paths, fallback: false,
   };
 }
 
