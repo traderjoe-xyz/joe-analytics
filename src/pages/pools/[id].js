@@ -460,7 +460,7 @@ export async function getStaticPaths() {
   // const paths = pools.map((pool) => ({
   //   params: { id: pool.id },
   // }));
-  return { paths: [], fallback: false };
+  return { paths: [], fallback: true };
 }
 
 export default PoolPage;

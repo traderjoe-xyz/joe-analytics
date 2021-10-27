@@ -569,10 +569,6 @@ export async function getStaticProps({ params }) {
 
   await getLatestBlock(client);
 
-  await getUser(id, client)
-
-  await getUsers(client)
-
   return {
     props: {
       initialApolloState: client.cache.extract(),
@@ -592,7 +588,7 @@ export async function getStaticPaths() {
   //   params: { id: user.id }
   // }));
 
-  return { paths: [], fallback: false };
+  return { paths: [], fallback: true };
 }
 
 export default UserPage;
