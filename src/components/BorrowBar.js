@@ -10,10 +10,10 @@ class BorrowBar extends Component {
 
 const styles = props => ({
   colorPrimary: {
-    backgroundColor: "#2e5957",
+    backgroundColor: "#e9edfb",
   },
   barColorPrimary: {
-    backgroundColor:"#B2DFDB",
+    background: "linear-gradient(180deg, #6CE7D9 0%, #6383E2 100%)",
   }
 });
 

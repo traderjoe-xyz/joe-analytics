@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { LinearProgress } from '@material-ui/core';
-class PurpleBar extends Component {
+class ProgressBar extends Component {
   render() {
     return <LinearProgress {...this.props} variant={"determinate"}/>;
   }
@@ -9,11 +9,11 @@ class PurpleBar extends Component {
 
 const styles = props => ({
   colorPrimary: {
-    backgroundColor: "#4c4766",
+    backgroundColor: "#e9edfb",
   },
   barColorPrimary: {
-    backgroundColor: "#cdc5ff",
+    background: "linear-gradient(180deg, #6CE7D9 0%, #6383E2 100%)",
   }
 });
 
-export default withStyles(styles)(PurpleBar);
+export default withStyles(styles)(ProgressBar);
