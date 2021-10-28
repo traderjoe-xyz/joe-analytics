@@ -362,6 +362,9 @@ export async function getStaticPaths() {
 
   const { data } = await apollo.query({
     query: tokenIdsQuery,
+    variables: {
+      first: 100
+    }
   });
 
   const paths = data.tokens.map(({ id }) => ({

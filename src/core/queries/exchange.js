@@ -160,9 +160,12 @@ export const pairTimeTravelQuery = gql`
 `;
 
 export const pairIdsQuery = gql`
-  query pairIdsQuery {
-    pairs(first: 1000) {
-      id
+  query pairIdsQuery($first: Int! = 1000) {
+    pairs(
+      first: $first
+      orderBy: volumeUSD
+      orderDirection: desc) {
+        id
     }
   }
 `;
@@ -319,12 +322,14 @@ export const tokenTimeTravelQuery = gql`
 `;
 
 export const tokenIdsQuery = gql`
-  query tokenIdsQuery {
-    tokens(first: 1000) {
-      id
-    }
+query tokenIdsQuery($first: Int! = 1000) {
+  tokens(
+    first: $first
+    orderBy: volumeUSD
+    orderDirection: desc) {
+    id
   }
-`;
+}`;
 
 export const tokenDayDatasQuery = gql`
   query tokenDayDatasQuery(

@@ -465,6 +465,9 @@ export async function getStaticPaths() {
 
   const { data } = await apollo.query({
     query: pairIdsQuery,
+    variables: {
+      first: 100
+    },
   });
 
   const paths = data.pairs.map(pair => ({
