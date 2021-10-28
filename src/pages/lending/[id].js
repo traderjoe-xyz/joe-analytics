@@ -130,11 +130,7 @@ function LendingPage() {
     { underlyingCollateralSeizedAmountUSD: [] }
   );
 
-  useInterval(async () => {
-    await Promise.all([getMarket]);
-  }, 60000);
-
-  const supplyAPY =
+  const supplyAPY = 
     decimalFormatter.format(parseFloat(market.supplyRate * 100).toFixed(2))
   const borrowAPY =
     decimalFormatter.format(parseFloat(market.borrowRate * 100).toFixed(2))
@@ -378,6 +374,21 @@ export async function getStaticProps({ params }) {
 }
 
 export async function getStaticPaths() {
+  // const APIURL = "https://api.thegraph.com/subgraphs/name/traderjoe-xyz/lending";
+  
+  // const client = new ApolloClient({
+  //   uri: APIURL,
+  //   cache: new InMemoryCache()
+  // });
+
+  // const { data: { markets } } = await client.query({
+  //   query: marketsQuery
+  // })
+
+  // const paths = markets.map(market => ({
+  //   params: { id: market.id },
+  // }))
+
   return { paths: [], fallback: true };
 }
 

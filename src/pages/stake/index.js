@@ -83,17 +83,6 @@ function BarPage() {
   const joePrice =
     parseFloat(token?.derivedAVAX) * parseFloat(bundles[0].avaxPrice);
 
-  useInterval(async () => {
-    await Promise.all([
-      getBar,
-      getBarHistories,
-      getDayData,
-      getFactory,
-      getJoeToken,
-      getAvaxPrice,
-    ]);
-  }, 60000);
-
   const {
     joeStakedUSD,
     joeHarvestedUSD,

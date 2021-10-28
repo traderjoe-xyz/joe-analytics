@@ -19,7 +19,6 @@ function RecentPoolsPage() {
       clientName: "masterchef",
     },
   });
-  useInterval(() => Promise.all([getPools]), 60000);
   return (
     <AppShell>
       <Head>

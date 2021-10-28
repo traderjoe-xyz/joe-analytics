@@ -17,10 +17,6 @@ function TokensPage() {
     data: { tokens },
   } = useQuery(tokensQuery);
 
-  useInterval(async () => {
-    await Promise.all([getTokens, getOneDayAvaxPrice]);
-  }, 60000);
-
   return (
     <AppShell>
       <Head>

@@ -159,10 +159,9 @@ function LendingsPage() {
     cumulativeReservesUSD,
   };
 
-  useInterval(async () => {
-    await Promise.all([getMarkets]);
-  }, 60000);
-
+  let totalBorrows = 0;
+  let totalSupply = 0;
+  let totalReserves = 0;
   let totalBorrowsUSD = 0;
   let totalSupplyUSD = 0;
   markets.forEach((market) => {

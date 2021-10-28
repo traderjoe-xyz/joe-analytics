@@ -98,10 +98,6 @@ function PairPage(props) {
     variables: { id },
   });
 
-  useInterval(async () => {
-    await getPair(id);
-  }, 60000);
-
   const { data: transactions } = useQuery(transactionsQuery, {
     variables: { pairAddresses: [id] },
     pollInterval: 60000,

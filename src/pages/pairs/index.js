@@ -9,7 +9,6 @@ function PairsPage() {
   const {
     data: { pairs },
   } = useQuery(pairsQuery);
-  useInterval(getPairs, 60000);
   return (
     <AppShell>
       <Head>

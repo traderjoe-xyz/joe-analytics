@@ -50,19 +50,6 @@ function IndexPage() {
     data: { dayDatas },
   } = useQuery(dayDatasQuery);
 
-  useInterval(
-    () =>
-      Promise.all([
-        getPairs,
-        getPools,
-        getTokens,
-        getDayData,
-        getOneDayAvaxPrice,
-        getSevenDayAvaxPrice,
-      ]),
-    60000
-  );
-
   const [useUSD, setUseUSD] = useState(true);
 
   const [liquidity, volume] = dayDatas

@@ -8,9 +8,6 @@ import { useQuery } from "@apollo/client";
 
 function LosersPage() {
   const { data } = useQuery(losersQuery);
-  useInterval(() => {
-    getLosers();
-  }, 60000);
   const pairs = data.pairs.filter((pair) => {
     const negativeFees = Math.sign(pair.feesUSDLost - pair.feesUSDLostYesterday) < 0;
     const negativeReserve = Math.sign(pair.reserveUSDLost) < 0;

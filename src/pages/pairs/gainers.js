@@ -8,9 +8,6 @@ import { useQuery } from "@apollo/client";
 
 function GainersPage() {
   const { data } = useQuery(gainersQuery);
-  useInterval(() => {
-    getGainers();
-  }, 60000);
   const pairs = data.pairs.filter((pair) => {
     const positiveFees = Math.sign(pair.feesUSDGained - pair.feesUSDGainedYesterday) > 0;
     const positiveReserve = Math.sign(pair.reserveUSDGained) > 0;

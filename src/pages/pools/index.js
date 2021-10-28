@@ -14,8 +14,6 @@ function PoolsPage() {
     },
   });
 
-  useInterval(getPools, 60000);
-
   return (
     <AppShell>
       <Head>

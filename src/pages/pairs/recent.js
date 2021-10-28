@@ -17,8 +17,6 @@ function RecentPairsPage() {
     data: { pairs },
   } = useQuery(pairsQuery);
 
-  useInterval(() => Promise.all([getPairs]), 60000);
-
   return (
     <AppShell>
       <Head>

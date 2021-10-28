@@ -95,12 +95,7 @@ function TokenPage() {
   });
 
   const { data: oneDayAvaxPriceData } = useQuery(oneDayAvaxPriceQuery);
-
-  useInterval(async () => {
-    await getToken(id);
-    await getOneDayAvaxPrice();
-  }, 60000);
-
+  
   const {
     data: { tokenDayDatas },
   } = useQuery(tokenDayDatasQuery, {
