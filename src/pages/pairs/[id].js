@@ -456,22 +456,22 @@ export async function getStaticProps({ params }) {
     props: {
       initialApolloState: client.cache.extract(),
     },
-    revalidate: 1,
+    revalidate: 60,
   };
 }
 
 export async function getStaticPaths() {
-  // const apollo = getApollo();
+  const apollo = getApollo();
 
-  // const { data } = await apollo.query({
-  //   query: pairIdsQuery,
-  // });
+  const { data } = await apollo.query({
+    query: pairIdsQuery,
+  });
 
-  // const paths = data.pairs.map(pair => ({
-  //   params: { id: pair.id },
-  // }));
+  const paths = data.pairs.map(pair => ({
+    params: { id: pair.id },
+  }));
 
-  return { paths: [], fallback: true };
+  return { paths, fallback: true };
 }
 
 export default PairPage;

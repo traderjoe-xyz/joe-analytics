@@ -450,17 +450,18 @@ export async function getStaticProps({ params: { id } }) {
     props: {
       initialApolloState: client.cache.extract(),
     },
-    revalidate: 1,
+    revalidate: 60,
   };
 }
 
 export async function getStaticPaths() {
-  // const client = getApollo();
-  // const { pools } = await getPoolIds(client);
-  // const paths = pools.map((pool) => ({
-  //   params: { id: pool.id },
-  // }));
-  return { paths: [], fallback: true };
+  const client = getApollo();
+  const { pools } = await getPoolIds(client);
+  const paths = pools.map((pool) => ({
+    params: { id: pool.id },
+  }));
+
+  return { paths, fallback: true };
 }
 
 export default PoolPage;

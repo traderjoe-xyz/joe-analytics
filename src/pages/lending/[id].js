@@ -355,7 +355,7 @@ export async function getStaticProps({ params }) {
     props: {
       initialApolloState: client.cache.extract(),
     },
-    revalidate: 1,
+    revalidate: 60,
   };
 }
 
@@ -375,7 +375,7 @@ export async function getStaticPaths() {
     params: { id: market.id },
   }))
 
-  return { paths, fallback: false };
+  return { paths, fallback: true };
 }
 
 export default LendingPage;
