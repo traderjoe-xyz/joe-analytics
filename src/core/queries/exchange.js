@@ -34,23 +34,10 @@ export const userIdsQuery = gql`
   }
 `;
 
-export const uniswapUserQuery = gql`
-  query uniswapUserQuery($id: String!) {
-    uniswapUser: user(id: $id) {
+export const userQuery = gql`
+  query userQuery($id: String!) {
+    user: user(id: $id) {
       id
-      liquidityPositions {
-        id
-        liquidityTokenBalance
-        # historicalSnapshots {
-        #   id
-        #   reserve0
-        #   reserve1
-        #   block
-        #   timestamp
-        #   liquidityTokenBalance
-        #   liquidityTokenTotalSupply
-        # }
-      }
     }
   }
 `;
@@ -173,9 +160,12 @@ export const pairTimeTravelQuery = gql`
 `;
 
 export const pairIdsQuery = gql`
-  query pairIdsQuery {
-    pairs(first: 1000) {
-      id
+  query pairIdsQuery($first: Int! = 1000) {
+    pairs(
+      first: $first
+      orderBy: volumeUSD
+      orderDirection: desc) {
+        id
     }
   }
 `;
@@ -332,12 +322,14 @@ export const tokenTimeTravelQuery = gql`
 `;
 
 export const tokenIdsQuery = gql`
-  query tokenIdsQuery {
-    tokens(first: 1000) {
-      id
-    }
+query tokenIdsQuery($first: Int! = 1000) {
+  tokens(
+    first: $first
+    orderBy: volumeUSD
+    orderDirection: desc) {
+    id
   }
-`;
+}`;
 
 export const tokenDayDatasQuery = gql`
   query tokenDayDatasQuery(

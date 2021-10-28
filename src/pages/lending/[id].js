@@ -15,6 +15,7 @@ import {
   marketDayDatasQuery,
   liquidationDayDatasQuery,
   useInterval,
+  marketsQuery
 } from "app/core";
 import {
   getMarket
@@ -373,12 +374,27 @@ export async function getStaticProps({ params }) {
     props: {
       initialApolloState: client.cache.extract(),
     },
-    revalidate: 1,
+    revalidate: 60,
   };
 }
 
 export async function getStaticPaths() {
-  return { paths: [], fallback: true };
+  const APIURL = "https://api.thegraph.com/subgraphs/name/traderjoe-xyz/lending";
+  
+  const client = new ApolloClient({
+    uri: APIURL,
+    cache: new InMemoryCache()
+  });
+
+  const { data: { markets } } = await client.query({
+    query: marketsQuery
+  })
+
+  const paths = markets.map(market => ({
+    params: { id: market.id },
+  }))
+
+  return { paths, fallback: true };
 }
 
 export default LendingPage;

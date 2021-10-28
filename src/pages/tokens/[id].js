@@ -353,23 +353,25 @@ export async function getStaticProps({ params }) {
     props: {
       initialApolloState: client.cache.extract(),
     },
-    revalidate: 1,
+    revalidate: 60,
   };
 }
 
 export async function getStaticPaths() {
-  // Call an external API endpoint to get posts
-  // const apollo = getApollo();
+  const apollo = getApollo();
 
-  // const { data } = await apollo.query({
-  //   query: tokenIdsQuery,
-  // });
+  const { data } = await apollo.query({
+    query: tokenIdsQuery,
+    variables: {
+      first: 100
+    }
+  });
 
-  // const paths = data.tokens.map(({ id }) => ({
-  //   params: { id },
-  // }));
+  const paths = data.tokens.map(({ id }) => ({
+    params: { id },
+  }));
 
-  return { paths: [], fallback: true };
+  return { paths, fallback: true };
 }
 
 export default TokenPage;
