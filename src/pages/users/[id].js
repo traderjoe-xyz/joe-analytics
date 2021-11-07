@@ -82,7 +82,7 @@ function UserPage() {
   const {
     data: { bundles },
   } = useQuery(avaxPriceQuery, {
-    pollInterval: 60000,
+    pollInterval: 1800000,
   });
 
   const { data: barData } = useQuery(barUserQuery, {
@@ -131,7 +131,7 @@ function UserPage() {
   //       getBarUser(id.toLocaleLowerCase()),
   //       getAvaxPrice,
   //     ]),
-  //   60000
+  //   1800000
   // );
 
   const joePrice =
@@ -573,7 +573,7 @@ export async function getStaticProps({ params }) {
     props: {
       initialApolloState: client.cache.extract(),
     },
-    revalidate: 60,
+    revalidate: 1800,
   };
 }
 

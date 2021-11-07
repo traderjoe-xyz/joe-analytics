@@ -14,7 +14,7 @@ function PoolsPage() {
     },
   });
 
-  useInterval(getPools, 60000);
+  useInterval(getPools, 1800000);
 
   return (
     <AppShell>
@@ -33,7 +33,7 @@ export async function getStaticProps() {
     props: {
       initialApolloState: client.cache.extract(),
     },
-    revalidate: 60,
+    revalidate: 1800,
   };
 }
 

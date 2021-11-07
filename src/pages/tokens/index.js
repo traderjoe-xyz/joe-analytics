@@ -19,7 +19,7 @@ function TokensPage() {
 
   useInterval(async () => {
     await Promise.all([getTokens, getOneDayAvaxPrice]);
-  }, 60000);
+  }, 1800000);
 
   return (
     <AppShell>
@@ -46,7 +46,7 @@ export async function getStaticProps() {
     props: {
       initialApolloState: client.cache.extract(),
     },
-    revalidate: 60,
+    revalidate: 1800,
   };
 }
 

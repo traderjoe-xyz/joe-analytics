@@ -26,7 +26,7 @@ export default function TokenTable({ tokens, title }) {
   const {
     data: { bundles },
   } = useQuery(avaxPriceQuery, {
-    pollInterval: 60000,
+    pollInterval: 1800000,
   });
 
   const { data: oneDayAvaxPriceData } = useQuery(oneDayAvaxPriceQuery);

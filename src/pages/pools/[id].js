@@ -80,7 +80,7 @@ function PoolPage() {
   const {
     data: { bundles },
   } = useQuery(avaxPriceQuery, {
-    pollInterval: 60000,
+    pollInterval: 1800000,
   });
 
   const token_address = JOE_TOKEN_ADDDRESS;
@@ -450,7 +450,7 @@ export async function getStaticProps({ params: { id } }) {
     props: {
       initialApolloState: client.cache.extract(),
     },
-    revalidate: 60,
+    revalidate: 1800,
   };
 }
 

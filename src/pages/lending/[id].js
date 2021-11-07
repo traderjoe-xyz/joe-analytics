@@ -133,7 +133,7 @@ function LendingPage() {
 
   useInterval(async () => {
     await Promise.all([getMarket]);
-  }, 60000);
+  }, 1800000);
 
   const supplyAPY =
     decimalFormatter.format(parseFloat(market.supplyRate * 100).toFixed(2))
@@ -374,7 +374,7 @@ export async function getStaticProps({ params }) {
     props: {
       initialApolloState: client.cache.extract(),
     },
-    revalidate: 60,
+    revalidate: 1800,
   };
 }
 
