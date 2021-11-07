@@ -9,7 +9,7 @@ function PairsPage() {
   const {
     data: { pairs },
   } = useQuery(pairsQuery);
-  useInterval(getPairs, 60000);
+  useInterval(getPairs, 1800000);
   return (
     <AppShell>
       <Head>
@@ -30,7 +30,7 @@ export async function getStaticProps() {
     props: {
       initialApolloState: client.cache.extract(),
     },
-    revalidate: 60,
+    revalidate: 1800,
   };
 }
 

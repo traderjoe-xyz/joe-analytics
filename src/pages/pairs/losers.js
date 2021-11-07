@@ -10,7 +10,7 @@ function LosersPage() {
   const { data } = useQuery(losersQuery);
   useInterval(() => {
     getLosers();
-  }, 60000);
+  }, 1800000);
   const pairs = data.pairs.filter((pair) => {
     const negativeFees = Math.sign(pair.feesUSDLost - pair.feesUSDLostYesterday) < 0;
     const negativeReserve = Math.sign(pair.reserveUSDLost) < 0;
@@ -34,7 +34,7 @@ export async function getStaticProps() {
     props: {
       initialApolloState: client.cache.extract(),
     },
-    revalidate: 60,
+    revalidate: 1800,
   };
 }
 

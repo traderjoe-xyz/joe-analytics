@@ -91,7 +91,7 @@ function TokenPage() {
   const {
     data: { bundles },
   } = useQuery(avaxPriceQuery, {
-    pollInterval: 60000,
+    pollInterval: 1800000,
   });
 
   const { data: oneDayAvaxPriceData } = useQuery(oneDayAvaxPriceQuery);
@@ -99,7 +99,7 @@ function TokenPage() {
   useInterval(async () => {
     await getToken(id);
     await getOneDayAvaxPrice();
-  }, 60000);
+  }, 1800000);
 
   const {
     data: { tokenDayDatas },
@@ -107,7 +107,7 @@ function TokenPage() {
     variables: {
       tokens: [id],
     },
-    pollInterval: 60000,
+    pollInterval: 1800000,
   });
 
   const {
@@ -122,7 +122,7 @@ function TokenPage() {
     variables: {
       pairAddresses: pairs.map((pair) => pair.id).sort(),
     },
-    pollInterval: 60000,
+    pollInterval: 1800000,
   });
 
   const chartDatas = tokenDayDatas.reduce(
@@ -353,7 +353,7 @@ export async function getStaticProps({ params }) {
     props: {
       initialApolloState: client.cache.extract(),
     },
-    revalidate: 60,
+    revalidate: 1800,
   };
 }
 
