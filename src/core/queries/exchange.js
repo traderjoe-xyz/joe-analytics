@@ -403,7 +403,7 @@ export const tokensQuery = gql`
 // block @client @export(as: "block")
 export const tokensTimeTravelQuery = gql`
   query tokensTimeTravelQuery($first: Int! = 1000, $block: Block_height!) {
-    tokens(first: $first, block: $block) {
+    tokens(first: $first, block: $block, orderBy: volumeUSD, orderDirection: desc) {
       ...tokenFields
     }
   }
