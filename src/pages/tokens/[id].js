@@ -199,14 +199,14 @@ function TokenPage() {
           </Grid>
           <Grid item xs={12} sm="auto" className={classes.links}>
             <Link
-              href={`https://traderjoexyz.com/#/pool/${token.id}/AVAX`}
+              href={`https://traderjoexyz.com/pool/${token.id}/AVAX`}
               target="_blank"
               variant="body1"
             >
               Add Liquidity
             </Link>
             <Link
-              href={`https://traderjoexyz.com/#/trade`}
+              href={`https://traderjoexyz.com/trade`}
               target="_blank"
               variant="body1"
             >
