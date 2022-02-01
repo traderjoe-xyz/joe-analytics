@@ -205,7 +205,7 @@ function PairPage(props) {
           </Box>
           <Box display="flex" alignItems="center" className={classes.links}>
             <Link
-              href={`https://traderjoexyz.com/#/pool/${pair.token0.id}/${pair.token1.id}`}
+              href={`https://traderjoexyz.com/pool/${pair.token0.id}/${pair.token1.id}`}
               target="_blank"
               variant="body1"
               className={classes.firstLink}
@@ -213,7 +213,7 @@ function PairPage(props) {
               Add Liquidity
             </Link>
             <Link
-              href={`https://traderjoexyz.com/#/trade?inputCurrency=${pair.token0.id}&outputCurrency=${pair.token1.id}`}
+              href={`https://traderjoexyz.com/trade?inputCurrency=${pair.token0.id}&outputCurrency=${pair.token1.id}`}
               target="_blank"
               variant="body1"
             >
