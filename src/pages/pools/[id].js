@@ -198,9 +198,7 @@ function PoolPage() {
           </Grid>
           <Grid item xs={12} sm="auto" className={classes.links}>
             <Link
-              href={`https://traderjoexyz.com/pool/${
-                pool.liquidityPair.token0.token_address
-              }/${pool.liquidityPair.token1.token_address}`}
+              href={`https://traderjoexyz.com/pool/${pool.liquidityPair.token0.id}/${pool.liquidityPair.token1.id}`}
               target="_blank"
               variant="body1"
             >
