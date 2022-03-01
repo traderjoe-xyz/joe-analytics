@@ -2,12 +2,14 @@ import { HttpLink, from, split } from "@apollo/client";
 
 import { RetryLink } from "@apollo/client/link/retry";
 
-import { GRAPH_BAR_URI, 
-  GRAPH_MASTERCHEF_URI, 
-  GRAPH_EXCHANGE_URI, 
+import {
+  GRAPH_BAR_URI,
+  GRAPH_MASTERCHEF_URI,
+  GRAPH_EXCHANGE_URI,
   GRAPH_BLOCKS_URI,
-  GRAPH_LENDING_URI
-} from "../../config/index.ts"; 
+  GRAPH_LENDING_URI,
+  GRAPH_MONEY_MAKER_URI,
+} from "../../config/index.ts";
 
 export const uniswap = from([
   new RetryLink(),
@@ -28,7 +30,7 @@ export const bar = from([
 export const masterchef = from([
   new RetryLink(),
   new HttpLink({
-    uri: GRAPH_MASTERCHEF_URI, 
+    uri: GRAPH_MASTERCHEF_URI,
     shouldBatch: true,
   }),
 ]);
@@ -36,7 +38,7 @@ export const masterchef = from([
 export const exchange = from([
   new RetryLink(),
   new HttpLink({
-    uri: GRAPH_EXCHANGE_URI, 
+    uri: GRAPH_EXCHANGE_URI,
     shouldBatch: true,
   }),
 ]);
@@ -44,7 +46,7 @@ export const exchange = from([
 export const lending = from([
   new RetryLink(),
   new HttpLink({
-    uri: GRAPH_LENDING_URI, 
+    uri: GRAPH_LENDING_URI,
     shouldBatch: true,
   }),
 ]);
@@ -52,7 +54,7 @@ export const lending = from([
 export const blocklytics = from([
   new RetryLink(),
   new HttpLink({
-    uri: GRAPH_BLOCKS_URI, 
+    uri: GRAPH_BLOCKS_URI,
     shouldBatch: true,
   }),
 ]);
@@ -64,6 +66,14 @@ export const lockup = from([
     shouldBatch: true,
   }),
 ]);
+
+export const moneyMaker = from([
+  new RetryLink(),
+  new HttpLink({
+    uri: GRAPH_MONEY_MAKER_URI,
+    shouldBatch: true,
+  }),
+])
 
 export default split(
   (operation) => {
@@ -85,7 +95,13 @@ export default split(
           return operation.getContext().clientName === "lockup";
         },
         lockup,
-        exchange
+        split(
+          (operation) => {
+            return operation.getContext().clientName === "moneymaker";
+          },
+          moneyMaker,
+          exchange
+        )
       )
     )
   )
