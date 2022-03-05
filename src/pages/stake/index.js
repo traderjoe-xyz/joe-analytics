@@ -15,6 +15,8 @@ import {
   getJoeToken,
   tokenQuery,
   useInterval,
+  stableJoeQuery,
+  getStableJoe,
 } from "app/core";
 
 import Chart from "../../components/Chart";
@@ -79,6 +81,10 @@ function BarPage() {
   const {
     data: { dayDatas },
   } = useQuery(dayDatasQuery);
+
+  const { 
+    data: { stableJoe },
+  } = useQuery(stableJoeQuery)
 
   const joePrice =
     parseFloat(token?.derivedAVAX) * parseFloat(bundles[0].avaxPrice);
@@ -166,7 +172,7 @@ function BarPage() {
   // get last day volume and APY
   const oneDayVolume = factory?.volumeUSD - factory?.oneDay.volumeUSD;
   const oneDayFees = oneDayVolume * FEE_RATE;
-  const totalStakedUSD = bar.joeStaked * joePrice;
+  const totalStakedUSD = stableJoe.joeStaked * joePrice;
 
   const APR = (oneDayFees * 365) / totalStakedUSD;
   const APY = Math.pow(1 + APR / 365, 365) - 1;
@@ -249,6 +255,7 @@ export async function getStaticProps() {
   await getDayData(client);
   await getJoeToken(client);
   await getAvaxPrice(client);
+  await getStableJoe(client);
   return {
     props: {
       initialApolloState: client.cache.extract(),

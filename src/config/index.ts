@@ -4,6 +4,7 @@ export const GRAPH_EXCHANGE_URI = 'https://api.thegraph.com/subgraphs/name/trade
 export const GRAPH_BLOCKS_URI = 'https://api.thegraph.com/subgraphs/name/dasconnor/avalanche-blocks'
 export const GRAPH_LENDING_URI = 'https://api.thegraph.com/subgraphs/name/traderjoe-xyz/lending'
 export const GRAPH_MONEY_MAKER_URI = 'https://api.thegraph.com/subgraphs/name/traderjoe-xyz/money-maker'
+export const GRAPH_SJOE_URI = 'https://api.thegraph.com/subgraphs/name/traderjoe-xyz/sjoe'
 
 export const FACTORY_ADDRESS = '0x9Ad6C38BE94206cA50bb0d90783181662f0Cfa10'.toLowerCase()
 export const JOE_TOKEN_ADDDRESS = '0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd'.toLowerCase()
