@@ -209,9 +209,9 @@ function BarPage() {
                 <Curves
                   width={width}
                   height={height}
+                  title="APR"
                   margin={{ top: 64, right: 32, bottom: 0, left: 64 }}
-                  data={[apr, apy]}
-                  labels={["APR", "APY"]}
+                  data={[apr]}
                 />
               )}
             </ParentSize>
@@ -231,63 +231,6 @@ function BarPage() {
                   title="Fees received (USD)"
                   margin={{ top: 64, right: 32, bottom: 0, left: 64 }}
                   data={[fees]}
-                />
-              )}
-            </ParentSize>
-          </Paper>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Paper
-            variant="outlined"
-            style={{ display: "flex", height: 400, flex: 1 }}
-          >
-            <ParentSize>
-              {({ width, height }) => (
-                <Curves
-                  width={width}
-                  height={height}
-                  data={[joeStakedUSD, joeHarvestedUSD]}
-                  margin={{ top: 64, right: 32, bottom: 0, left: 64 }}
-                  labels={["Joe Staked (USD)", "Joe Harvested (USD)"]}
-                />
-              )}
-            </ParentSize>
-          </Paper>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Paper
-            variant="outlined"
-            style={{ display: "flex", height: 400, flex: 1 }}
-          >
-            <ParentSize>
-              {({ width, height }) => (
-                <Curves
-                  width={width}
-                  height={height}
-                  margin={{ top: 64, right: 32, bottom: 0, left: 64 }}
-                  data={[xJoeMinted, xJoeBurned]}
-                  labels={["xJoe Minted", "xJoe Burned"]}
-                />
-              )}
-            </ParentSize>
-          </Paper>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Paper
-            variant="outlined"
-            style={{ display: "flex", height: 400, flex: 1 }}
-          >
-            <ParentSize>
-              {({ width, height }) => (
-                <Curves
-                  width={width}
-                  height={height}
-                  title="xJoe Total Supply"
-                  margin={{ top: 64, right: 32, bottom: 0, left: 64 }}
-                  data={[xJoe]}
                 />
               )}
             </ParentSize>
