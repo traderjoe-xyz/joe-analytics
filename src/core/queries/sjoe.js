@@ -8,3 +8,13 @@ export const stableJoeQuery = gql`
       }
   }
 `;
+
+export const stableJoeDayDatasQuery = gql`
+  query stableJoeDayDatasQuery {
+    stableJoeDayDatas(orderBy: date, orderDirection: desc) {
+      id
+      date
+      totalJoeStaked
+    }
+  }
+`

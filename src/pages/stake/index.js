@@ -1,13 +1,11 @@
-import { AppShell, Curves, KPI } from "app/components";
-import { Grid, Paper, useTheme } from "@material-ui/core";
+import { AppShell, Curves, KPI, RemittanceTable } from "app/components";
+import { Grid, Paper } from "@material-ui/core";
 import {
   barHistoriesQuery,
-  barQuery,
   dayDatasQuery,
   avaxPriceQuery,
   factoryQuery,
   getApollo,
-  getBar,
   getBarHistories,
   getDayData,
   getAvaxPrice,
@@ -17,43 +15,26 @@ import {
   useInterval,
   stableJoeQuery,
   getStableJoe,
+  getMoneyMaker,
+  moneyMakerQuery,
+  getMoneyMakerDayDatas,
+  moneyMakerDayDatasQuery,
+  getStableJoeDayDatas,
+  stableJoeDayDatasQuery,
+  getRemittances,
+  remittancesQuery,
 } from "app/core";
 
-import Chart from "../../components/Chart";
 import Head from "next/head";
 import { ParentSize } from "@visx/responsive";
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import { useQuery } from "@apollo/client";
 import { JOE_TOKEN_ADDDRESS } from "config";
+import dayjs from "dayjs";
 
 const FEE_RATE = 0.0005; // 0.05%
 
-const useStyles = makeStyles((theme) => ({
-  charts: {
-    flexGrow: 1,
-    marginBottom: theme.spacing(4),
-  },
-  paper: {
-    padding: theme.spacing(2),
-    // textAlign: "center",
-    color: theme.palette.text.secondary,
-  },
-}));
-
 function BarPage() {
-  const classes = useStyles();
-
-  const theme = useTheme();
-
-  const {
-    data: { bar },
-  } = useQuery(barQuery, {
-    context: {
-      clientName: "bar",
-    },
-  });
-
   const {
     data: { histories },
   } = useQuery(barHistoriesQuery, {
@@ -82,108 +63,110 @@ function BarPage() {
     data: { dayDatas },
   } = useQuery(dayDatasQuery);
 
-  const { 
+  const {
     data: { stableJoe },
   } = useQuery(stableJoeQuery)
+
+  const {
+    data: { stableJoeDayDatas },
+  } = useQuery(stableJoeDayDatasQuery)
+
+  const {
+    data: { moneyMaker },
+  } = useQuery(moneyMakerQuery)
+
+  const {
+    data: { dayDatas: moneyMakerDayDatas },
+  } = useQuery(moneyMakerDayDatasQuery)
+
+  const {
+    data: { remits: remittances },
+  } = useQuery(remittancesQuery)
 
   const joePrice =
     parseFloat(token?.derivedAVAX) * parseFloat(bundles[0].avaxPrice);
 
   useInterval(async () => {
     await Promise.all([
-      getBar,
-      getBarHistories,
-      getDayData,
       getFactory,
       getJoeToken,
       getAvaxPrice,
+      getBarHistories,
+      getDayData,
+      getStableJoe,
+      getMoneyMaker,
+      getMoneyMakerDayDatas,
+      getStableJoeDayDatas,
     ]);
   }, 1800000);
 
-  const {
-    joeStakedUSD,
-    joeHarvestedUSD,
-    xJoeMinted,
-    xJoeBurned,
-    xJoe,
-    apr,
-    apy,
-    fees,
-  } = histories.reduce(
+  // APR chart
+  const apr = moneyMakerDayDatas.reduce(
     (previousValue, currentValue) => {
-      const date = currentValue.date * 1000;
-      const dayData = dayDatas.find((d) => d.date === currentValue.date);
-      previousValue["joeStakedUSD"].push({
-        date,
-        value: parseFloat(currentValue.joeStakedUSD),
-      });
-      previousValue["joeHarvestedUSD"].push({
-        date,
-        value: parseFloat(currentValue.joeHarvestedUSD),
-      });
-
-      previousValue["xJoeMinted"].push({
-        date,
-        value: parseFloat(currentValue.xJoeMinted),
-      });
-      previousValue["xJoeBurned"].push({
-        date,
-        value: parseFloat(currentValue.xJoeBurned),
-      });
-      previousValue["xJoe"].push({
-        date,
-        value: parseFloat(currentValue.xJoeSupply),
-      });
-      const apr =
-        (((dayData?.volumeUSD * FEE_RATE) / currentValue.xJoeSupply) * 365) /
-        (currentValue.ratio * joePrice);
-      previousValue["apr"].push({
+      const date = currentValue.date;
+      const stableJoeDayData = stableJoeDayDatas.find((d) => d.date == currentValue.date);
+      const moneyMakerDayData = moneyMakerDayDatas.find((d) => d.date === currentValue.date);
+      const usdRemitted = moneyMakerDayData?.usdRemitted ?? 0;
+      const joeStaked = stableJoeDayData?.totalJoeStaked ?? 0;
+      const apr = (usdRemitted * 365) / (joeStaked * joePrice);
+      previousValue.push({
         date,
         value: parseFloat(apr * 100),
       });
-      previousValue["apy"].push({
-        date,
-        value: parseFloat((Math.pow(1 + apr / 365, 365) - 1) * 100),
-      });
-      previousValue["fees"].push({
+      return previousValue;
+    },
+    []
+  ).reverse();
+  
+  // Fees chart
+  const fees = histories.reduce(
+    (previousValue, currentValue) => {
+      const date = currentValue.date;
+      const dayData = dayDatas.find((d) => d.date === currentValue.date);
+      previousValue.push({
         date,
         value: parseFloat(dayData?.volumeUSD * FEE_RATE),
       });
       return previousValue;
     },
-    {
-      joeStakedUSD: [],
-      joeHarvestedUSD: [],
-      xJoeMinted: [],
-      xJoeBurned: [],
-      xJoe: [],
-      apr: [],
-      apy: [],
-      fees: [],
-    }
+    []
   );
 
-  // average APY of days histories
-  const averageApy =
-    apy.reduce((prevValue, currValue) => {
-      return prevValue + (currValue.value || 0);
-    }, 0) / apy.length;
-
-  // get last day volume and APY
-  const oneDayVolume = factory?.volumeUSD - factory?.oneDay.volumeUSD;
-  const oneDayFees = oneDayVolume * FEE_RATE;
+  // Total Staked
   const totalStakedUSD = stableJoe.joeStaked * joePrice;
 
-  const APR = (oneDayFees * 365) / totalStakedUSD;
-  const APY = Math.pow(1 + APR / 365, 365) - 1;
+  // Fees (24H)
+  const oneDayVolume = factory?.volumeUSD - factory?.oneDay.volumeUSD;
+  const oneDayFees = oneDayVolume * FEE_RATE;
 
+  // APR (7D)
+  const utcSevenDayBack = dayjs()
+    .startOf('day')
+    .subtract(7, 'day')
+    .unix()
+  const sevenDayMoneyMakerDayDatas = moneyMakerDayDatas.filter((data) => data.date >= utcSevenDayBack)
+  const sevenDayLength = sevenDayMoneyMakerDayDatas.length
+  const sevenDayUsdRemitted = sevenDayMoneyMakerDayDatas.reduce((sum, cur) => {
+    return sum + (cur.usdRemitted ? Number(cur.usdRemitted) : 0)
+  }, 0)
+  const sevenDayAPR = ((sevenDayUsdRemitted / sevenDayLength) * 365) / totalStakedUSD
+
+  // APR (24H)
+  const utcOneDayBack = dayjs().startOf('day').subtract(1, 'day').unix()
+  const oneDayMoneyMakerDayDatas = moneyMakerDayDatas.filter((data) => data.date >= utcOneDayBack)
+  const oneDayLength = oneDayMoneyMakerDayDatas.length
+  const oneDayUsdRemitted = oneDayMoneyMakerDayDatas.reduce((sum, cur) => {
+    return sum + (cur.usdRemitted ? Number(cur.usdRemitted) : 0)
+  }, 0)
+  const oneDayAPR = ((oneDayUsdRemitted / oneDayLength) * 365) / totalStakedUSD;
+  
   return (
     <AppShell>
       <Head>
         <title>Joe Stake | Trader Joe Analytics</title>
       </Head>
 
-      <Grid container spacing={3}>
+      <Grid container spacing={3} style={{ marginBottom: "10px" }}>
         <Grid item xs={12}>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6} md={3}>
@@ -197,10 +180,10 @@ function BarPage() {
               <KPI title="Fees (24H)" value={oneDayFees} format="currency" />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <KPI title="APY (24H)" value={APY * 100} format="percent" />
+              <KPI title="APR (24H)" value={oneDayAPR * 100} format="percent" />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <KPI title="APY (Avg)" value={averageApy} format="percent" />
+              <KPI title="APR (7D)" value={sevenDayAPR * 100} format="percent" />
             </Grid>
           </Grid>
         </Grid>
@@ -243,19 +226,23 @@ function BarPage() {
           </Paper>
         </Grid>
       </Grid>
+      <RemittanceTable remittances={remittances} orderBy="timestamp" orderDirection="desc" rowsPerPage={10} />
     </AppShell>
   );
 }
 
 export async function getStaticProps() {
   const client = getApollo();
-  await getBar(client);
   await getBarHistories(client);
   await getFactory(client);
   await getDayData(client);
   await getJoeToken(client);
   await getAvaxPrice(client);
+  await getMoneyMaker(client);
   await getStableJoe(client);
+  await getMoneyMakerDayDatas(client);
+  await getStableJoeDayDatas(client);
+  await getRemittances(client);
   return {
     props: {
       initialApolloState: client.cache.extract(),
