@@ -159,7 +159,10 @@ function BarPage() {
     return sum + (cur.usdRemitted ? Number(cur.usdRemitted) : 0)
   }, 0)
   const oneDayAPR = ((oneDayUsdRemitted / oneDayLength) * 365) / totalStakedUSD;
-  
+
+  // Last Remittance
+  const lastRemittanceUsd = oneDayMoneyMakerDayDatas[oneDayMoneyMakerDayDatas.length - 1].usdRemitted
+
   return (
     <AppShell>
       <Head>
@@ -168,21 +171,24 @@ function BarPage() {
 
       <Grid container spacing={3} style={{ marginBottom: "10px" }}>
         <Grid item xs={12}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} sm={6} md={3}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6} md>
               <KPI
                 title="Total Staked"
                 value={totalStakedUSD}
                 format="currency"
               />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item xs={12} sm={6} md>
               <KPI title="Fees (24H)" value={oneDayFees} format="currency" />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item xs={12} sm={6} md>
+              <KPI title="Last Remittance" value={lastRemittanceUsd} format="currency" />
+            </Grid>
+            <Grid item xs={12} sm={6} md>
               <KPI title="APR (24H)" value={oneDayAPR * 100} format="percent" />
             </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item xs={12} sm={6} md>
               <KPI title="APR (7D)" value={sevenDayAPR * 100} format="percent" />
             </Grid>
           </Grid>
