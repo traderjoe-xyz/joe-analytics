@@ -9,6 +9,7 @@ import {
   GRAPH_BLOCKS_URI,
   GRAPH_LENDING_URI,
   GRAPH_MONEY_MAKER_URI,
+  GRAPH_SJOE_URI,
 } from "../../config/index.ts";
 
 export const uniswap = from([
@@ -75,6 +76,14 @@ export const moneyMaker = from([
   }),
 ])
 
+export const sjoe = from([
+  new RetryLink(),
+  new HttpLink({
+    uri: GRAPH_SJOE_URI,
+    shouldBatch: true,
+  }),
+])
+
 export default split(
   (operation) => {
     return operation.getContext().clientName === "blocklytics";
@@ -100,7 +109,13 @@ export default split(
             return operation.getContext().clientName === "moneymaker";
           },
           moneyMaker,
-          exchange
+          split(
+            (operation) => {
+              return operation.getContext().clientName === "sjoe";
+            },
+            sjoe,
+            exchange
+          )
         )
       )
     )
