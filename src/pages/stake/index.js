@@ -110,7 +110,7 @@ function BarPage() {
       const joeStaked = stableJoeDayData?.totalJoeStaked ?? 0;
       const apr = (usdRemitted * 365) / (joeStaked * joePrice);
       previousValue.push({
-        date,
+        date: date * 1000,
         value: parseFloat(apr * 100),
       });
       return previousValue;
@@ -124,7 +124,7 @@ function BarPage() {
       const date = currentValue.date;
       const dayData = dayDatas.find((d) => d.date === currentValue.date);
       previousValue.push({
-        date,
+        date: date * 1000,
         value: parseFloat(dayData?.volumeUSD * FEE_RATE),
       });
       return previousValue;
