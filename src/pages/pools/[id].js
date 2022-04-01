@@ -452,7 +452,7 @@ export async function getStaticProps({ params: { id } }) {
 export async function getStaticPaths() {
   const client = getApollo();
   const { pools } = await getPoolIds(client);
-  const paths = pools.filter(pool => !["24", "66", "67"].includes(pool.id)).map((pool) => ({
+  const paths = pools.filter(pool => !["24", "66", "67", "69"].includes(pool.id)).map((pool) => ({
     params: { id: pool.id },
   }));
 
