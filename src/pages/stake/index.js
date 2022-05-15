@@ -65,23 +65,23 @@ function BarPage() {
 
   const {
     data: { stableJoe },
-  } = useQuery(stableJoeQuery)
+  } = useQuery(stableJoeQuery);
 
   const {
     data: { stableJoeDayDatas },
-  } = useQuery(stableJoeDayDatasQuery)
+  } = useQuery(stableJoeDayDatasQuery);
 
   const {
     data: { moneyMaker },
-  } = useQuery(moneyMakerQuery)
+  } = useQuery(moneyMakerQuery);
 
   const {
     data: { dayDatas: moneyMakerDayDatas },
-  } = useQuery(moneyMakerDayDatasQuery)
+  } = useQuery(moneyMakerDayDatasQuery);
 
   const {
     data: { remits: remittances },
-  } = useQuery(remittancesQuery)
+  } = useQuery(remittancesQuery);
 
   const joePrice =
     parseFloat(token?.derivedAVAX) * parseFloat(bundles[0].avaxPrice);
@@ -101,11 +101,15 @@ function BarPage() {
   }, 1800000);
 
   // APR chart
-  const apr = moneyMakerDayDatas.reduce(
-    (previousValue, currentValue) => {
+  const apr = moneyMakerDayDatas
+    .reduce((previousValue, currentValue) => {
       const date = currentValue.date;
-      const stableJoeDayData = stableJoeDayDatas.find((d) => d.date == currentValue.date);
-      const moneyMakerDayData = moneyMakerDayDatas.find((d) => d.date === currentValue.date);
+      const stableJoeDayData = stableJoeDayDatas.find(
+        (d) => d.date == currentValue.date
+      );
+      const moneyMakerDayData = moneyMakerDayDatas.find(
+        (d) => d.date === currentValue.date
+      );
       const usdRemitted = moneyMakerDayData?.usdRemitted ?? 0;
       const joeStaked = stableJoeDayData?.totalJoeStaked ?? 0;
       const apr = (usdRemitted * 365) / (joeStaked * joePrice);
@@ -114,23 +118,19 @@ function BarPage() {
         value: parseFloat(apr * 100),
       });
       return previousValue;
-    },
-    []
-  ).reverse();
-  
+    }, [])
+    .reverse();
+
   // Fees chart
-  const fees = histories.reduce(
-    (previousValue, currentValue) => {
-      const date = currentValue.date;
-      const dayData = dayDatas.find((d) => d.date === currentValue.date);
-      previousValue.push({
-        date: date * 1000,
-        value: parseFloat(dayData?.volumeUSD * FEE_RATE),
-      });
-      return previousValue;
-    },
-    []
-  );
+  const fees = histories.reduce((previousValue, currentValue) => {
+    const date = currentValue.date;
+    const dayData = dayDatas.find((d) => d.date === currentValue.date);
+    previousValue.push({
+      date: date * 1000,
+      value: parseFloat(dayData?.volumeUSD * FEE_RATE),
+    });
+    return previousValue;
+  }, []);
 
   // Total Staked
   const totalStakedUSD = stableJoe.joeStaked * joePrice;
@@ -140,28 +140,31 @@ function BarPage() {
   const oneDayFees = oneDayVolume * FEE_RATE;
 
   // APR (7D)
-  const utcSevenDayBack = dayjs()
-    .startOf('day')
-    .subtract(7, 'day')
-    .unix()
-  const sevenDayMoneyMakerDayDatas = moneyMakerDayDatas.filter((data) => data.date >= utcSevenDayBack)
-  const sevenDayLength = sevenDayMoneyMakerDayDatas.length
+  const utcSevenDayBack = dayjs().startOf("day").subtract(7, "day").unix();
+  const sevenDayMoneyMakerDayDatas = moneyMakerDayDatas.filter(
+    (data) => data.date >= utcSevenDayBack
+  );
+  const sevenDayLength = sevenDayMoneyMakerDayDatas.length;
   const sevenDayUsdRemitted = sevenDayMoneyMakerDayDatas.reduce((sum, cur) => {
-    return sum + (cur.usdRemitted ? Number(cur.usdRemitted) : 0)
-  }, 0)
-  const sevenDayAPR = ((sevenDayUsdRemitted / sevenDayLength) * 365) / totalStakedUSD
+    return sum + (cur.usdRemitted ? Number(cur.usdRemitted) : 0);
+  }, 0);
+  const sevenDayAPR =
+    ((sevenDayUsdRemitted / sevenDayLength) * 365) / totalStakedUSD;
 
   // APR (24H)
-  const utcOneDayBack = dayjs().startOf('day').subtract(1, 'day').unix()
-  const oneDayMoneyMakerDayDatas = moneyMakerDayDatas.filter((data) => data.date >= utcOneDayBack)
-  const oneDayLength = oneDayMoneyMakerDayDatas.length
+  const utcOneDayBack = dayjs().startOf("day").subtract(1, "day").unix();
+  const oneDayMoneyMakerDayDatas = moneyMakerDayDatas.filter(
+    (data) => data.date >= utcOneDayBack
+  );
+  const oneDayLength = oneDayMoneyMakerDayDatas.length;
   const oneDayUsdRemitted = oneDayMoneyMakerDayDatas.reduce((sum, cur) => {
-    return sum + (cur.usdRemitted ? Number(cur.usdRemitted) : 0)
-  }, 0)
+    return sum + (cur.usdRemitted ? Number(cur.usdRemitted) : 0);
+  }, 0);
   const oneDayAPR = ((oneDayUsdRemitted / oneDayLength) * 365) / totalStakedUSD;
 
   // Last Remittance
-  const lastRemittanceUsd = oneDayMoneyMakerDayDatas[oneDayMoneyMakerDayDatas.length - 1].usdRemitted
+  const lastRemittanceUsd =
+    oneDayMoneyMakerDayDatas[oneDayMoneyMakerDayDatas.length - 1].usdRemitted;
 
   return (
     <AppShell>
@@ -183,13 +186,21 @@ function BarPage() {
               <KPI title="Fees (24H)" value={oneDayFees} format="currency" />
             </Grid>
             <Grid item xs={12} sm={6} md>
-              <KPI title="Last Remittance" value={lastRemittanceUsd} format="currency" />
+              <KPI
+                title="Last Remittance"
+                value={lastRemittanceUsd}
+                format="currency"
+              />
             </Grid>
             <Grid item xs={12} sm={6} md>
               <KPI title="APR (24H)" value={oneDayAPR * 100} format="percent" />
             </Grid>
             <Grid item xs={12} sm={6} md>
-              <KPI title="APR (7D)" value={sevenDayAPR * 100} format="percent" />
+              <KPI
+                title="APR (7D)"
+                value={sevenDayAPR * 100}
+                format="percent"
+              />
             </Grid>
           </Grid>
         </Grid>
@@ -232,7 +243,12 @@ function BarPage() {
           </Paper>
         </Grid>
       </Grid>
-      <RemittanceTable remittances={remittances} orderBy="timestamp" orderDirection="desc" rowsPerPage={10} />
+      <RemittanceTable
+        remittances={remittances}
+        orderBy="timestamp"
+        orderDirection="desc"
+        rowsPerPage={10}
+      />
     </AppShell>
   );
 }
