@@ -110,7 +110,6 @@ function BarPage() {
       const moneyMakerDayData = moneyMakerDayDatas.find(
         (d) => d.date === currentValue.date
       );
-      console.log("USDREMITTED", moneyMakerDayData);
       const usdRemitted = moneyMakerDayData?.usdRemitted ?? 0;
       const joeStaked = stableJoeDayData?.totalJoeStaked ?? 0;
       const apr = (usdRemitted * 365) / (joeStaked * joePrice);
